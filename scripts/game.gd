@@ -8,6 +8,10 @@ const BULLET_SPEED := 650.0
 const MAX_WAVES := 8
 const BG := Color("101a29")
 const ROAD := Color("34475a")
+const CELL_SIZE := 40.0
+const GRID_SIZE := Vector2i(32, 18)
+const START_CELL := Vector2i(0, 8)
+const GOAL_CELL := Vector2i(29, 8)
 
 var upgrade_pool: Array[String] = ["生命补给", "急救包", "枪械增幅", "快速扳机", "高速弹头", "冲击弹", "双重射击", "炮塔增幅", "射程扩展", "机械润滑", "核心修复", "核心加固", "移动训练", "赏金猎人", "军需补给", "防弹衣", "核心装甲", "塔体加固", "穿甲弹", "巨兽克星"]
 var rng := RandomNumberGenerator.new()
@@ -23,12 +27,15 @@ var state := "ready"
 var enemies: Array[Dictionary] = []
 var towers: Array[Dictionary] = []
 var bullets: Array[Dictionary] = []
+var hostile_bullets: Array[Dictionary] = []
 var hit_texts: Array[Dictionary] = []
 var impacts: Array[Dictionary] = []
 var spawn_left := 0
 var spawned_this_wave := 0
 var spawn_timer := 0.0
 var fire_timer := 0.0
+var dodge_timer := 0.0
+var dodge_cooldown := 0.0
 var selected_tower := 0
 var selected_tower_index := -1
 var player_damage := 16.0
@@ -47,11 +54,67 @@ var core_armor := 0.0
 var armor_penetration := 0.55
 var boss_bonus := 1.0
 var upgrade_choices: Array[String] = []
+var navigation := AStarGrid2D.new()
+var navigation_revision := 0
 
 ## 初始化随机源和首局提示；逻辑状态由本节点统一维护。
 func _ready() -> void:
 	rng.randomize()
+	rebuild_navigation()
 	queue_redraw()
+
+## 把世界坐标映射到导航格；仅敌人的道路通行区域参与寻路。
+## @param pos 世界坐标，单位为画面像素。
+## @return 限制在地图内的导航格坐标。
+func nav_cell(pos: Vector2) -> Vector2i:
+	return Vector2i(clampi(int(floor(pos.x / CELL_SIZE)), 0, GRID_SIZE.x - 1), clampi(int(floor(pos.y / CELL_SIZE)), 0, GRID_SIZE.y - 1))
+
+## 根据固定道路走廊和现存炮塔重建可通行网格，供敌人动态绕行。
+func rebuild_navigation() -> void:
+	navigation.region = Rect2i(Vector2i.ZERO, GRID_SIZE)
+	navigation.cell_size = Vector2(CELL_SIZE, CELL_SIZE)
+	navigation.offset = Vector2(CELL_SIZE / 2.0, CELL_SIZE / 2.0)
+	navigation.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	navigation.update()
+	for x in GRID_SIZE.x:
+		for y in GRID_SIZE.y:
+			var cell := Vector2i(x, y)
+			var point := Vector2(x * CELL_SIZE + CELL_SIZE / 2.0, y * CELL_SIZE + CELL_SIZE / 2.0)
+			var on_road := false
+			for i in range(PATH.size() - 1):
+				if point.distance_to(Geometry2D.get_closest_point_to_segment(point, PATH[i], PATH[i + 1])) <= 78.0:
+					on_road = true
+					break
+			# 重建时必须同时清除已拆除炮塔留下的阻塞标记。
+			navigation.set_point_solid(cell, not on_road or y < 2 or y > 16)
+	for tower in towers:
+		navigation.set_point_solid(nav_cell(tower.pos))
+	navigation_revision += 1
+	for i in enemies.size():
+		var enemy := enemies[i]
+		enemy.route = route_from(enemy.pos)
+		enemy.route_index = 0
+		enemies[i] = enemy
+
+## 从敌人当前位置计算到核心的网格路线；建筑变化后调用以绕开新障碍。
+## @param pos 敌人当前世界坐标。
+## @return 路线点数组；无路时返回空数组。
+func route_from(pos: Vector2) -> PackedVector2Array:
+	var start := nav_cell(pos)
+	if navigation.is_point_solid(start):
+		# 击退可能把敌人短暂推出可通行格，选择最近的开放格恢复寻路。
+		var best := INF
+		for x in range(maxi(0, start.x - 2), mini(GRID_SIZE.x, start.x + 3)):
+			for y in range(maxi(0, start.y - 2), mini(GRID_SIZE.y, start.y + 3)):
+				var candidate := Vector2i(x, y)
+				if navigation.is_point_solid(candidate): continue
+				var distance := pos.distance_to(Vector2(x * CELL_SIZE + 20.0, y * CELL_SIZE + 20.0))
+				if distance < best:
+					best = distance
+					start = candidate
+		if best == INF:
+			return PackedVector2Array()
+	return navigation.get_point_path(start, GOAL_CELL)
 
 ## 推进角色、敌人、炮塔与弹丸；结算后停止所有战斗更新。
 ## @param delta 距上一帧的秒数，所有移动与冷却均按此时间推进。
@@ -60,10 +123,13 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		return
 	move_player(delta)
+	dodge_timer = maxf(0.0, dodge_timer - delta)
+	dodge_cooldown = maxf(0.0, dodge_cooldown - delta)
 	update_feedback(delta)
 	if state == "fighting":
 		update_spawning(delta)
 		update_enemies(delta)
+		update_hostile_bullets(delta)
 		update_towers(delta)
 		update_bullets(delta)
 		shoot_player(delta)
@@ -88,6 +154,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_H: repair_selected_tower()
 			KEY_X: sell_selected_tower()
 			KEY_P: cycle_tower_priority()
+			KEY_F: dodge()
 			KEY_SPACE:
 				if state == "ready": start_wave()
 			KEY_Q:
@@ -116,6 +183,20 @@ func move_player(delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	player_pos += direction * PLAYER_SPEED * move_multiplier * delta
 	player_pos = player_pos.clamp(Vector2(22, 92), Vector2(1258, 695))
+
+## 朝移动方向短距离闪避；无移动输入时朝鼠标方向，短暂无敌用于躲避可见弹丸。
+func dodge() -> void:
+	if state != "fighting" or dodge_cooldown > 0.0:
+		return
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if direction == Vector2.ZERO:
+		direction = (get_global_mouse_position() - player_pos).normalized()
+	if direction == Vector2.ZERO:
+		return
+	player_pos = (player_pos + direction * 105.0).clamp(Vector2(22, 92), Vector2(1258, 695))
+	dodge_timer = 0.22
+	dodge_cooldown = 2.5
+	impacts.append({"pos": player_pos, "time": 0.2, "color": Color("80deff")})
 
 ## 返回指定波的敌人总数，供开波和测试共同使用。
 ## @param number 从 1 开始的波次编号。
@@ -159,90 +240,148 @@ func update_spawning(delta: float) -> void:
 	if spawn_timer <= 0.0:
 		# 类型按夜次逐步解锁，精英和 Boss 只在对应事件夜出现。
 		var kind := enemy_kind_for(wave, spawned_this_wave)
-		var hp := 34.0 + wave * 14.0
+		var hp := 34.0 + wave * 18.0
 		var speed := 65.0 + wave * 12.0
 		var radius := 17.0
-		var reward := 12
+		var reward := 8
 		if kind == "runner":
 			hp *= 0.65
 			speed *= 1.55
 			radius = 14.0
-			reward = 15
+			reward = 11
 		elif kind == "armored":
 			hp *= 1.7
 			speed *= 0.7
 			radius = 20.0
-			reward = 22
+			reward = 16
 		elif kind == "ranged":
 			hp *= 0.8
-			reward = 20
+			reward = 14
 		elif kind == "elite":
 			hp *= 5.0
 			speed *= 0.7
 			radius = 25.0
-			reward = 60
+			reward = 42
 		elif kind == "boss":
 			hp *= 13.0
 			speed *= 0.48
 			radius = 35.0
-			reward = 200
-		enemies.append({"pos": PATH[0], "segment": 1, "hp": hp, "max_hp": hp, "speed": speed, "attack_timer": 0.0, "kind": kind, "radius": radius, "reward": reward})
+			reward = 100
+		enemies.append({"pos": Vector2(20, 340), "segment": 0, "route": route_from(Vector2(20, 340)), "route_index": 0, "hp": hp, "max_hp": hp, "speed": speed, "attack_timer": 0.0, "windup": 0.0, "target_kind": "", "aim": Vector2.ZERO, "kind": kind, "radius": radius, "reward": reward})
 		spawn_left -= 1
 		spawned_this_wave += 1
 		spawn_timer = 1.15
 
-## 沿折线推进敌人；靠近玩家时先攻击玩家，抵达核心后持续攻击核心。
+## 沿动态路线推进敌人；攻击前摇锁定目标位置，闪避可使弹丸落空。
 ## @param delta 本帧经过的秒数。
 func update_enemies(delta: float) -> void:
 	for i in range(enemies.size() - 1, -1, -1):
 		var enemy := enemies[i]
 		var pos: Vector2 = enemy.pos
-		var timer: float = maxf(0.0, enemy.attack_timer - delta)
-		if enemy.kind == "ranged" and pos.distance_to(player_pos) < 180.0:
-			if timer <= 0.0:
-				player_hp -= maxf(1.0, 6.0 - player_armor)
-				add_damage_text(player_pos, maxf(1.0, 6.0 - player_armor), Color("ff7777"))
-				timer = 1.35
-		elif enemy.kind == "ranged" and tower_at_range(pos, 155.0) >= 0:
-			# 远程敌人会攻击靠近道路的炮塔，维修因此具有实际防守用途。
-			var target_tower := tower_at_range(pos, 155.0)
-			if target_tower >= 0 and timer <= 0.0:
-				var tower := towers[target_tower]
-				tower.hp -= 8.0
-				add_damage_text(tower.pos, 8.0, Color("ff7777"))
-				if tower.hp <= 0.0:
-					towers.remove_at(target_tower)
-					selected_tower_index = -1
-				else:
-					towers[target_tower] = tower
-				timer = 1.35
-		elif pos.distance_to(player_pos) < enemy.radius + 15.0:
-			if timer <= 0.0:
-				var damage: float = maxf(1.0, (18.0 if enemy.kind == "boss" else 9.0) - player_armor)
-				player_hp -= damage
-				add_damage_text(player_pos, damage, Color("ff7777"))
-				timer = 0.9
-		elif enemy.segment >= PATH.size():
-			if timer <= 0.0:
-				var damage: float = maxf(1.0, (30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0) - core_armor)
-				core_hp -= damage
-				add_damage_text(CORE_POS, damage, Color("ff7777"))
-				timer = 1.0
-		else:
+		enemy.attack_timer = maxf(0.0, enemy.attack_timer - delta)
+		if enemy.windup > 0.0:
+			enemy.windup -= delta
+			if enemy.windup <= 0.0:
+				resolve_enemy_attack(enemy)
+		elif enemy.attack_timer <= 0.0:
+			# 优先攻击靠近的玩家；远程敌人可转向炮塔，Boss 具有更远的弹幕预警。
+			var ranged: bool = enemy.kind == "ranged" or enemy.kind == "boss"
+			var range_to_player: float = 300.0 if enemy.kind == "boss" else 180.0 if ranged else enemy.radius + 15.0
+			if pos.distance_to(player_pos) < range_to_player:
+				enemy.target_kind = "player"
+				enemy.aim = player_pos
+				enemy.windup = 0.65 if enemy.kind == "boss" else 0.45 if ranged else 0.28
+				enemy.attack_timer = enemy.windup + (1.8 if enemy.kind == "boss" else 1.35 if ranged else 0.9)
+			elif enemy.kind == "ranged" and tower_at_range(pos, 155.0) >= 0:
+				enemy.target_kind = "tower"
+				enemy.aim = towers[tower_at_range(pos, 155.0)].pos
+				enemy.windup = 0.45
+				enemy.attack_timer = 1.8
+			elif pos.distance_to(CORE_POS) < 34.0:
+				enemy.target_kind = "core"
+				enemy.aim = CORE_POS
+				enemy.windup = 0.35
+				enemy.attack_timer = 1.35
+		if enemy.windup <= 0.0 and enemy.target_kind == "":
 			var remaining: float = enemy.speed * delta
-			while remaining > 0.0 and enemy.segment < PATH.size():
-				var target: Vector2 = PATH[enemy.segment]
+			var route: PackedVector2Array = enemy.route
+			while remaining > 0.0 and enemy.route_index < route.size():
+				var target: Vector2 = route[enemy.route_index]
 				var distance := pos.distance_to(target)
 				if distance <= remaining:
 					pos = target
 					remaining -= distance
-					enemy.segment += 1
+					enemy.route_index += 1
 				else:
 					pos = pos.move_toward(target, remaining)
 					remaining = 0.0
+			enemy.segment = enemy.route_index
+		# 轻微分离重叠敌人，避免同一格内完全叠在一起。
+		for j in enemies.size():
+			if j == i: continue
+			var offset: Vector2 = pos - enemies[j].pos
+			if offset.length() > 0.1 and offset.length() < enemy.radius * 1.1:
+				pos += offset.normalized() * minf(8.0 * delta, enemy.radius * 1.1 - offset.length())
 		enemy.pos = pos
-		enemy.attack_timer = timer
 		enemies[i] = enemy
+
+## 在前摇结束时结算近战，或发射沿预警方向飞行的敌方弹丸。
+## @param enemy 前摇中的敌人数据，包含目标类型与锁定位置。
+func resolve_enemy_attack(enemy: Dictionary) -> void:
+	var target_kind: String = enemy.target_kind
+	enemy.target_kind = ""
+	if target_kind == "player" and (enemy.kind == "ranged" or enemy.kind == "boss"):
+		var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
+		if direction == Vector2.ZERO: direction = Vector2.LEFT
+		var count := 3 if enemy.kind == "boss" else 1
+		for index in count:
+			var spread := (index - 1) * 0.22 if count == 3 else 0.0
+			hostile_bullets.append({"pos": enemy.pos, "velocity": direction.rotated(spread) * (360.0 if enemy.kind == "boss" else 300.0), "damage": 12.0 if enemy.kind == "boss" else 6.0, "life": 1.5, "radius": 9.0 if enemy.kind == "boss" else 7.0})
+	elif target_kind == "tower":
+		var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
+		hostile_bullets.append({"pos": enemy.pos, "velocity": direction * 300.0, "damage": 8.0, "life": 1.0, "radius": 7.0})
+	elif target_kind == "player" and enemy.pos.distance_to(player_pos) < enemy.radius + 20.0 and dodge_timer <= 0.0:
+		var damage: float = maxf(1.0, 9.0 - player_armor)
+		player_hp -= damage
+		add_damage_text(player_pos, damage, Color("ff7777"))
+	elif target_kind == "core" and enemy.pos.distance_to(CORE_POS) < 42.0:
+		var damage: float = maxf(1.0, (30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0) - core_armor)
+		core_hp -= damage
+		add_damage_text(CORE_POS, damage, Color("ff7777"))
+
+## 推进敌方实体弹丸并检查玩家闪避、炮塔受损与弹丸寿命。
+## @param delta 本帧经过的秒数。
+func update_hostile_bullets(delta: float) -> void:
+	var route_dirty := false
+	for i in range(hostile_bullets.size() - 1, -1, -1):
+		var bullet := hostile_bullets[i]
+		bullet.pos += bullet.velocity * delta
+		bullet.life -= delta
+		var consumed := false
+		if bullet.pos.distance_to(player_pos) < bullet.radius + 15.0:
+			consumed = true
+			if dodge_timer <= 0.0:
+				var damage: float = maxf(1.0, bullet.damage - player_armor)
+				player_hp -= damage
+				add_damage_text(player_pos, damage, Color("ff7777"))
+		else:
+			var target := tower_at_range(bullet.pos, bullet.radius + 21.0)
+			if target >= 0:
+				consumed = true
+				var tower := towers[target]
+				tower.hp -= bullet.damage
+				add_damage_text(tower.pos, bullet.damage, Color("ff7777"))
+				if tower.hp <= 0.0:
+					towers.remove_at(target)
+					selected_tower_index = -1
+					route_dirty = true
+				else: towers[target] = tower
+		if consumed or bullet.life <= 0.0 or not Rect2(-50, -50, 1380, 820).has_point(bullet.pos):
+			hostile_bullets.remove_at(i)
+		else:
+			hostile_bullets[i] = bullet
+	if route_dirty:
+		rebuild_navigation()
 
 ## 玩家按住左键时朝鼠标射击；建造模式下左键只放置炮塔。
 ## @param delta 本帧经过的秒数。
@@ -339,19 +478,33 @@ func update_feedback(delta: float) -> void:
 		if impacts[i].time <= 0.0:
 			impacts.remove_at(i)
 
-## 检查目标是否远离道路、核心、玩家与其他塔，避免堵住通路。
+## 检查金币以外的建造条件，并临时封格确认入口及场上敌人仍能到达核心。
 ## @param pos 待放置炮塔的世界坐标，单位为画面像素。
 ## @return 可以安全建造时返回 true。
 func can_build_at(pos: Vector2) -> bool:
 	if not Rect2(35, 105, 1210, 575).has_point(pos) or pos.distance_to(CORE_POS) < 66.0 or pos.distance_to(player_pos) < 38.0:
 		return false
-	for i in range(PATH.size() - 1):
-		var nearest := Geometry2D.get_closest_point_to_segment(pos, PATH[i], PATH[i + 1])
-		if pos.distance_to(nearest) < 56.0:
+	var cell := nav_cell(pos)
+	if cell == START_CELL or cell == GOAL_CELL:
+		return false
+	for enemy in enemies:
+		if pos.distance_to(enemy.pos) < 40.0:
 			return false
 	for tower in towers:
 		if pos.distance_to(tower.pos) < 52.0:
 			return false
+	# 临时阻塞候选格，检查入口和场上所有敌人仍能到达核心。
+	var was_solid := navigation.is_point_solid(cell)
+	navigation.set_point_solid(cell)
+	var reachable := not navigation.get_id_path(START_CELL, GOAL_CELL).is_empty()
+	if reachable:
+		for enemy in enemies:
+			if route_from(enemy.pos).is_empty():
+				reachable = false
+				break
+	navigation.set_point_solid(cell, was_solid)
+	if not reachable:
+		return false
 	return true
 
 ## 扣费并建造所选炮塔；位置和金币不足时不改变战局。
@@ -359,12 +512,13 @@ func can_build_at(pos: Vector2) -> bool:
 func build_tower(pos: Vector2) -> void:
 	if state == "won" or state == "lost" or not can_build_at(pos):
 		return
-	var cost := 40 if selected_tower == 1 else 65
+	var cost := 40 if selected_tower == 1 else 55
 	if gold < cost:
 		return
 	gold -= cost
 	towers.append({"pos": pos, "kind": selected_tower, "range": 180.0 if selected_tower == 1 else 225.0, "damage": 11.0 if selected_tower == 1 else 34.0, "cooldown": 0.0, "level": 1, "hp": 75.0 * tower_hp_multiplier, "max_hp": 75.0 * tower_hp_multiplier, "priority": "nearest", "spent": cost})
 	selected_tower_index = towers.size() - 1
+	rebuild_navigation()
 
 ## 查找点击位置内的炮塔，用于选中后管理。
 ## @param pos 世界坐标，单位为画面像素。
@@ -416,6 +570,7 @@ func sell_selected_tower() -> void:
 	gold += int(towers[selected_tower_index].spent / 2)
 	towers.remove_at(selected_tower_index)
 	selected_tower_index = -1
+	rebuild_navigation()
 
 ## 在最近、最前和高血量目标间循环炮塔攻击优先级。
 func cycle_tower_priority() -> void:
