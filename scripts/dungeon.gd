@@ -112,9 +112,11 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	for i in range(enemies.size() - 1, -1, -1):
 		if enemies[i].pos.distance_to(center) > radius + 18.0: continue
 		if game.hero.hero_id == "berserker" and index == 0 and (enemies[i].pos - hero_pos).normalized().dot(direction) < 0.0: continue
+		var target := enemies[i]
 		damage_enemy(i, power)
-		if i < enemies.size() and game.hero.hero_id == "frost_mage":
-			enemies[i].slow_time = 2.5
+		# 保存实际命中对象，击杀删除后不能把减速错误施加给移到此索引的另一只怪。
+		if target.hp > 0.0 and game.hero.hero_id == "frost_mage":
+			target.slow_time = 2.5
 	if game.hero.hero_id == "berserker" and index == 1: game.player_hp = minf(game.max_player_hp, game.player_hp + 12.0)
 	if game.hero.hero_id == "frost_mage" and index == 2: game.player_hp = minf(game.max_player_hp, game.player_hp + 6.0)
 	game.hero.cooldowns[index] = [4.0, 9.0, 8.0, 22.0][index] if game.hero.hero_id == "berserker" else [3.5, 10.0, 9.0, 23.0][index]
@@ -156,7 +158,7 @@ func update_enemies(delta: float) -> void:
 					var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
 					hostile_bullets.append({"pos": enemy.pos, "velocity": direction * 310.0, "life": 2.0, "damage": enemy.damage})
 				elif enemy.pos.distance_to(hero_pos) < 47.0:
-					game.player_hp -= maxf(1.0, enemy.damage - game.player_armor - (5.0 if game.hero.ward_time > 0.0 else 0.0))
+					game.player_hp -= game.incoming_damage(enemy.damage, game.player_armor, game.hero.ward_time > 0.0)
 		elif enemy.attack_timer <= 0.0 and enemy.pos.distance_to(hero_pos) < (260.0 if enemy.kind == "boss" else 42.0):
 			enemy.windup = 0.65 if enemy.kind == "boss" else 0.32
 			enemy.aim = hero_pos
@@ -187,7 +189,7 @@ func update_bullets(delta: float) -> void:
 		bullet.pos += bullet.velocity * delta
 		bullet.life -= delta
 		if bullet.pos.distance_to(hero_pos) < 23.0:
-			if game.dodge_timer <= 0.0: game.player_hp -= maxf(1.0, bullet.damage - game.player_armor - (5.0 if game.hero.ward_time > 0.0 else 0.0))
+			if game.dodge_timer <= 0.0: game.player_hp -= game.incoming_damage(bullet.damage, game.player_armor, game.hero.ward_time > 0.0)
 			hostile_bullets.remove_at(i)
 		elif bullet.life <= 0.0: hostile_bullets.remove_at(i)
 		else: hostile_bullets[i] = bullet

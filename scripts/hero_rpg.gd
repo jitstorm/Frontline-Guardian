@@ -4,9 +4,10 @@ extends RefCounted
 const CAPACITY := 12
 const SLOTS: Array[String] = ["weapon", "head", "chest", "hands", "legs", "relic"]
 const ITEM_IDS: Array[String] = ["rust_axe", "oak_staff", "iron_helm", "leather_vest", "runner_boots", "fighter_gloves", "vital_charm", "steel_blade", "guardian_mail", "berserker_mark", "frost_focus", "storm_grasp"]
+## 装备价格单位为金币；skill_power 为额外技能伤害比例，零点三表示增加百分之三十。
 const ITEMS := {
 	"rust_axe": {"name": "旧战斧", "slot": "weapon", "rarity": "common", "price": 35, "attack": 5.0},
-	"oak_staff": {"name": "橡木法杖", "slot": "weapon", "rarity": "common", "price": 35, "attack": 4.0},
+	"oak_staff": {"name": "橡木法杖", "slot": "weapon", "rarity": "common", "price": 35, "attack": 4.0, "skill_power": 0.30},
 	"iron_helm": {"name": "铁盔", "slot": "head", "rarity": "common", "price": 28, "health": 18.0},
 	"leather_vest": {"name": "皮甲", "slot": "chest", "rarity": "common", "price": 30, "defense": 2.0},
 	"runner_boots": {"name": "疾行靴", "slot": "legs", "rarity": "common", "price": 30, "speed": 25.0},
@@ -18,9 +19,10 @@ const ITEMS := {
 	"frost_focus": {"name": "寒霜法器", "slot": "relic", "rarity": "epic", "price": 110, "attack": 6.0, "effect": "frost_burst"},
 	"storm_grasp": {"name": "风暴之握", "slot": "hands", "rarity": "epic", "price": 100, "rate": 0.25, "effect": "wide_sweep"}
 }
+## 英雄基础属性；skill_power 从零起步，由装备提供，生命和攻击仍按等级成长。
 const HEROES := {
-	"berserker": {"name": "狂战士", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0},
-	"frost_mage": {"name": "寒霜法师", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0}
+	"berserker": {"name": "狂战士", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0, "skill_power": 0.0},
+	"frost_mage": {"name": "寒霜法师", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0, "skill_power": 0.0}
 }
 const SKILL_NAMES := {
 	"berserker": ["横扫", "战吼", "血怒突进", "裂地击"],
@@ -70,7 +72,7 @@ func stats() -> Dictionary:
 	result.attack += (level - 1) * (2.5 if hero_id == "berserker" else 3.0)
 	for item_id in equipment.values():
 		var item: Dictionary = ITEMS[item_id]
-		for key in ["health", "attack", "defense", "rate", "speed"]:
+		for key in ["health", "attack", "defense", "rate", "speed", "skill_power"]:
 			result[key] += item.get(key, 0.0)
 	if buff_time > 0.0: result.rate += 0.3
 	return result
@@ -110,7 +112,8 @@ func skill_damage(index: int) -> float:
 	if index < 0 or index >= 4 or skill_levels[index] == 0: return 0.0
 	var power: float = stats().get("attack", 0.0)
 	var scales := [1.4, 0.6, 1.1, 2.6] if hero_id == "berserker" else [1.5, 0.85, 0.5, 2.0]
-	return power * scales[index] * (1.0 + 0.3 * (skill_levels[index] - 1))
+	# 法杖提供独立技能增幅，使武器选择在普攻和技能构筑之间产生取舍。
+	return power * scales[index] * (1.0 + 0.3 * (skill_levels[index] - 1)) * (1.0 + stats().get("skill_power", 0.0))
 
 ## 在有可用背包位置时收下战利品或商店商品。
 ## @param item_id 装备目录中的标识。

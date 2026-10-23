@@ -7,7 +7,7 @@ func _initialize() -> void:
 	root.add_child(game)
 	await process_frame
 	assert(game.select_hero("berserker"))
-	assert(game.wave_enemy_count(1) == 6)
+	assert(game.wave_enemy_count(1) == 10)
 	assert(game.wave_enemy_count(2) > game.wave_enemy_count(1))
 	assert(game.wave_enemy_count(3) > game.wave_enemy_count(2))
 	assert(game.MAX_WAVES == 8)
@@ -50,7 +50,7 @@ func _initialize() -> void:
 	game.start_wave()
 	assert(game.state == "fighting" and game.wave == 1)
 	game.update_spawning(0.1)
-	assert(game.enemies.size() == 1 and game.spawn_left == 5)
+	assert(game.enemies.size() == 1 and game.spawn_left == game.wave_enemy_count(1) - 1)
 	var ranged_enemy: Dictionary = game.enemies[0]
 	ranged_enemy.kind = "ranged"
 	ranged_enemy.pos = game.player_pos + Vector2(-120, 0)

@@ -3,3 +3,5 @@
 *.tmp
 *.zip
 test_logs/*.png.import
+test_logs/*.out.txt
+test_logs/*.err.txt
