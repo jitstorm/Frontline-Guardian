@@ -48,6 +48,24 @@ func _initialize() -> void:
 	game.update_bullets(0.0)
 	assert(game.kills - kills_before == 2 and game.enemies.size() == 1)
 	assert(game.tower_damage_dealt > 0 and game.hero_damage_dealt == 0)
+	# 战甲不是“检测玩家有没有按键”：实际攻击技能命中才破甲，五秒后恢复物理减伤。
+	game.enemies.clear()
+	var boss := enemy(game.player_pos + Vector2(145, 0), "boss")
+	boss.hp = 1000.0
+	boss.max_hp = 1000.0
+	game.enemies.append(boss)
+	var shot := {"damage": 50.0, "velocity": Vector2.ZERO, "knockback": 0.0}
+	game.apply_bullet_damage(0, shot, 1.0)
+	assert(is_equal_approx(boss.hp, 997.5))
+	assert(game.cast_skill(3, boss.pos) and boss.exposed_time == 5.0)
+	var exposed_hp: float = boss.hp
+	game.apply_bullet_damage(0, shot, 1.0)
+	assert(is_equal_approx(exposed_hp - boss.hp, 50.0))
+	game.update_feedback(5.1)
+	var recovered_hp: float = boss.hp
+	game.apply_bullet_damage(0, shot, 1.0)
+	assert(is_equal_approx(recovered_hp - boss.hp, 2.5))
+	assert(is_equal_approx(game.hero_damage_dealt, game.hero_basic_damage + game.hero_skill_damage))
 	# 直接走基地近战结算和副本近战结算，验证两张地图都真正使用递减护甲。
 	game.player_armor = 8.0
 	var hp_before: float = game.player_hp
@@ -111,6 +129,17 @@ func check_waves() -> void:
 		total += game.enemies.size()
 		print("wave_budget night=%d count=%d hp=%.1f gold=%d spawn_seconds=%.2f" % [night, game.enemies.size(), hp, reward, ticks * 0.05])
 	assert(total == 290)
+	# 抵达核心后的目标优先级必须稳定，不能用靠近英雄让首领永久停止攻击核心。
+	var breached: Dictionary = game.enemies[0]
+	breached.pos = game.CORE_POS
+	breached.attack_timer = 0.0
+	breached.windup = 0.0
+	breached.target_kind = ""
+	game.enemies.clear()
+	game.enemies.append(breached)
+	game.player_pos = game.CORE_POS + Vector2(20, 0)
+	game.update_enemies(0.0)
+	assert(game.enemies[0].target_kind == "core")
 	game.free()
 
 ## 创建用于真实弹丸碰撞的静止目标，避免移动干扰边界检查。

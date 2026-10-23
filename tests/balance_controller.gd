@@ -12,7 +12,7 @@ const STEP := 0.05
 ## @param plan 英雄投入、混合投入或炮塔投入策略标识。
 func prepare(game: Node2D, plan: String) -> void:
 	# 首先保留少量基础防线，随后把同一金币余额投入英雄或炮塔。
-	var limit := 2 if plan == "hero" else 4 if plan == "mixed" else 8
+	var limit := 3 if plan == "hero" else 4 if plan == "mixed" else 8
 	var reserved := 1 if plan == "hero" else maxi(2, mini(limit, game.wave + 1)) if plan == "mixed" else limit
 	while game.towers.size() < reserved:
 		if not build_next(game): break

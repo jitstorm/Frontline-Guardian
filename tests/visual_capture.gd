@@ -37,6 +37,8 @@ func _initialize() -> void:
 	game.select_hero("frost_mage")
 	var controller = load("res://tests/balance_controller.gd").new()
 	var captured := false
+	var guarded_captured := false
+	var exposed_captured := false
 	for tick in 16000:
 		if game.state == "won" or game.state == "lost": break
 		if game.state == "ready":
@@ -45,12 +47,21 @@ func _initialize() -> void:
 		elif game.state == "upgrade": controller.choose_upgrade(game, "towers")
 		controller.act(game)
 		game._process(0.05)
+		for enemy in game.enemies:
+			if enemy.kind != "boss": continue
+			var exposed: bool = enemy.get("exposed_time", 0.0) > 0.0
+			if (exposed and not exposed_captured) or (not exposed and not guarded_captured):
+				game.queue_redraw()
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png("res://test_logs/boss_break.png" if exposed else "res://test_logs/boss_guard.png")
+				if exposed: exposed_captured = true
+				else: guarded_captured = true
 		if not captured and game.wave >= 7 and game.enemies.size() >= 8:
 			game.queue_redraw()
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png("res://test_logs/balance_combat.png")
 			captured = true
-	assert(captured and game.state == "won")
+	assert(captured and guarded_captured and exposed_captured and game.state == "won")
 	game.queue_redraw()
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://test_logs/victory.png")
@@ -62,5 +73,5 @@ func _initialize() -> void:
 	game.queue_redraw()
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://test_logs/defeat.png")
-	print("visual_capture=PASS hero_selection shop inventory goblin_camp balance_combat victory defeat")
+	print("visual_capture=PASS hero_selection shop inventory goblin_camp balance_combat boss_guard boss_break victory defeat")
 	quit(0)

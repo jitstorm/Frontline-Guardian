@@ -85,8 +85,9 @@ func _process(delta: float) -> void:
 func fire_at(aim: Vector2) -> void:
 	var direction := (aim - hero_pos).normalized()
 	if direction == Vector2.ZERO: return
-	bullets.append({"pos": hero_pos, "velocity": direction * 650.0, "life": 1.5, "damage": game.player_damage, "radius": 6.0})
-	fire_timer = 0.19 / (game.gun_rate_multiplier * game.hero.stats().rate)
+	var stats: Dictionary = game.hero.stats()
+	bullets.append({"pos": hero_pos, "velocity": direction * 650.0, "life": stats.basic_range / 650.0, "damage": game.player_damage, "radius": 6.0})
+	fire_timer = stats.basic_interval / (game.gun_rate_multiplier * stats.rate)
 
 ## 施放当前英雄的副本技能；伤害、减速与冷却读取同一英雄成长实例。
 ## @param index Q/W/E/R 的技能索引。
@@ -113,22 +114,26 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 		if enemies[i].pos.distance_to(center) > radius + 18.0: continue
 		if game.hero.hero_id == "berserker" and index == 0 and (enemies[i].pos - hero_pos).normalized().dot(direction) < 0.0: continue
 		var target := enemies[i]
-		damage_enemy(i, power)
+		damage_enemy(i, power, index != (1 if game.hero.hero_id == "berserker" else 2))
 		# 保存实际命中对象，击杀删除后不能把减速错误施加给移到此索引的另一只怪。
 		if target.hp > 0.0 and game.hero.hero_id == "frost_mage":
 			target.slow_time = 2.5
 	if game.hero.hero_id == "berserker" and index == 1: game.player_hp = minf(game.max_player_hp, game.player_hp + 12.0)
 	if game.hero.hero_id == "frost_mage" and index == 2: game.player_hp = minf(game.max_player_hp, game.player_hp + 6.0)
-	game.hero.cooldowns[index] = [4.0, 9.0, 8.0, 22.0][index] if game.hero.hero_id == "berserker" else [3.5, 10.0, 9.0, 23.0][index]
+	game.hero.cooldowns[index] = [3.0, 9.0, 8.0, 22.0][index] if game.hero.hero_id == "berserker" else [2.8, 10.0, 9.0, 23.0][index]
 	return true
 
 ## 扣除真实敌人生命并处理击杀；Boss 击杀才创建可拾取奖励。
+## 精英与首领战甲使用基地共用的减伤和破甲时长，只有攻击技能能打开输出窗口。
 ## @param index 当前敌人数组索引。
 ## @param damage 本次结算伤害。
-func damage_enemy(index: int, damage: float) -> void:
+## @param offensive_skill 是否由攻击技能命中；命中后打开五秒物理破甲窗口。
+func damage_enemy(index: int, damage: float, offensive_skill: bool = false) -> void:
 	if index < 0 or index >= enemies.size(): return
 	var enemy := enemies[index]
-	enemy.hp -= damage * (0.75 if enemy.kind == "elite" else 1.0)
+	if offensive_skill: enemy.exposed_time = game.ARMOR_BREAK_SECONDS
+	var guarded: bool = enemy.kind in ["elite", "boss"] and enemy.get("exposed_time", 0.0) <= 0.0
+	enemy.hp -= damage * (0.75 if enemy.kind == "elite" else 1.0) * (game.GUARD_DAMAGE_MULTIPLIER if guarded else 1.0)
 	enemy.hit_time = 0.16
 	if enemy.hp > 0.0:
 		enemies[index] = enemy
@@ -149,6 +154,7 @@ func update_enemies(delta: float) -> void:
 	for i in enemies.size():
 		var enemy := enemies[i]
 		enemy.hit_time = maxf(0.0, enemy.get("hit_time", 0.0) - delta)
+		enemy.exposed_time = maxf(0.0, enemy.get("exposed_time", 0.0) - delta)
 		enemy.attack_timer = maxf(0.0, enemy.attack_timer - delta)
 		enemy.slow_time = maxf(0.0, enemy.slow_time - delta)
 		if enemy.windup > 0.0:
@@ -215,6 +221,10 @@ func _draw() -> void:
 		var bob := sin(Time.get_ticks_msec() * 0.009 + enemy.pos.x) * 2.0
 		draw_texture_rect(art, Rect2(enemy.pos + Vector2(-radius, -radius + bob), Vector2(radius * 2.0, radius * 2.0)), false, Color("ff8e8e") if enemy.get("hit_time", 0.0) > 0.0 else Color.WHITE if enemy.windup <= 0.0 else color)
 		draw_rect(Rect2(enemy.pos + Vector2(-radius, -radius - 11), Vector2(radius * 2.0 * enemy.hp / enemy.max_hp, 5)), Color("ffe074"))
+		if enemy.kind in ["elite", "boss"]:
+			var exposed: bool = enemy.get("exposed_time", 0.0) > 0.0
+			draw_arc(enemy.pos, radius + 5.0, 0.0, TAU, 24, Color("ffbd7a") if exposed else Color("80deff"), 2.0)
+			draw_string(font, enemy.pos + Vector2(-45, -radius - 20), "破甲 %.1f秒" % enemy.exposed_time if exposed else "战甲：攻击技能破甲", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("80deff"))
 		if enemy.windup > 0.0: draw_line(enemy.pos, enemy.aim, Color("ff7777"), 2.0)
 	# 死亡帧与真实敌人数组隔离，奖励仍只由实际击杀路径发放一次。
 	for frame in death_frames:

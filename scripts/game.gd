@@ -6,6 +6,10 @@ const CORE_POS := Vector2(1190, 350)
 const PLAYER_SPEED := 255.0
 const BULLET_SPEED := 650.0
 const MAX_WAVES := 8
+## 精英与首领战甲未被攻击技能击破时，仅承受百分之五的物理伤害，保留非零伤害。
+const GUARD_DAMAGE_MULTIPLIER := 0.05
+## 攻击技能命中后的破甲持续时间，单位为秒；基地与营地共用。
+const ARMOR_BREAK_SECONDS := 5.0
 ## 八夜总量配合分组出怪递增；增加战场密度时同步压低单怪金币，避免收入翻倍。
 const WAVE_COUNTS := [10, 16, 24, 32, 40, 48, 56, 64]
 const BG := Color("101a29")
@@ -87,6 +91,10 @@ var gold_bonus := 0
 var bounty_kills := 0
 ## 本局英雄普攻与技能实际扣除的敌人生命，不计溢出伤害及营地独立战斗。
 var hero_damage_dealt := 0.0
+## 基地英雄普攻实际扣除的生命，用于与主动技能分开核验输出预算。
+var hero_basic_damage := 0.0
+## 基地主动技能实际扣除的生命，不计溢出伤害。
+var hero_skill_damage := 0.0
 ## 本局基地炮塔实际扣除的敌人生命，不计溢出伤害。
 var tower_damage_dealt := 0.0
 var player_armor := 0.0
@@ -262,7 +270,7 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	var damage := hero.skill_damage(index)
 	var radius: float = [95.0, 135.0, 115.0, 210.0][index]
 	var center := player_pos
-	var base_cooldowns := [4.0, 9.0, 8.0, 22.0] if hero.hero_id == "berserker" else [3.5, 10.0, 9.0, 23.0]
+	var base_cooldowns := [3.0, 9.0, 8.0, 22.0] if hero.hero_id == "berserker" else [2.8, 10.0, 9.0, 23.0]
 	# 1. 技能释放先计算职业特有的方向、范围和临时增益。
 	if hero.hero_id == "berserker":
 		if index == 1: hero.buff_time = 5.0
@@ -284,7 +292,11 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 		if hero.hero_id == "berserker" and index == 0 and (enemy.pos - player_pos).normalized().dot(direction) < 0.0: continue
 		var dealt: float = damage * (0.65 if enemy.kind == "armored" else 1.0)
 		if hero.has_effect("rage_chain") and hero.hero_id == "berserker" and index == 2: dealt *= 1.45
-		hero_damage_dealt += minf(dealt, maxf(0.0, enemy.hp))
+		var actual := minf(dealt, maxf(0.0, enemy.hp))
+		hero_damage_dealt += actual
+		hero_skill_damage += actual
+		# 攻击技能命中后打开五秒物理输出窗口，战吼与护盾不能代替攻击技能破甲。
+		if index != (1 if hero.hero_id == "berserker" else 2): enemy.exposed_time = ARMOR_BREAK_SECONDS
 		enemy.hp -= dealt
 		enemy.hit_time = 0.16
 		enemy.pos += (enemy.pos - center).normalized() * (38.0 if hero.hero_id == "berserker" else 8.0)
@@ -558,7 +570,8 @@ func update_spawning(delta: float) -> void:
 			radius = 25.0
 			reward = 25
 		elif kind == "boss":
-			hp *= 13.0
+			# 首领预算按攻击技能打开破甲窗口后的协同输出计算，不能只靠普攻磨穿护甲。
+			hp *= 20.0
 			speed *= 0.48
 			radius = 35.0
 			reward = 70
@@ -592,7 +605,13 @@ func update_enemies(delta: float) -> void:
 			# 优先攻击靠近的玩家；远程敌人可转向炮塔，Boss 具有更远的弹幕预警。
 			var ranged: bool = enemy.kind == "ranged" or enemy.kind == "boss"
 			var range_to_player: float = 300.0 if enemy.kind == "boss" else 180.0 if ranged else enemy.radius + 15.0
-			if pos.distance_to(player_pos) < range_to_player:
+			# 已突破防线抵达核心的敌人优先攻击核心，不能靠贴身引怪无限拖延结算。
+			if pos.distance_to(CORE_POS) < 34.0:
+				enemy.target_kind = "core"
+				enemy.aim = CORE_POS
+				enemy.windup = 0.35
+				enemy.attack_timer = 1.35
+			elif pos.distance_to(player_pos) < range_to_player:
 				enemy.target_kind = "player"
 				enemy.aim = player_pos
 				enemy.windup = 0.65 if enemy.kind == "boss" else 0.45 if ranged else 0.28
@@ -602,11 +621,6 @@ func update_enemies(delta: float) -> void:
 				enemy.aim = towers[tower_at_range(pos, 155.0)].pos
 				enemy.windup = 0.45
 				enemy.attack_timer = 1.8
-			elif pos.distance_to(CORE_POS) < 34.0:
-				enemy.target_kind = "core"
-				enemy.aim = CORE_POS
-				enemy.windup = 0.35
-				enemy.attack_timer = 1.35
 		if enemy.windup <= 0.0 and enemy.target_kind == "":
 			var remaining: float = enemy.speed * (enemy.get("slow_factor", 1.0) if enemy.get("slow_time", 0.0) > 0.0 else 1.0) * delta
 			var route: PackedVector2Array = enemy.route
@@ -696,6 +710,7 @@ func shoot_player(delta: float) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): fire_at(get_global_mouse_position())
 
 ## 按真实冷却朝指定位置发射普攻弹丸，鼠标操作和自动回归使用相同入口。
+## 射程和基础间隔来自英雄配置；寿命随弹速换算，攻速和弹速强化不会绕过职业射程。
 ## @param target 鼠标或控制器瞄准的世界坐标，单位为像素。
 ## @return 战斗中且非建塔模式、冷却结束并有有效方向时返回 true。
 func fire_at(target: Vector2) -> bool:
@@ -704,11 +719,13 @@ func fire_at(target: Vector2) -> bool:
 	if aim.length() < 4.0:
 		return false
 	var velocity := aim.normalized() * BULLET_SPEED * bullet_speed_multiplier
-	bullets.append({"pos": player_pos, "velocity": velocity, "damage": player_damage, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
+	var stats: Dictionary = hero.stats()
+	var lifetime: float = stats.basic_range / velocity.length()
+	bullets.append({"pos": player_pos, "velocity": velocity, "damage": player_damage, "life": lifetime, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
 	if multishot:
-		bullets.append({"pos": player_pos, "velocity": velocity.rotated(0.17), "damage": player_damage * 0.7, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
+		bullets.append({"pos": player_pos, "velocity": velocity.rotated(0.17), "damage": player_damage * 0.7, "life": lifetime, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
 	impacts.append({"pos": player_pos + aim.normalized() * 24.0, "time": 0.12, "color": Color("ffe074")})
-	fire_timer = 0.19 / (gun_rate_multiplier * hero.stats().get("rate", 1.0))
+	fire_timer = stats.basic_interval / (gun_rate_multiplier * stats.rate)
 	return true
 
 ## 炮塔自动选取范围内最近敌人；速射塔与重炮塔有不同射程、伤害及射速。
@@ -744,7 +761,8 @@ func update_towers(delta: float) -> void:
 func update_bullets(delta: float) -> void:
 	for i in range(bullets.size() - 1, -1, -1):
 		var bullet := bullets[i]
-		bullet.pos += bullet.velocity * delta
+		# 按剩余寿命限制本帧行程，低帧率不能让有限射程的普攻继续飞出整帧距离。
+		bullet.pos += bullet.velocity * minf(delta, maxf(0.0, bullet.life))
 		bullet.life -= delta
 		var hit := -1
 		for j in enemies.size():
@@ -769,6 +787,7 @@ func update_bullets(delta: float) -> void:
 			bullets[i] = bullet
 
 ## 结算一枚弹丸对一个目标的伤害、击退和击杀，重炮溅射复用同一奖励路径。
+## 精英与首领未破甲时同时抵抗物理伤害和击退，攻击技能命中后的五秒窗口恢复正常结算。
 ## @param index 本次倒序结算中的敌人索引。
 ## @param bullet 含伤害、方向、来源和重甲系数的真实弹丸。
 ## @param scale 直接命中为一，溅射为零点四五。
@@ -776,13 +795,19 @@ func apply_bullet_damage(index: int, bullet: Dictionary, scale: float) -> void:
 	var enemy := enemies[index]
 	# 1. 先记录目标真实损血，避免重炮溅射的溢出伤害虚增平衡统计。
 	var armor_factor: float = maxf(bullet.get("armor_factor", 0.55), armor_penetration) if enemy.kind == "armored" else 1.0
-	var dealt: float = bullet.damage * scale * armor_factor * (boss_bonus if enemy.kind == "boss" else 1.0)
+	var guarded: bool = enemy.kind in ["elite", "boss"] and enemy.get("exposed_time", 0.0) <= 0.0
+	var dealt: float = bullet.damage * scale * armor_factor * (boss_bonus if enemy.kind == "boss" else 1.0) * (GUARD_DAMAGE_MULTIPLIER if guarded else 1.0)
 	var actual := minf(dealt, maxf(0.0, enemy.hp))
 	if bullet.get("source", "hero") == "tower": tower_damage_dealt += actual
-	else: hero_damage_dealt += actual
+	else:
+		hero_damage_dealt += actual
+		hero_basic_damage += actual
 	enemy.hp -= dealt
 	enemy.hit_time = 0.16
-	enemy.pos -= bullet.velocity.normalized() * bullet.knockback * scale
+	# 战甲同时抵抗击退，防止多塔把首领永久顶在路口、靠非零伤害慢慢磨死。
+	# 攻击技能破甲后恢复击退效果，让控制与输出窗口具有实际价值。
+	var knockback_factor := 0.10 if guarded else 1.0
+	enemy.pos -= bullet.velocity.normalized() * bullet.knockback * scale * knockback_factor
 	add_damage_text(enemy.pos, dealt, Color("ffe074"))
 	# 2. 真实死亡后立即移出碰撞数组，金币与经验仅经过一次统一击杀路径。
 	if enemy.hp <= 0.0:
@@ -807,6 +832,7 @@ func update_feedback(delta: float) -> void:
 		if death_frames[i].time <= 0.0: death_frames.remove_at(i)
 	for enemy in enemies:
 		enemy.hit_time = maxf(0.0, enemy.get("hit_time", 0.0) - delta)
+		enemy.exposed_time = maxf(0.0, enemy.get("exposed_time", 0.0) - delta)
 	for i in range(hit_texts.size() - 1, -1, -1):
 		hit_texts[i].time -= delta
 		hit_texts[i].pos.y -= 36.0 * delta
@@ -1048,6 +1074,10 @@ func _draw() -> void:
 		# 受击时短暂发亮，蓄力时用原有预警线表示攻击状态。
 		draw_unit(art, enemy.pos, enemy.radius * 2.4, Color("ff8e8e") if enemy.get("hit_time", 0.0) > 0.0 else Color.WHITE if enemy.windup <= 0.0 else color)
 		draw_rect(Rect2(enemy.pos + Vector2(-enemy.radius, -enemy.radius - 9.0), Vector2(enemy.radius * 2.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
+		if enemy.kind in ["elite", "boss"]:
+			var exposed: bool = enemy.get("exposed_time", 0.0) > 0.0
+			draw_arc(enemy.pos, enemy.radius + 5.0, 0.0, TAU, 24, Color("ffbd7a") if exposed else Color("80deff"), 2.0)
+			draw_string(UI_FONT, Vector2(maxf(20.0, enemy.pos.x - 35.0), enemy.pos.y - enemy.radius - 17), "破甲 %.1f秒" % enemy.exposed_time if exposed else "战甲：用攻击技能击破", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("ffbd7a") if exposed else Color("80deff"))
 		if enemy.windup > 0.0:
 			draw_line(enemy.pos, enemy.aim, Color("ff7272", 0.7), 2.0)
 			draw_arc(enemy.aim, 18.0, 0.0, TAU, 24, Color("ff7272"), 2.0)
@@ -1167,6 +1197,7 @@ func _draw() -> void:
 			draw_string(font, pos + Vector2(12, 44), "攻击 %d  生命 %d  防御 %d  移速 %d  攻速 +%d%%" % [int(item.get("attack", 0)), int(item.get("health", 0)), int(item.get("defense", 0)), int(item.get("speed", 0)), int(item.get("rate", 0.0) * 100)], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
 		draw_rect(Rect2(905, 570, 255, 60), Color("365a74"))
 		draw_string(font, Vector2(110, 595), "护甲按比例减伤；速射塔单攻，重炮塔溅射并克制重甲。", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("b6c8d7"))
+		draw_string(font, Vector2(110, 622), "精英与首领战甲减伤 95%；攻击技能命中后破甲五秒。", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("80deff"))
 		draw_string(font, Vector2(920, 605), "药剂：恢复 55 生命｜22 金币", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 	if inventory_open:
 		draw_rect(Rect2(65, 102, 1150, 560), Color("182b41"))

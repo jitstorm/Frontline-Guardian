@@ -30,6 +30,7 @@ func _initialize() -> void:
 	camp.update_bullets(0.05)
 	camp.update_bullets(0.05)
 	assert(camp.enemies[4].hp < boss_hp, "副本弹丸必须真实命中 Boss")
+	assert(camp.cast_skill(0, boss_pos), "攻击技能打开首领战甲窗口后再测试普通弹丸击杀")
 	for i in 30:
 		if camp.reward_spawned: break
 		camp.fire_at(boss_pos)

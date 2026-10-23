@@ -1,6 +1,6 @@
 # 八夜首轮平衡修复与测试记录
 
-环境：Godot 4.7.2；默认 100 金币；测试步长 0.05 秒。原始输出见 `balance-2026-10-23.txt`，逐局逐夜数据见 `balance_matrix.json`。
+本文件是首轮结果快照，已由后续主动技能平衡修订。环境：Godot 4.7.2；默认 100 金币；测试步长 0.05 秒。原始输出见 `balance-2026-10-23.txt`，[首轮逐局逐夜数据](https://github.com/jitstorm/Frontline-Guardian/blob/ad045da/test_logs/balance_matrix.json)固定对应提交 ad045da；当前 `balance_matrix.json` 保存后续最新结果。
 
 ## 修改
 

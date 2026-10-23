@@ -11,18 +11,25 @@ func _initialize() -> void:
 		for plan in ["hero", "mixed", "towers"]:
 			for run_seed in [7, 23, 91]:
 				records.append(run_case(class_id, plan, run_seed, true, false))
+				records.append(run_case(class_id, plan, run_seed, true, false, false))
 		# 被动防线作为对照，不要求通关；它的结果用于衡量英雄介入的价值。
 		for run_seed in [7, 23, 91]:
 			records.append(run_case(class_id, "mixed", run_seed, false, false))
-		for run_seed in [7, 23, 91]:
-			records.append(run_case(class_id, "mixed", run_seed, true, false, false))
 		# 营地使用完整敌人更新和真实移动，避免原有快速奖励回归被当成平衡证据。
 		for run_seed in [7, 23]:
 			records.append(run_case(class_id, "mixed", run_seed, true, true))
 	var file := FileAccess.open("res://test_logs/balance_matrix.json", FileAccess.WRITE)
 	file.store_string(JSON.stringify(records, "\t"))
+	var failures := 0
+	for result in records:
+		if result.is_empty():
+			failures += 1
+			continue
+		if result.result not in ["won", "lost"] or (result.active and result.skills and result.result != "won") or (result.active and not result.skills and result.result != "lost") or (result.camp and not result.camp_success):
+			failures += 1
+			push_error("参考策略未达到验收条件：%s" % JSON.stringify(result))
 	print("balance_matrix=COMPLETE cases=%d" % records.size())
-	quit(0)
+	quit(0 if failures == 0 else 1)
 
 ## 从默认一百金币运行一局，不修改英雄生命、等级或敌人属性。
 ## @param class_id 本局英雄目录标识。
@@ -47,7 +54,7 @@ func run_case(class_id: String, plan: String, run_seed: int, active: bool, camp:
 		if game.state == "ready":
 			controller.prepare(game, plan)
 			game.start_wave()
-			current = {"night": game.wave, "start_tick": tick, "core_start": game.core_hp, "peak_alive": 0, "hero_start": game.hero_damage_dealt, "tower_start": game.tower_damage_dealt, "towers": game.towers.size(), "equipment": game.hero.equipment.duplicate(), "skill_levels": game.hero.skill_levels.duplicate()}
+			current = {"night": game.wave, "start_tick": tick, "core_start": game.core_hp, "peak_alive": 0, "hero_start": game.hero_damage_dealt, "basic_start": game.hero_basic_damage, "skill_start": game.hero_skill_damage, "tower_start": game.tower_damage_dealt, "towers": game.towers.size(), "equipment": game.hero.equipment.duplicate(), "skill_levels": game.hero.skill_levels.duplicate()}
 		if game.state == "fighting":
 			if active: controller.act(game, null, skills)
 			game._process(controller.STEP)
@@ -57,6 +64,8 @@ func run_case(class_id: String, plan: String, run_seed: int, active: bool, camp:
 				current.core_end = game.core_hp
 				current.gold_end = game.gold
 				current.hero_damage = game.hero_damage_dealt - current.hero_start
+				current.basic_damage = game.hero_basic_damage - current.basic_start
+				current.skill_damage = game.hero_skill_damage - current.skill_start
 				current.tower_damage = game.tower_damage_dealt - current.tower_start
 				nights.append(current)
 		if game.state == "upgrade":
@@ -65,12 +74,8 @@ func run_case(class_id: String, plan: String, run_seed: int, active: bool, camp:
 			controller.choose_upgrade(game, plan)
 		assert(game.gold >= 0, "任何投入方向都不能产生负金币")
 		tick += 1
-	var result := {"hero": class_id, "plan": plan, "seed": run_seed, "active": active, "skills": skills, "camp": camp, "camp_success": camp_success, "result": game.state, "night": game.wave, "core": game.core_hp, "hp": game.player_hp, "gold": game.gold, "level": game.hero.level, "kills": game.kills, "hero_damage": game.hero_damage_dealt, "tower_damage": game.tower_damage_dealt, "nights": nights}
+	var result := {"hero": class_id, "plan": plan, "seed": run_seed, "active": active, "skills": skills, "camp": camp, "camp_success": camp_success, "result": game.state, "night": game.wave, "core": game.core_hp, "hp": game.player_hp, "gold": game.gold, "level": game.hero.level, "kills": game.kills, "hero_damage": game.hero_damage_dealt, "basic_damage": game.hero_basic_damage, "skill_damage": game.hero_skill_damage, "tower_damage": game.tower_damage_dealt, "nights": nights}
 	assert(game.state == "won" or game.state == "lost", "八夜模拟未在限定步数内结算")
-	if active:
-		assert(game.state == "won", "普通难度的主动参考策略必须具备通关能力")
-	if camp:
-		assert(camp_success, "正常移速和冷却下必须能够战胜营地并实际拾取奖励")
 	print("balance_case hero=%s plan=%s seed=%d active=%s skills=%s camp=%s/%s result=%s night=%d core=%.1f hero_damage=%.0f tower_damage=%.0f" % [class_id, plan, run_seed, active, skills, camp, camp_success, game.state, game.wave, game.core_hp, game.hero_damage_dealt, game.tower_damage_dealt])
 	game.free()
 	return result

@@ -19,10 +19,11 @@ const ITEMS := {
 	"frost_focus": {"name": "寒霜法器", "slot": "relic", "rarity": "epic", "price": 110, "attack": 6.0, "effect": "frost_burst"},
 	"storm_grasp": {"name": "风暴之握", "slot": "hands", "rarity": "epic", "price": 100, "rate": 0.25, "effect": "wide_sweep"}
 }
-## 英雄基础属性；skill_power 从零起步，由装备提供，生命和攻击仍按等级成长。
+## 英雄基础属性；skill_power 为技能增幅，basic_interval 为普攻间隔秒数，basic_range 为射程像素数。
+## 两名英雄均以主动技能为核心，普攻用于补刀，不再共用高频远程枪械的输出预算。
 const HEROES := {
-	"berserker": {"name": "狂战士", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0, "skill_power": 0.0},
-	"frost_mage": {"name": "寒霜法师", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0, "skill_power": 0.0}
+	"berserker": {"name": "狂战士", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0, "skill_power": 0.0, "basic_interval": 0.48, "basic_range": 190.0},
+	"frost_mage": {"name": "寒霜法师", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0, "skill_power": 0.0, "basic_interval": 0.58, "basic_range": 380.0}
 }
 const SKILL_NAMES := {
 	"berserker": ["横扫", "战吼", "血怒突进", "裂地击"],
@@ -64,7 +65,7 @@ func choose(choice: String) -> bool:
 	return true
 
 ## 计算当前英雄、等级、装备和临时增益合成后的实战属性。
-## @return 含生命上限、攻击、防御、攻速和像素每秒移速的字典；未选英雄时为空。
+## @return 含生命上限、攻击、防御、攻速、像素每秒移速、普攻间隔秒数和射程像素数的字典；未选英雄时为空。
 func stats() -> Dictionary:
 	if hero_id == "": return {}
 	var result: Dictionary = HEROES[hero_id].duplicate()
@@ -111,7 +112,7 @@ func upgrade_skill(index: int) -> bool:
 func skill_damage(index: int) -> float:
 	if index < 0 or index >= 4 or skill_levels[index] == 0: return 0.0
 	var power: float = stats().get("attack", 0.0)
-	var scales := [1.4, 0.6, 1.1, 2.6] if hero_id == "berserker" else [1.5, 0.85, 0.5, 2.0]
+	var scales := [3.2, 0.6, 2.0, 4.5] if hero_id == "berserker" else [3.0, 1.35, 0.5, 3.6]
 	# 法杖提供独立技能增幅，使武器选择在普攻和技能构筑之间产生取舍。
 	return power * scales[index] * (1.0 + 0.3 * (skill_levels[index] - 1)) * (1.0 + stats().get("skill_power", 0.0))
 
