@@ -7,6 +7,7 @@ func _initialize() -> void:
 	var game: Node2D = script.new()
 	root.add_child(game)
 	await process_frame
+	assert(game.select_hero("berserker"))
 	var sites: Array[Vector2] = [Vector2(185, 255), Vector2(330, 430), Vector2(445, 610), Vector2(660, 350), Vector2(790, 155), Vector2(970, 430), Vector2(1090, 245), Vector2(450, 430), Vector2(660, 155), Vector2(980, 245), Vector2(300, 250), Vector2(750, 345)]
 	var next_site := 0
 	var ticks := 0

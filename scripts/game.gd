@@ -12,6 +12,7 @@ const CELL_SIZE := 40.0
 const GRID_SIZE := Vector2i(32, 18)
 const START_CELL := Vector2i(0, 8)
 const GOAL_CELL := Vector2i(29, 8)
+const HeroRPG = preload("res://scripts/hero_rpg.gd")
 
 var upgrade_pool: Array[String] = ["生命补给", "急救包", "枪械增幅", "快速扳机", "高速弹头", "冲击弹", "双重射击", "炮塔增幅", "射程扩展", "机械润滑", "核心修复", "核心加固", "移动训练", "赏金猎人", "军需补给", "防弹衣", "核心装甲", "塔体加固", "穿甲弹", "巨兽克星"]
 var rng := RandomNumberGenerator.new()
@@ -23,7 +24,12 @@ var max_core_hp := 120.0
 var gold := 100
 var kills := 0
 var wave := 0
-var state := "ready"
+var state := "select_hero"
+var hero = HeroRPG.new()
+var notice := ""
+var notice_time := 0.0
+var inventory_open := false
+var shop_open := false
 var enemies: Array[Dictionary] = []
 var towers: Array[Dictionary] = []
 var bullets: Array[Dictionary] = []
@@ -50,6 +56,9 @@ var tower_rate_multiplier := 1.0
 var tower_hp_multiplier := 1.0
 var gold_bonus := 0
 var player_armor := 0.0
+var hero_health_bonus := 0.0
+var hero_attack_bonus := 0.0
+var hero_armor_bonus := 0.0
 var core_armor := 0.0
 var armor_penetration := 0.55
 var boss_bonus := 1.0
@@ -122,11 +131,16 @@ func _process(delta: float) -> void:
 	if state == "won" or state == "lost":
 		queue_redraw()
 		return
-	move_player(delta)
+	if state == "select_hero":
+		queue_redraw()
+		return
+	if state != "dungeon": move_player(delta)
 	dodge_timer = maxf(0.0, dodge_timer - delta)
 	dodge_cooldown = maxf(0.0, dodge_cooldown - delta)
 	update_feedback(delta)
+	notice_time = maxf(0.0, notice_time - delta)
 	if state == "fighting":
+		hero.tick(delta)
 		update_spawning(delta)
 		update_enemies(delta)
 		update_hostile_bullets(delta)
@@ -143,10 +157,159 @@ func _process(delta: float) -> void:
 				roll_upgrades()
 	queue_redraw()
 
+## 选择英雄并同步初始实战属性；重新开局由场景重载完成，避免遗留装备和冷却。
+## @param choice 狂战士或冰霜法师的目录标识。
+## @return 成功选定并进入准备阶段时返回 true。
+func select_hero(choice: String) -> bool:
+	if state != "select_hero" or not hero.choose(choice): return false
+	max_player_hp = hero.stats().health
+	player_hp = max_player_hp
+	player_damage = hero.stats().attack
+	player_armor = hero.stats().defense
+	state = "ready"
+	return true
+
+## 装备或等级变化后保留当前生命比例，并同步攻击和防御到原有战斗结算。
+func sync_hero_stats() -> void:
+	var current: Dictionary = hero.stats()
+	if current.is_empty(): return
+	var ratio := player_hp / maxf(1.0, max_player_hp)
+	max_player_hp = current.health + hero_health_bonus
+	player_hp = minf(max_player_hp, max_player_hp * ratio)
+	player_damage = current.attack + hero_attack_bonus
+	player_armor = current.defense + hero_armor_bonus
+
+## 按职业执行四种技能的伤害、击退、减速或临时防护，只有实战命中才发放击杀收益。
+## @param index Q/W/E/R 对应的技能索引。
+## @param aim 鼠标所指世界位置，用于方向性技能。
+## @return 冷却结束且成功释放时返回 true。
+func cast_skill(index: int, aim: Vector2) -> bool:
+	if state != "fighting" or index < 0 or index >= 4 or hero.skill_levels[index] <= 0 or hero.cooldowns[index] > 0.0: return false
+	var direction := (aim - player_pos).normalized()
+	if direction == Vector2.ZERO: direction = Vector2.RIGHT
+	var damage := hero.skill_damage(index)
+	var radius: float = [95.0, 135.0, 115.0, 210.0][index]
+	var center := player_pos
+	var base_cooldowns := [4.0, 9.0, 8.0, 22.0] if hero.hero_id == "berserker" else [3.5, 10.0, 9.0, 23.0]
+	# 先确认射程，再按职业给同一按键不同的实际战斗效果。
+	if hero.hero_id == "berserker":
+		if index == 1: hero.buff_time = 5.0
+		if index == 2:
+			player_pos = (player_pos + direction * 110.0).clamp(Vector2(22, 92), Vector2(1258, 695))
+			center = player_pos
+		if index == 3: center = player_pos + direction * 95.0
+	else:
+		if index == 0: center = player_pos + direction * 145.0; radius = 52.0
+		if index == 2: hero.ward_time = 5.0
+		if index == 3: center = player_pos + direction * 150.0
+	if hero.has_effect("wide_sweep") and hero.hero_id == "berserker" and index == 0: radius *= 1.55
+	if hero.has_effect("frost_burst") and hero.hero_id == "frost_mage" and index == 1: radius *= 1.4
+	var hits := 0
+	for i in range(enemies.size() - 1, -1, -1):
+		var enemy := enemies[i]
+		if enemy.pos.distance_to(center) > radius + enemy.radius: continue
+		if hero.hero_id == "berserker" and index == 0 and (enemy.pos - player_pos).normalized().dot(direction) < 0.0: continue
+		var dealt: float = damage * (0.65 if enemy.kind == "armored" else 1.0)
+		if hero.has_effect("rage_chain") and hero.hero_id == "berserker" and index == 2: dealt *= 1.45
+		enemy.hp -= dealt
+		enemy.pos += (enemy.pos - center).normalized() * (38.0 if hero.hero_id == "berserker" else 8.0)
+		if hero.hero_id == "frost_mage":
+			enemy.slow_time = 2.5 if index != 3 else 4.0
+			enemy.slow_factor = 0.45
+		add_damage_text(enemy.pos, dealt, Color("80deff") if hero.hero_id == "frost_mage" else Color("ffbd7a"))
+		if enemy.hp <= 0.0:
+			enemies.remove_at(i)
+			reward_enemy(enemy)
+		else: enemies[i] = enemy
+		hits += 1
+	if hero.hero_id == "berserker" and index == 1: player_hp = minf(max_player_hp, player_hp + 12.0)
+	if hero.hero_id == "frost_mage" and index == 2: player_hp = minf(max_player_hp, player_hp + 6.0)
+	hero.cooldowns[index] = base_cooldowns[index]
+	impacts.append({"pos": center, "time": 0.2, "color": Color("80deff") if hero.hero_id == "frost_mage" else Color("ffbd7a")})
+	show_notice("%s  %d hit(s)" % [HeroRPG.SKILL_NAMES[hero.hero_id][index], hits])
+	return true
+
+## 对真实击杀统一发放原有金币和英雄经验；炮塔与英雄技能走同一条奖励路径。
+## @param enemy 已被实际扣血至零的敌人数据。
+func reward_enemy(enemy: Dictionary) -> void:
+	kills += 1
+	gold += enemy.reward + gold_bonus
+	var previous_max := max_player_hp
+	if hero.gain_xp(8 + int(enemy.reward / 2)) > 0:
+		sync_hero_stats()
+		player_hp = minf(max_player_hp, player_hp + max_player_hp - previous_max)
+
+## 使用原有金币余额购买商品；仅准备阶段开放，失败时显示明确原因。
+## @param item_id 装备目录中的商品，或恢复药剂 potion。
+## @return 购买且实际取得商品时返回 true。
+func buy_item(item_id: String) -> bool:
+	if state != "ready":
+		show_notice("Shop opens during preparation")
+		return false
+	var price := 22 if item_id == "potion" else int(HeroRPG.ITEMS.get(item_id, {}).get("price", -1))
+	if price < 0:
+		show_notice("Unknown item")
+		return false
+	if gold < price:
+		show_notice("Not enough gold")
+		return false
+	if item_id == "potion":
+		if player_hp >= max_player_hp:
+			show_notice("Health already full")
+			return false
+		player_hp = minf(max_player_hp, player_hp + 55.0)
+	elif not hero.pickup(item_id):
+		show_notice("Inventory full")
+		return false
+	gold -= price
+	show_notice("Purchased " + item_id)
+	return true
+
+## 出售背包中的装备并退回目录价格的一半；穿戴中的装备需先卸下。
+## @param index 背包里的装备索引。
+## @return 商品存在且成功出售时返回 true。
+func sell_item(index: int) -> bool:
+	if state != "ready" or index < 0 or index >= hero.inventory.size(): return false
+	var item_id: String = hero.inventory[index]
+	gold += int(HeroRPG.ITEMS[item_id].price / 2)
+	hero.inventory.remove_at(index)
+	show_notice("Sold " + item_id)
+	return true
+
+## 穿戴背包物品后立即更新原战斗变量，使装备加成参与下一次伤害和受击。
+## @param index 背包物品索引。
+## @return 成功穿戴或交换时返回 true。
+func equip_item(index: int) -> bool:
+	if not hero.equip(index): return false
+	sync_hero_stats()
+	return true
+
+## 卸下指定装备并立即撤销其属性；满背包时保持原状态。
+## @param slot 装备部位标识。
+## @return 成功卸下时返回 true。
+func unequip_item(slot: String) -> bool:
+	if not hero.unequip(slot): return false
+	sync_hero_stats()
+	return true
+
+## 在状态栏短暂显示购买失败、技能锁定等操作结果。
+## @param message 用户可读的操作结果。
+func show_notice(message: String) -> void:
+	notice = message
+	notice_time = 2.5
+
 ## 处理移动以外的输入：建造、开波、强化和重新开始。
 ## @param event 本帧 Godot 输入事件。
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
+		if state == "select_hero":
+			if event.physical_keycode == KEY_1: select_hero("berserker")
+			if event.physical_keycode == KEY_2: select_hero("frost_mage")
+			return
+		if shop_open or inventory_open:
+			if event.physical_keycode == KEY_B: shop_open = false
+			elif event.physical_keycode == KEY_I: inventory_open = false
+			return
 		match event.physical_keycode:
 			KEY_1: selected_tower = 1
 			KEY_2: selected_tower = 2
@@ -159,11 +322,42 @@ func _unhandled_input(event: InputEvent) -> void:
 				if state == "ready": start_wave()
 			KEY_Q:
 				if state == "upgrade": apply_upgrade(upgrade_choices[0])
+				elif state == "fighting": cast_skill(0, get_global_mouse_position())
+			KEY_W:
+				if state == "fighting": cast_skill(1, get_global_mouse_position())
 			KEY_E:
 				if state == "upgrade": apply_upgrade(upgrade_choices[1])
+				elif state == "fighting": cast_skill(2, get_global_mouse_position())
 			KEY_R:
 				if state == "won" or state == "lost": get_tree().reload_current_scene()
+				elif state == "fighting": cast_skill(3, get_global_mouse_position())
+			KEY_B: shop_open = state == "ready" and not shop_open
+			KEY_I: inventory_open = not inventory_open
+			KEY_5: if hero.skill_points > 0: hero.upgrade_skill(0)
+			KEY_6: if hero.skill_points > 0: hero.upgrade_skill(1)
+			KEY_7: if hero.skill_points > 0: hero.upgrade_skill(2)
+			KEY_8: if hero.skill_points > 0: hero.upgrade_skill(3)
 	if event is InputEventMouseButton and event.pressed:
+		if state == "select_hero" and event.button_index == MOUSE_BUTTON_LEFT:
+			if Rect2(265, 270, 345, 210).has_point(get_global_mouse_position()): select_hero("berserker")
+			elif Rect2(670, 270, 345, 210).has_point(get_global_mouse_position()): select_hero("frost_mage")
+			return
+		if shop_open and event.button_index == MOUSE_BUTTON_LEFT:
+			var point := get_global_mouse_position()
+			for i in HeroRPG.ITEM_IDS.size():
+				if Rect2(110 + (i % 2) * 530, 150 + int(i / 2) * 68, 500, 57).has_point(point): buy_item(HeroRPG.ITEM_IDS[i]); break
+			if Rect2(905, 570, 255, 60).has_point(point): buy_item("potion")
+			return
+		if inventory_open and event.button_index == MOUSE_BUTTON_LEFT:
+			var point := get_global_mouse_position()
+			for i in hero.inventory.size():
+				if Rect2(100 + (i % 2) * 530, 330 + int(i / 2) * 48, 500, 42).has_point(point):
+					if Input.is_key_pressed(KEY_SHIFT): sell_item(i)
+					else: equip_item(i)
+					break
+			for i in HeroRPG.SLOTS.size():
+				if Rect2(100 + (i % 3) * 350, 140 + int(i / 3) * 70, 320, 60).has_point(point): unequip_item(HeroRPG.SLOTS[i]); break
+			return
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			selected_tower = 0
 			selected_tower_index = -1
@@ -181,7 +375,7 @@ func _unhandled_input(event: InputEvent) -> void:
 ## @param delta 本帧经过的秒数。
 func move_player(delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	player_pos += direction * PLAYER_SPEED * move_multiplier * delta
+	player_pos += direction * (hero.stats().get("speed", PLAYER_SPEED) if hero.hero_id != "" else PLAYER_SPEED) * move_multiplier * delta
 	player_pos = player_pos.clamp(Vector2(22, 92), Vector2(1258, 695))
 
 ## 朝移动方向短距离闪避；无移动输入时朝鼠标方向，短暂无敌用于躲避可见弹丸。
@@ -303,7 +497,7 @@ func update_enemies(delta: float) -> void:
 				enemy.windup = 0.35
 				enemy.attack_timer = 1.35
 		if enemy.windup <= 0.0 and enemy.target_kind == "":
-			var remaining: float = enemy.speed * delta
+			var remaining: float = enemy.speed * (enemy.get("slow_factor", 1.0) if enemy.get("slow_time", 0.0) > 0.0 else 1.0) * delta
 			var route: PackedVector2Array = enemy.route
 			while remaining > 0.0 and enemy.route_index < route.size():
 				var target: Vector2 = route[enemy.route_index]
@@ -323,6 +517,7 @@ func update_enemies(delta: float) -> void:
 			if offset.length() > 0.1 and offset.length() < enemy.radius * 1.1:
 				pos += offset.normalized() * minf(8.0 * delta, enemy.radius * 1.1 - offset.length())
 		enemy.pos = pos
+		enemy.slow_time = maxf(0.0, enemy.get("slow_time", 0.0) - delta)
 		enemies[i] = enemy
 
 ## 在前摇结束时结算近战，或发射沿预警方向飞行的敌方弹丸。
@@ -361,7 +556,7 @@ func update_hostile_bullets(delta: float) -> void:
 		if bullet.pos.distance_to(player_pos) < bullet.radius + 15.0:
 			consumed = true
 			if dodge_timer <= 0.0:
-				var damage: float = maxf(1.0, bullet.damage - player_armor)
+				var damage: float = maxf(1.0, bullet.damage - player_armor - (5.0 if hero.ward_time > 0.0 else 0.0))
 				player_hp -= damage
 				add_damage_text(player_pos, damage, Color("ff7777"))
 		else:
@@ -397,7 +592,7 @@ func shoot_player(delta: float) -> void:
 	if multishot:
 		bullets.append({"pos": player_pos, "velocity": velocity.rotated(0.17), "damage": player_damage * 0.7, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
 	impacts.append({"pos": player_pos + aim.normalized() * 24.0, "time": 0.12, "color": Color("ffe074")})
-	fire_timer = 0.19 / gun_rate_multiplier
+	fire_timer = 0.19 / (gun_rate_multiplier * hero.stats().get("rate", 1.0))
 
 ## 炮塔自动选取范围内最近敌人；速射塔与重炮塔有不同射程、伤害及射速。
 ## @param delta 本帧经过的秒数。
@@ -448,8 +643,7 @@ func update_bullets(delta: float) -> void:
 			impacts.append({"pos": bullet.pos, "time": 0.2, "color": bullet.color})
 			if enemy.hp <= 0.0:
 				enemies.remove_at(hit)
-				kills += 1
-				gold += enemy.reward + gold_bonus
+				reward_enemy(enemy)
 			else:
 				enemies[hit] = enemy
 			bullets.remove_at(i)
@@ -595,17 +789,23 @@ func apply_upgrade(choice: String) -> void:
 		return
 	match choice:
 		"生命补给":
+			hero_health_bonus += 20.0
 			max_player_hp += 20.0
 			player_hp = minf(max_player_hp, player_hp + 45.0)
 		"急救包":
+			hero_health_bonus += 5.0
 			max_player_hp += 5.0
 			player_hp = minf(max_player_hp, player_hp + 60.0)
-		"枪械增幅": player_damage += 8.0
+		"枪械增幅":
+			hero_attack_bonus += 8.0
+			player_damage += 8.0
 		"快速扳机": gun_rate_multiplier += 0.2
 		"高速弹头": bullet_speed_multiplier += 0.25
 		"冲击弹": bullet_knockback += 12.0
 		"双重射击":
-			if multishot: player_damage += 4.0
+			if multishot:
+				hero_attack_bonus += 4.0
+				player_damage += 4.0
 			else: multishot = true
 		"炮塔增幅": tower_multiplier += 0.3
 		"射程扩展": tower_range_bonus += 25.0
@@ -619,7 +819,9 @@ func apply_upgrade(choice: String) -> void:
 		"移动训练": move_multiplier += 0.18
 		"赏金猎人": gold_bonus += 5
 		"军需补给": gold += 45
-		"防弹衣": player_armor += 2.0
+		"防弹衣":
+			hero_armor_bonus += 2.0
+			player_armor += 2.0
 		"核心装甲": core_armor += 3.0
 		"塔体加固":
 			tower_hp_multiplier += 0.25
@@ -722,3 +924,51 @@ func _draw() -> void:
 	if message != "":
 		draw_rect(Rect2(240, 635, 800, 55), Color("253e59"))
 		draw_string(font, Vector2(270, 670), message, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
+	if hero.hero_id != "":
+		draw_rect(Rect2(20, 672, 340, 7), Color("253e59"))
+		draw_rect(Rect2(20, 672, 340.0 * hero.xp / hero.xp_to_next(), 7), Color("80deff"))
+		draw_string(font, Vector2(20, 660), "%s Lv%d  XP %d/%d  Points %d" % [HeroRPG.HEROES[hero.hero_id].name, hero.level, hero.xp, hero.xp_to_next(), hero.skill_points], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
+		for i in 4:
+			var key_name: String = ["Q", "W", "E", "R"][i]
+			var skill_rect := Rect2(375 + i * 78, 635, 70, 55)
+			draw_rect(skill_rect, Color("365a74") if hero.cooldowns[i] <= 0.0 else Color("253545"))
+			draw_string(font, skill_rect.position + Vector2(8, 23), "%s %d" % [key_name, hero.skill_levels[i]], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+			draw_string(font, skill_rect.position + Vector2(8, 44), "READY" if hero.cooldowns[i] <= 0.0 else "%.1fs" % hero.cooldowns[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("80deff"))
+	if notice_time > 0.0:
+		draw_rect(Rect2(760, 575, 470, 43), Color("253e59"))
+		draw_string(font, Vector2(775, 603), notice, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
+	if state == "select_hero":
+		draw_rect(Rect2(190, 160, 900, 390), Color("182b41"))
+		draw_string(font, Vector2(490, 220), "CHOOSE YOUR HERO", HORIZONTAL_ALIGNMENT_LEFT, -1, 28, Color("ffe074"))
+		for i in 2:
+			var rect := Rect2(265 + i * 405, 270, 345, 210)
+			draw_rect(rect, Color("704b3e") if i == 0 else Color("365a74"))
+			var title := "1  BERSERKER" if i == 0 else "2  FROST MAGE"
+			var detail := "High HP / melee / knockback" if i == 0 else "Frost / range / slow"
+			draw_string(font, rect.position + Vector2(30, 65), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color.WHITE)
+			draw_string(font, rect.position + Vector2(30, 115), detail, HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
+	if shop_open:
+		draw_rect(Rect2(65, 102, 1150, 560), Color("182b41"))
+		draw_string(font, Vector2(100, 136), "SHOP - click to buy  |  B close  |  Gold %d" % gold, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("ffe074"))
+		for i in HeroRPG.ITEM_IDS.size():
+			var id: String = HeroRPG.ITEM_IDS[i]
+			var item: Dictionary = HeroRPG.ITEMS[id]
+			var pos := Vector2(110 + (i % 2) * 530, 150 + int(i / 2) * 68)
+			draw_rect(Rect2(pos, Vector2(500, 57)), Color("365a74"))
+			draw_string(font, pos + Vector2(12, 22), "%s [%s]  $%d" % [item.name, item.rarity, item.price], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
+			draw_string(font, pos + Vector2(12, 44), "ATK %d  HP %d  DEF %d  SPD %d" % [int(item.get("attack", 0)), int(item.get("health", 0)), int(item.get("defense", 0)), int(item.get("speed", 0))], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
+		draw_rect(Rect2(905, 570, 255, 60), Color("365a74"))
+		draw_string(font, Vector2(920, 605), "Potion +55 HP  $22", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+	if inventory_open:
+		draw_rect(Rect2(65, 102, 1150, 560), Color("182b41"))
+		draw_string(font, Vector2(100, 132), "EQUIPMENT - click slot to remove  |  I close", HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
+		for i in HeroRPG.SLOTS.size():
+			var slot: String = HeroRPG.SLOTS[i]
+			var pos := Vector2(100 + (i % 3) * 350, 140 + int(i / 3) * 70)
+			draw_rect(Rect2(pos, Vector2(320, 60)), Color("365a74"))
+			draw_string(font, pos + Vector2(12, 35), "%s: %s" % [slot, hero.equipment.get(slot, "empty")], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+		draw_string(font, Vector2(100, 315), "BAG %d/%d - click to equip, Shift-click to sell" % [hero.inventory.size(), HeroRPG.CAPACITY], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
+		for i in hero.inventory.size():
+			var pos := Vector2(100 + (i % 2) * 530, 330 + int(i / 2) * 48)
+			draw_rect(Rect2(pos, Vector2(500, 42)), Color("365a74"))
+			draw_string(font, pos + Vector2(12, 28), "%s  [%s]" % [HeroRPG.ITEMS[hero.inventory[i]].name, HeroRPG.ITEMS[hero.inventory[i]].rarity], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)

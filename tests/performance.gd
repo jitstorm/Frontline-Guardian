@@ -6,6 +6,7 @@ func _initialize() -> void:
 	var game: Node2D = script.new()
 	root.add_child(game)
 	await process_frame
+	assert(game.select_hero("berserker"))
 	game.wave = 8
 	for i in 20:
 		var pos := Vector2(80 + i * 2, 340)

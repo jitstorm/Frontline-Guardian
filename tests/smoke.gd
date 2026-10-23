@@ -6,6 +6,7 @@ func _initialize() -> void:
 	var game: Node2D = script.new()
 	root.add_child(game)
 	await process_frame
+	assert(game.select_hero("berserker"))
 	assert(game.wave_enemy_count(1) == 6)
 	assert(game.wave_enemy_count(2) > game.wave_enemy_count(1))
 	assert(game.wave_enemy_count(3) > game.wave_enemy_count(2))
