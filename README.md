@@ -13,8 +13,8 @@ Godot 4.7 的 2D 即时战斗、塔防与 Roguelite 八夜防守 Demo。全部�
 
 ## 运行
 
-使用 Godot 4.7 或同系列稳定版导入 `project.godot`，按 F6/F5 运行。命令行可执行 `godot --headless --path . --editor --quit` 验证导入，之后执行 `godot --headless --path . --script res://tests/smoke.gd` 运行逻辑冒烟测试。
+使用 Godot 4.7 或同系列稳定版导入 `project.godot`，按 F6/F5 运行。命令行可执行 `godot --headless --path . --editor --quit` 验证导入，再分别执行 `godot --headless --path . --script res://tests/smoke.gd`、`godot --headless --path . --script res://tests/playthrough.gd` 和 `godot --headless --path . --script res://tests/performance.gd`。
 
 ## 验证边界
 
-冒烟测试检查夜次编排、敌人类型、命中击退、炮塔管理和 20 种强化的属性变化。画面交互、手感、平衡性及真实图形帧率需要图形环境人工验证。
+冒烟测试检查夜次编排、敌人类型、命中击退、炮塔管理和 20 种强化的属性变化。自动通关测试使用高资源预置防线验证八夜可到达胜利状态，不代表正常资源条件下的平衡性。画面交互、手感及真实图形帧率需要图形环境人工验证。
