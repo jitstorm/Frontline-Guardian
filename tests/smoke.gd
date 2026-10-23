@@ -34,6 +34,17 @@ func _initialize() -> void:
 		blocked.navigation.set_point_solid(Vector2i(10, y))
 	assert(not blocked.can_build_at(Vector2(420, 540)), "禁止封死道路")
 	blocked.queue_free()
+	var destructible: Node2D = script.new()
+	root.add_child(destructible)
+	await process_frame
+	destructible.selected_tower = 1
+	destructible.build_tower(Vector2(300, 120))
+	destructible.towers[0].hp = 1.0
+	var revision_before: int = destructible.navigation_revision
+	destructible.hostile_bullets.append({"pos": Vector2(300, 120), "velocity": Vector2.ZERO, "damage": 8.0, "life": 1.0, "radius": 7.0})
+	destructible.update_hostile_bullets(0.0)
+	assert(destructible.towers.is_empty() and destructible.navigation_revision > revision_before)
+	destructible.queue_free()
 	assert(game.upgrade_pool.size() >= 20)
 	game.start_wave()
 	assert(game.state == "fighting" and game.wave == 1)
