@@ -17,6 +17,7 @@ var max_player_hp := 100.0
 var core_hp := 120.0
 var max_core_hp := 120.0
 var gold := 100
+var kills := 0
 var wave := 0
 var state := "ready"
 var enemies: Array[Dictionary] = []
@@ -99,6 +100,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			selected_tower = 0
 			selected_tower_index = -1
+		elif event.button_index == MOUSE_BUTTON_LEFT and state == "upgrade":
+			var mouse := get_global_mouse_position()
+			if Rect2(340, 545, 280, 110).has_point(mouse): apply_upgrade(upgrade_choices[0])
+			elif Rect2(660, 545, 280, 110).has_point(mouse): apply_upgrade(upgrade_choices[1])
 		elif event.button_index == MOUSE_BUTTON_LEFT and selected_tower > 0:
 			build_tower(get_global_mouse_position())
 		elif event.button_index == MOUSE_BUTTON_LEFT:
@@ -304,6 +309,7 @@ func update_bullets(delta: float) -> void:
 			impacts.append({"pos": bullet.pos, "time": 0.2, "color": bullet.color})
 			if enemy.hp <= 0.0:
 				enemies.remove_at(hit)
+				kills += 1
 				gold += enemy.reward + gold_bonus
 			else:
 				enemies[hit] = enemy
@@ -517,13 +523,25 @@ func _draw() -> void:
 		draw_string(font, Vector2(25, 118), "Tower Lv%d  HP %d/%d  Target %s  |  U Upgrade  H Repair  X Sell  P Priority" % [selected.level, ceili(selected.hp), ceili(selected.max_hp), selected.priority], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
 	draw_string(font, Vector2(825, 32), "Night %d/%d   Gold %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 	draw_string(font, Vector2(825, 62), "HP %d/%d   Core %d/%d" % [ceili(player_hp), ceili(max_player_hp), ceili(core_hp), ceili(max_core_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+	draw_rect(Rect2(825, 73, 180.0 * maxf(0.0, player_hp) / max_player_hp, 5), Color("ffe074"))
+	draw_rect(Rect2(1020, 73, 180.0 * maxf(0.0, core_hp) / max_core_hp, 5), Color("638cff"))
 	if selected_tower > 0:
 		var mouse := get_global_mouse_position()
 		draw_arc(mouse, 21.0, 0.0, TAU, 36, Color("7fffd4") if can_build_at(mouse) else Color("ff7777"), 2.0)
 	var message := "SPACE: Start wave" if state == "ready" else ""
-	if state == "upgrade" and upgrade_choices.size() == 2: message = "Choose upgrade: Q  %s      E  %s" % upgrade_choices
+	if state == "upgrade" and upgrade_choices.size() == 2:
+		draw_rect(Rect2(300, 470, 680, 200), Color("182b41"))
+		draw_string(font, Vector2(475, 515), "NIGHT CLEARED - CHOOSE ONE", HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("ffe074"))
+		for i in 2:
+			var card := Rect2(340 + i * 320, 545, 280, 110)
+			draw_rect(card, Color("365a74"))
+			draw_string(font, card.position + Vector2(18, 42), upgrade_choices[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
+			draw_string(font, card.position + Vector2(18, 79), "Press Q" if i == 0 else "Press E", HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("b6c8d7"))
 	if state == "won": message = "VICTORY!  Eight nights survived.  Press R to restart"
 	if state == "lost": message = "DEFEAT!  Press R to restart"
+	if state == "won" or state == "lost":
+		draw_rect(Rect2(240, 550, 800, 140), Color("182b41"))
+		draw_string(font, Vector2(275, 600), "Nights reached: %d    Enemies defeated: %d" % [wave, kills], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 	if message != "":
 		draw_rect(Rect2(240, 635, 800, 55), Color("253e59"))
 		draw_string(font, Vector2(270, 670), message, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
