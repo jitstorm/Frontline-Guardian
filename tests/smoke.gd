@@ -31,6 +31,16 @@ func _initialize() -> void:
 	game.selected_tower = 1
 	game.build_tower(Vector2(300, 120))
 	assert(game.towers.size() == 1 and game.gold == 60)
+	assert(game.tower_at(Vector2(300, 120)) == 0)
+	game.cycle_tower_priority()
+	assert(game.towers[0].priority == "front")
+	game.upgrade_selected_tower()
+	assert(game.towers[0].level == 2 and game.gold == 30)
+	game.towers[0].hp = 50.0
+	game.repair_selected_tower()
+	assert(game.towers[0].hp == 85.0 and game.gold == 15)
+	game.sell_selected_tower()
+	assert(game.towers.is_empty() and game.gold == 50)
 	game.state = "upgrade"
 	game.roll_upgrades()
 	assert(game.upgrade_choices.size() == 2 and game.upgrade_choices[0] != game.upgrade_choices[1])

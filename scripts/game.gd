@@ -29,6 +29,7 @@ var spawned_this_wave := 0
 var spawn_timer := 0.0
 var fire_timer := 0.0
 var selected_tower := 0
+var selected_tower_index := -1
 var player_damage := 16.0
 var tower_multiplier := 1.0
 var move_multiplier := 1.0
@@ -70,6 +71,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.physical_keycode:
 			KEY_1: selected_tower = 1
 			KEY_2: selected_tower = 2
+			KEY_U: upgrade_selected_tower()
+			KEY_H: repair_selected_tower()
+			KEY_X: sell_selected_tower()
+			KEY_P: cycle_tower_priority()
 			KEY_SPACE:
 				if state == "ready": start_wave()
 			KEY_Q:
@@ -81,8 +86,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			selected_tower = 0
+			selected_tower_index = -1
 		elif event.button_index == MOUSE_BUTTON_LEFT and selected_tower > 0:
 			build_tower(get_global_mouse_position())
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			selected_tower_index = tower_at(get_global_mouse_position())
 	queue_redraw()
 
 ## 按当前键盘方向移动玩家并限制在战场内。
@@ -178,6 +186,19 @@ func update_enemies(delta: float) -> void:
 				player_hp -= 6.0
 				add_damage_text(player_pos, 6.0, Color("ff7777"))
 				timer = 1.35
+		elif enemy.kind == "ranged" and tower_at_range(pos, 155.0) >= 0:
+			# 远程敌人会攻击靠近道路的炮塔，维修因此具有实际防守用途。
+			var target_tower := tower_at_range(pos, 155.0)
+			if target_tower >= 0 and timer <= 0.0:
+				var tower := towers[target_tower]
+				tower.hp -= 8.0
+				add_damage_text(tower.pos, 8.0, Color("ff7777"))
+				if tower.hp <= 0.0:
+					towers.remove_at(target_tower)
+					selected_tower_index = -1
+				else:
+					towers[target_tower] = tower
+				timer = 1.35
 		elif pos.distance_to(player_pos) < enemy.radius + 15.0:
 			if timer <= 0.0:
 				player_hp -= 18.0 if enemy.kind == "boss" else 9.0
@@ -227,11 +248,16 @@ func update_towers(delta: float) -> void:
 			towers[i] = tower
 			continue
 		var target := -1
-		var best: float = tower.range
+		var best := INF
 		for j in enemies.size():
 			var distance: float = tower.pos.distance_to(enemies[j].pos)
-			if distance < best:
-				best = distance
+			if distance > tower.range:
+				continue
+			var score := distance
+			if tower.priority == "front": score = -float(enemies[j].segment) * 1000.0 - enemies[j].pos.x
+			if tower.priority == "strong": score = -float(enemies[j].hp)
+			if score < best:
+				best = score
 				target = j
 		if target >= 0:
 			var direction: Vector2 = (enemies[target].pos - tower.pos).normalized()
@@ -314,7 +340,69 @@ func build_tower(pos: Vector2) -> void:
 	if gold < cost:
 		return
 	gold -= cost
-	towers.append({"pos": pos, "kind": selected_tower, "range": 180.0 if selected_tower == 1 else 225.0, "damage": 11.0 if selected_tower == 1 else 34.0, "cooldown": 0.0})
+	towers.append({"pos": pos, "kind": selected_tower, "range": 180.0 if selected_tower == 1 else 225.0, "damage": 11.0 if selected_tower == 1 else 34.0, "cooldown": 0.0, "level": 1, "hp": 75.0, "max_hp": 75.0, "priority": "nearest", "spent": cost})
+	selected_tower_index = towers.size() - 1
+
+## 查找点击位置内的炮塔，用于选中后管理。
+## @param pos 世界坐标，单位为画面像素。
+## @return 命中的炮塔索引；未命中返回 -1。
+func tower_at(pos: Vector2) -> int:
+	return tower_at_range(pos, 25.0)
+
+## 查找指定距离内最近的炮塔，供玩家选择及远程敌人攻击使用。
+## @param pos 查询中心的世界坐标。
+## @param distance 最大查询距离，单位为画面像素。
+## @return 最近炮塔索引；范围内没有炮塔时返回 -1。
+func tower_at_range(pos: Vector2, distance: float) -> int:
+	var result := -1
+	var best := distance
+	for i in towers.size():
+		var current: float = pos.distance_to(towers[i].pos)
+		if current < best:
+			best = current
+			result = i
+	return result
+
+## 花费金币提升所选炮塔的伤害、射程及耐久，最高三级。
+func upgrade_selected_tower() -> void:
+	if selected_tower_index < 0 or selected_tower_index >= towers.size(): return
+	var tower := towers[selected_tower_index]
+	var cost: int = 30 * tower.level
+	if tower.level >= 3 or gold < cost: return
+	gold -= cost
+	tower.spent += cost
+	tower.level += 1
+	tower.damage *= 1.35
+	tower.range += 20.0
+	tower.max_hp += 25.0
+	tower.hp += 25.0
+	towers[selected_tower_index] = tower
+
+## 花费 15 金币维修受损炮塔，未受损或金币不足时不扣费。
+func repair_selected_tower() -> void:
+	if selected_tower_index < 0 or selected_tower_index >= towers.size(): return
+	var tower := towers[selected_tower_index]
+	if tower.hp >= tower.max_hp or gold < 15: return
+	gold -= 15
+	tower.hp = minf(tower.max_hp, tower.hp + 35.0)
+	towers[selected_tower_index] = tower
+
+## 出售所选炮塔并返还累计投入的一半，用于调整防线。
+func sell_selected_tower() -> void:
+	if selected_tower_index < 0 or selected_tower_index >= towers.size(): return
+	gold += int(towers[selected_tower_index].spent / 2)
+	towers.remove_at(selected_tower_index)
+	selected_tower_index = -1
+
+## 在最近、最前和高血量目标间循环炮塔攻击优先级。
+func cycle_tower_priority() -> void:
+	if selected_tower_index < 0 or selected_tower_index >= towers.size(): return
+	var tower := towers[selected_tower_index]
+	match tower.priority:
+		"nearest": tower.priority = "front"
+		"front": tower.priority = "strong"
+		_: tower.priority = "nearest"
+	towers[selected_tower_index] = tower
 
 ## 从强化池中抽取两个不同选项，等待玩家在波间作出选择。
 func roll_upgrades() -> void:
@@ -350,9 +438,13 @@ func _draw() -> void:
 		draw_line(PATH[i], PATH[i + 1], Color("698095"), 2.0, true)
 	draw_circle(CORE_POS, 37.0, Color("638cff"))
 	draw_circle(CORE_POS, 23.0, Color("c6d4ff"))
-	for tower in towers:
+	for i in towers.size():
+		var tower := towers[i]
 		draw_circle(tower.pos, 21.0, Color("247e79") if tower.kind == 1 else Color("995642"))
 		draw_circle(tower.pos, 12.0, Color("7fffd4") if tower.kind == 1 else Color("ff9b71"))
+		draw_rect(Rect2(tower.pos + Vector2(-20, -31), Vector2(40.0 * tower.hp / tower.max_hp, 3)), Color("7fffd4"))
+		if i == selected_tower_index:
+			draw_arc(tower.pos, 27.0, 0.0, TAU, 32, Color.WHITE, 2.0)
 	for enemy in enemies:
 		var color := Color("e46d75")
 		if enemy.kind == "runner": color = Color("f5ba69")
@@ -376,6 +468,9 @@ func _draw() -> void:
 	var font := ThemeDB.fallback_font
 	draw_string(font, Vector2(25, 33), "FRONTLINE GUARDIAN", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color.WHITE)
 	draw_string(font, Vector2(25, 65), "WASD Move  |  Mouse Fire  |  1 Rapid $40  |  2 Cannon $65  |  Right Click Cancel", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("b6c8d7"))
+	if selected_tower_index >= 0 and selected_tower_index < towers.size():
+		var selected := towers[selected_tower_index]
+		draw_string(font, Vector2(25, 118), "Tower Lv%d  HP %d/%d  Target %s  |  U Upgrade  H Repair  X Sell  P Priority" % [selected.level, ceili(selected.hp), ceili(selected.max_hp), selected.priority], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
 	draw_string(font, Vector2(825, 32), "Night %d/%d   Gold %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 	draw_string(font, Vector2(825, 62), "HP %d/%d   Core %d/%d" % [ceili(player_hp), ceili(max_player_hp), ceili(core_hp), ceili(max_core_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 	if selected_tower > 0:
