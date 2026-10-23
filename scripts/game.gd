@@ -13,6 +13,7 @@ const GRID_SIZE := Vector2i(32, 18)
 const START_CELL := Vector2i(0, 8)
 const GOAL_CELL := Vector2i(29, 8)
 const HeroRPG = preload("res://scripts/hero_rpg.gd")
+const GoblinCamp = preload("res://dungeon.tscn")
 
 var upgrade_pool: Array[String] = ["生命补给", "急救包", "枪械增幅", "快速扳机", "高速弹头", "冲击弹", "双重射击", "炮塔增幅", "射程扩展", "机械润滑", "核心修复", "核心加固", "移动训练", "赏金猎人", "军需补给", "防弹衣", "核心装甲", "塔体加固", "穿甲弹", "巨兽克星"]
 var rng := RandomNumberGenerator.new()
@@ -25,11 +26,19 @@ var gold := 100
 var kills := 0
 var wave := 0
 var state := "select_hero"
+## 本局英雄成长与装备容器；金币仍由上方 gold 统一记账。
 var hero = HeroRPG.new()
+## 操作失败或奖励提示，仅用于界面显示，不控制经济状态。
 var notice := ""
 var notice_time := 0.0
 var inventory_open := false
 var shop_open := false
+## Boss 掉落已经领取，用于阻止同一副本奖励重复发放。
+var dungeon_reward_claimed := false
+## 本局已经进入营地；撤退后不允许重刷普通怪收益。
+var dungeon_attempted := false
+## 活跃副本场景；离开后释放，基地节点始终保留。
+var dungeon_scene: Node2D
 var enemies: Array[Dictionary] = []
 var towers: Array[Dictionary] = []
 var bullets: Array[Dictionary] = []
@@ -56,6 +65,7 @@ var tower_rate_multiplier := 1.0
 var tower_hp_multiplier := 1.0
 var gold_bonus := 0
 var player_armor := 0.0
+## 波间强化永久增加的属性，装备重算时必须保留这些增量。
 var hero_health_bonus := 0.0
 var hero_attack_bonus := 0.0
 var hero_armor_bonus := 0.0
@@ -169,6 +179,43 @@ func select_hero(choice: String) -> bool:
 	state = "ready"
 	return true
 
+## 第 2 夜结束后开放营地入口，领取 Boss 奖励后本局不再开放。
+## @return 波间可进入且尚未领奖时返回 true。
+func dungeon_available() -> bool:
+	return wave == 2 and state == "upgrade" and not dungeon_attempted and not dungeon_reward_claimed
+
+## 将独立营地场景叠加到战场上，并暂停基地战斗循环。
+## @return 入口有效且副本已加载时返回 true。
+func enter_dungeon() -> bool:
+	if not dungeon_available(): return false
+	dungeon_scene = GoblinCamp.instantiate()
+	dungeon_scene.game = self
+	dungeon_scene.reward_collected.connect(complete_dungeon)
+	dungeon_scene.retreat_requested.connect(leave_dungeon)
+	add_child(dungeon_scene)
+	dungeon_attempted = true
+	state = "dungeon"
+	return true
+
+## 仅在实际拾取 Boss 掉落时发奖一次；背包满时兑换金币。
+## @param item_id 副本战利品的装备目录标识。
+func complete_dungeon(item_id: String) -> void:
+	if state != "dungeon" or dungeon_reward_claimed or dungeon_scene == null or not dungeon_scene.reward_spawned or not dungeon_scene.reward_taken: return
+	dungeon_reward_claimed = true
+	if hero.pickup(item_id): show_notice("Camp cleared: epic loot obtained")
+	else:
+		gold += 60
+		show_notice("Camp cleared: bag full, +60 gold")
+	leave_dungeon()
+
+## 返回基地第 2 夜波间状态；炮塔、强化选项和本局经济保持原状。
+func leave_dungeon() -> void:
+	if state != "dungeon": return
+	if dungeon_scene != null:
+		dungeon_scene.queue_free()
+		dungeon_scene = null
+	state = "upgrade"
+
 ## 装备或等级变化后保留当前生命比例，并同步攻击和防御到原有战斗结算。
 func sync_hero_stats() -> void:
 	var current: Dictionary = hero.stats()
@@ -191,7 +238,7 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	var radius: float = [95.0, 135.0, 115.0, 210.0][index]
 	var center := player_pos
 	var base_cooldowns := [4.0, 9.0, 8.0, 22.0] if hero.hero_id == "berserker" else [3.5, 10.0, 9.0, 23.0]
-	# 先确认射程，再按职业给同一按键不同的实际战斗效果。
+	# 1. 技能释放先计算职业特有的方向、范围和临时增益。
 	if hero.hero_id == "berserker":
 		if index == 1: hero.buff_time = 5.0
 		if index == 2:
@@ -204,6 +251,7 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 		if index == 3: center = player_pos + direction * 150.0
 	if hero.has_effect("wide_sweep") and hero.hero_id == "berserker" and index == 0: radius *= 1.55
 	if hero.has_effect("frost_burst") and hero.hero_id == "frost_mage" and index == 1: radius *= 1.4
+	# 2. 命中时对现存敌人真实扣血，并复用击杀奖励和经验路径。
 	var hits := 0
 	for i in range(enemies.size() - 1, -1, -1):
 		var enemy := enemies[i]
@@ -224,6 +272,7 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 		hits += 1
 	if hero.hero_id == "berserker" and index == 1: player_hp = minf(max_player_hp, player_hp + 12.0)
 	if hero.hero_id == "frost_mage" and index == 2: player_hp = minf(max_player_hp, player_hp + 6.0)
+	# 3. 技能真正释放后才进入冷却；未命中也消耗本次施法机会。
 	hero.cooldowns[index] = base_cooldowns[index]
 	impacts.append({"pos": center, "time": 0.2, "color": Color("80deff") if hero.hero_id == "frost_mage" else Color("ffbd7a")})
 	show_notice("%s  %d hit(s)" % [HeroRPG.SKILL_NAMES[hero.hero_id][index], hits])
@@ -306,6 +355,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.physical_keycode == KEY_1: select_hero("berserker")
 			if event.physical_keycode == KEY_2: select_hero("frost_mage")
 			return
+		if state == "dungeon":
+			match event.physical_keycode:
+				KEY_ESCAPE: leave_dungeon()
+				KEY_F: dodge()
+				KEY_Q: dungeon_scene.cast_skill(0, get_global_mouse_position())
+				KEY_W: dungeon_scene.cast_skill(1, get_global_mouse_position())
+				KEY_E: dungeon_scene.cast_skill(2, get_global_mouse_position())
+				KEY_R: dungeon_scene.cast_skill(3, get_global_mouse_position())
+			return
 		if shop_open or inventory_open:
 			if event.physical_keycode == KEY_B: shop_open = false
 			elif event.physical_keycode == KEY_I: inventory_open = false
@@ -332,12 +390,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				if state == "won" or state == "lost": get_tree().reload_current_scene()
 				elif state == "fighting": cast_skill(3, get_global_mouse_position())
 			KEY_B: shop_open = state == "ready" and not shop_open
+			KEY_G: enter_dungeon()
 			KEY_I: inventory_open = not inventory_open
 			KEY_5: if hero.skill_points > 0: hero.upgrade_skill(0)
 			KEY_6: if hero.skill_points > 0: hero.upgrade_skill(1)
 			KEY_7: if hero.skill_points > 0: hero.upgrade_skill(2)
 			KEY_8: if hero.skill_points > 0: hero.upgrade_skill(3)
 	if event is InputEventMouseButton and event.pressed:
+		if state == "dungeon": return
 		if state == "select_hero" and event.button_index == MOUSE_BUTTON_LEFT:
 			if Rect2(265, 270, 345, 210).has_point(get_global_mouse_position()): select_hero("berserker")
 			elif Rect2(670, 270, 345, 210).has_point(get_global_mouse_position()): select_hero("frost_mage")
@@ -374,20 +434,28 @@ func _unhandled_input(event: InputEvent) -> void:
 ## 按当前键盘方向移动玩家并限制在战场内。
 ## @param delta 本帧经过的秒数。
 func move_player(delta: float) -> void:
-	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var direction := movement_vector()
 	player_pos += direction * (hero.stats().get("speed", PLAYER_SPEED) if hero.hero_id != "" else PLAYER_SPEED) * move_multiplier * delta
 	player_pos = player_pos.clamp(Vector2(22, 92), Vector2(1258, 695))
 
+## 读取方向键移动，避免 W 键既移动又释放英雄技能导致误触。
+## @return 单位长度以内的二维移动方向。
+func movement_vector() -> Vector2:
+	return Vector2(float(Input.is_key_pressed(KEY_RIGHT)) - float(Input.is_key_pressed(KEY_LEFT)), float(Input.is_key_pressed(KEY_DOWN)) - float(Input.is_key_pressed(KEY_UP))).normalized()
+
 ## 朝移动方向短距离闪避；无移动输入时朝鼠标方向，短暂无敌用于躲避可见弹丸。
 func dodge() -> void:
-	if state != "fighting" or dodge_cooldown > 0.0:
+	if (state != "fighting" and state != "dungeon") or dodge_cooldown > 0.0:
 		return
-	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var direction := movement_vector()
 	if direction == Vector2.ZERO:
 		direction = (get_global_mouse_position() - player_pos).normalized()
 	if direction == Vector2.ZERO:
 		return
-	player_pos = (player_pos + direction * 105.0).clamp(Vector2(22, 92), Vector2(1258, 695))
+	if state == "dungeon" and dungeon_scene != null:
+		dungeon_scene.hero_pos = (dungeon_scene.hero_pos + direction * 105.0).clamp(Vector2(50, 110), Vector2(1230, 660))
+	else:
+		player_pos = (player_pos + direction * 105.0).clamp(Vector2(22, 92), Vector2(1258, 695))
 	dodge_timer = 0.22
 	dodge_cooldown = 2.5
 	impacts.append({"pos": player_pos, "time": 0.2, "color": Color("80deff")})
@@ -536,7 +604,7 @@ func resolve_enemy_attack(enemy: Dictionary) -> void:
 		var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
 		hostile_bullets.append({"pos": enemy.pos, "velocity": direction * 300.0, "damage": 8.0, "life": 1.0, "radius": 7.0})
 	elif target_kind == "player" and enemy.pos.distance_to(player_pos) < enemy.radius + 20.0 and dodge_timer <= 0.0:
-		var damage: float = maxf(1.0, 9.0 - player_armor)
+		var damage: float = maxf(1.0, 9.0 - player_armor - (5.0 if hero.ward_time > 0.0 else 0.0))
 		player_hp -= damage
 		add_damage_text(player_pos, damage, Color("ff7777"))
 	elif target_kind == "core" and enemy.pos.distance_to(CORE_POS) < 42.0:
@@ -887,7 +955,7 @@ func _draw() -> void:
 	draw_rect(Rect2(0, 0, 1280, 85), Color("182b41"))
 	var font := ThemeDB.fallback_font
 	draw_string(font, Vector2(25, 33), "FRONTLINE GUARDIAN", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color.WHITE)
-	draw_string(font, Vector2(25, 65), "WASD Move  |  Mouse Fire  |  F Dodge  |  1 Rapid $40  |  2 Cannon $55", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("b6c8d7"))
+	draw_string(font, Vector2(25, 65), "Arrows Move | Mouse Fire | QWER Skills | F Dodge | B Shop | I Bag | 1/2 Towers", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
 	if selected_tower_index >= 0 and selected_tower_index < towers.size():
 		var selected := towers[selected_tower_index]
 		var upgrade_cost: int = 30 * selected.level
@@ -909,6 +977,7 @@ func _draw() -> void:
 		draw_string(font, mouse + Vector2(26, -20), "BUILD $%d" % (40 if selected_tower == 1 else 55) if legal else "BLOCKED / NO GOLD", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, tint)
 	var message := "SPACE: Start wave" if state == "ready" else ""
 	if state == "upgrade" and upgrade_choices.size() == 2:
+		if dungeon_available(): draw_string(font, Vector2(420, 454), "G: Enter Goblin Camp  |  Choose upgrade to skip", HORIZONTAL_ALIGNMENT_LEFT, -1, 19, Color("e7a6ff"))
 		draw_rect(Rect2(300, 470, 680, 200), Color("182b41"))
 		draw_string(font, Vector2(475, 515), "NIGHT CLEARED - CHOOSE ONE", HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("ffe074"))
 		for i in 2:
@@ -921,10 +990,14 @@ func _draw() -> void:
 	if state == "won" or state == "lost":
 		draw_rect(Rect2(240, 550, 800, 140), Color("182b41"))
 		draw_string(font, Vector2(275, 600), "Nights reached: %d    Enemies defeated: %d" % [wave, kills], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
-	if message != "":
+	if state == "ready":
+		draw_rect(Rect2(20, 575, 370, 42), Color("253e59"))
+		draw_string(font, Vector2(35, 604), message, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
+	elif message != "":
 		draw_rect(Rect2(240, 635, 800, 55), Color("253e59"))
 		draw_string(font, Vector2(270, 670), message, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
 	if hero.hero_id != "":
+		draw_string(font, Vector2(770, 105), "5-8: Upgrade Q/W/E/R skills", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("80deff"))
 		draw_rect(Rect2(20, 672, 340, 7), Color("253e59"))
 		draw_rect(Rect2(20, 672, 340.0 * hero.xp / hero.xp_to_next(), 7), Color("80deff"))
 		draw_string(font, Vector2(20, 660), "%s Lv%d  XP %d/%d  Points %d" % [HeroRPG.HEROES[hero.hero_id].name, hero.level, hero.xp, hero.xp_to_next(), hero.skill_points], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
@@ -953,10 +1026,15 @@ func _draw() -> void:
 		for i in HeroRPG.ITEM_IDS.size():
 			var id: String = HeroRPG.ITEM_IDS[i]
 			var item: Dictionary = HeroRPG.ITEMS[id]
+			var effect_label := ""
+			match item.get("effect", ""):
+				"rage_chain": effect_label = " | Rush +45%"
+				"frost_burst": effect_label = " | Nova +40%"
+				"wide_sweep": effect_label = " | Cleave +55%"
 			var pos := Vector2(110 + (i % 2) * 530, 150 + int(i / 2) * 68)
 			draw_rect(Rect2(pos, Vector2(500, 57)), Color("365a74"))
-			draw_string(font, pos + Vector2(12, 22), "%s [%s]  $%d" % [item.name, item.rarity, item.price], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
-			draw_string(font, pos + Vector2(12, 44), "ATK %d  HP %d  DEF %d  SPD %d" % [int(item.get("attack", 0)), int(item.get("health", 0)), int(item.get("defense", 0)), int(item.get("speed", 0))], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
+			draw_string(font, pos + Vector2(12, 22), "%s [%s]  $%d%s" % [item.name, item.rarity, item.price, effect_label], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+			draw_string(font, pos + Vector2(12, 44), "ATK %d  HP %d  DEF %d  SPD %d  RATE +%d%%" % [int(item.get("attack", 0)), int(item.get("health", 0)), int(item.get("defense", 0)), int(item.get("speed", 0)), int(item.get("rate", 0.0) * 100)], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
 		draw_rect(Rect2(905, 570, 255, 60), Color("365a74"))
 		draw_string(font, Vector2(920, 605), "Potion +55 HP  $22", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 	if inventory_open:

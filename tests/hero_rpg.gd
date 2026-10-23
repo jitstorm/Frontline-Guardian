@@ -44,6 +44,67 @@ func _initialize() -> void:
 	assert(mage.cast_skill(0, mage.player_pos + Vector2(145, 0)))
 	assert(mage.enemies[0].hp < 150.0 and mage.enemies[0].slow_time > 0.0)
 	assert(mage.hero.cooldowns[0] != berserker.hero.cooldowns[0])
+	# 三件史诗装备分别扩大横扫、新星范围及冲锋伤害，断言实际敌人生命变化。
+	var sweep: Node2D = script.new()
+	root.add_child(sweep)
+	await process_frame
+	sweep.select_hero("berserker")
+	sweep.state = "fighting"
+	sweep.enemies.append(make_enemy(sweep.player_pos + Vector2(135, 0)))
+	sweep.cast_skill(0, sweep.player_pos + Vector2(200, 0))
+	assert(sweep.enemies[0].hp == 150.0)
+	sweep.hero.pickup("storm_grasp")
+	sweep.equip_item(0)
+	sweep.hero.cooldowns[0] = 0.0
+	sweep.cast_skill(0, sweep.player_pos + Vector2(200, 0))
+	assert(sweep.enemies[0].hp < 150.0)
+	var frost: Node2D = script.new()
+	root.add_child(frost)
+	await process_frame
+	frost.select_hero("frost_mage")
+	frost.state = "fighting"
+	frost.enemies.append(make_enemy(frost.player_pos + Vector2(165, 0)))
+	frost.cast_skill(1, frost.player_pos + Vector2(200, 0))
+	assert(frost.enemies[0].hp == 150.0)
+	frost.hero.pickup("frost_focus")
+	frost.equip_item(0)
+	frost.hero.cooldowns[1] = 0.0
+	frost.cast_skill(1, frost.player_pos + Vector2(200, 0))
+	assert(frost.enemies[0].hp < 150.0)
+	var rage: Node2D = script.new()
+	root.add_child(rage)
+	await process_frame
+	rage.select_hero("berserker")
+	rage.state = "fighting"
+	rage.enemies.append(make_enemy(rage.player_pos + Vector2(130, 0)))
+	rage.hero.pickup("berserker_mark")
+	rage.equip_item(0)
+	rage.cast_skill(2, rage.player_pos + Vector2(200, 0))
+	assert(rage.enemies[0].hp < 150.0 - rage.hero.skill_damage(2))
+	var full: Node2D = script.new()
+	root.add_child(full)
+	await process_frame
+	full.select_hero("berserker")
+	for i in 12: assert(full.hero.pickup("iron_helm"))
+	var full_gold: int = full.gold
+	assert(not full.buy_item("oak_staff") and full.gold == full_gold and full.notice == "Inventory full")
+	full.hero.choose("frost_mage")
+	assert(full.hero.inventory.is_empty() and full.hero.equipment.is_empty() and full.hero.skill_points == 0)
+	full.gold = 0
+	assert(not full.buy_item("steel_blade") and full.notice == "Not enough gold" and full.gold == 0)
+	# 每个按键都在真实敌人生命上检查伤害和冷却，避免只有界面技能图标而无战斗效果。
+	for class_id in ["berserker", "frost_mage"]:
+		for skill_index in 4:
+			var fighter: Node2D = script.new()
+			root.add_child(fighter)
+			await process_frame
+			fighter.select_hero(class_id)
+			fighter.state = "fighting"
+			var distance := 145.0 if class_id == "frost_mage" and (skill_index == 0 or skill_index == 3) else 130.0 if class_id == "berserker" and skill_index == 2 else 60.0
+			fighter.enemies.append(make_enemy(fighter.player_pos + Vector2(distance, 0)))
+			assert(fighter.cast_skill(skill_index, fighter.player_pos + Vector2(200, 0)))
+			assert(fighter.enemies[0].hp < 150.0 and fighter.hero.cooldowns[skill_index] > 0.0, "技能必须造成实伤并进入冷却")
+			fighter.queue_free()
 	print("hero_rpg=PASS skills=2 damage_and_slow xp_level=%d gold=%d" % [berserker.hero.level, berserker.gold])
 	quit(0)
 

@@ -27,14 +27,20 @@ const SKILL_NAMES := {
 	"frost_mage": ["Ice Lance", "Frost Nova", "Ice Ward", "Blizzard"]
 }
 
+## 当前选择的职业标识；空字符串表示尚未选英雄。
 var hero_id := ""
+## 本局等级和经验，经验只来自实际击杀。
 var level := 1
 var xp := 0
+## 升级获得的未分配技能点。
 var skill_points := 0
+## Q/W/E/R 技能等级与剩余冷却，数组索引和按键一一对应。
 var skill_levels := [1, 1, 1, 1]
 var cooldowns := [0.0, 0.0, 0.0, 0.0]
+## 未穿戴装备的目录标识；穿戴时移入对应槽位。
 var inventory: Array[String] = []
 var equipment: Dictionary = {}
+## 战吼和冰盾剩余秒数，仅在实战或副本内递减。
 var buff_time := 0.0
 var ward_time := 0.0
 

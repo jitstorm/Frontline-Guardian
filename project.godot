@@ -14,9 +14,3 @@ window/stretch/mode="canvas_items"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/default_filters/use_nearest_mipmap_filter=false
-
-[input]
-move_up={"deadzone":0.2,"events":[{"type":"InputEventKey","physical_keycode":87}]}
-move_down={"deadzone":0.2,"events":[{"type":"InputEventKey","physical_keycode":83}]}
-move_left={"deadzone":0.2,"events":[{"type":"InputEventKey","physical_keycode":65}]}
-move_right={"deadzone":0.2,"events":[{"type":"InputEventKey","physical_keycode":68}]}
