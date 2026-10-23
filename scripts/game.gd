@@ -9,7 +9,7 @@ const MAX_WAVES := 8
 const BG := Color("101a29")
 const ROAD := Color("34475a")
 
-var upgrade_pool: Array[String] = ["生命补给", "枪械增幅", "炮塔增幅", "核心修复", "移动训练"]
+var upgrade_pool: Array[String] = ["生命补给", "急救包", "枪械增幅", "快速扳机", "高速弹头", "冲击弹", "双重射击", "炮塔增幅", "射程扩展", "机械润滑", "核心修复", "核心加固", "移动训练", "赏金猎人", "军需补给", "防弹衣", "核心装甲", "塔体加固", "穿甲弹", "巨兽克星"]
 var rng := RandomNumberGenerator.new()
 var player_pos := Vector2(1080, 530)
 var player_hp := 100.0
@@ -33,6 +33,18 @@ var selected_tower_index := -1
 var player_damage := 16.0
 var tower_multiplier := 1.0
 var move_multiplier := 1.0
+var gun_rate_multiplier := 1.0
+var bullet_speed_multiplier := 1.0
+var bullet_knockback := 14.0
+var multishot := false
+var tower_range_bonus := 0.0
+var tower_rate_multiplier := 1.0
+var tower_hp_multiplier := 1.0
+var gold_bonus := 0
+var player_armor := 0.0
+var core_armor := 0.0
+var armor_penetration := 0.55
+var boss_bonus := 1.0
 var upgrade_choices: Array[String] = []
 
 ## 初始化随机源和首局提示；逻辑状态由本节点统一维护。
@@ -183,8 +195,8 @@ func update_enemies(delta: float) -> void:
 		var timer: float = maxf(0.0, enemy.attack_timer - delta)
 		if enemy.kind == "ranged" and pos.distance_to(player_pos) < 180.0:
 			if timer <= 0.0:
-				player_hp -= 6.0
-				add_damage_text(player_pos, 6.0, Color("ff7777"))
+				player_hp -= maxf(1.0, 6.0 - player_armor)
+				add_damage_text(player_pos, maxf(1.0, 6.0 - player_armor), Color("ff7777"))
 				timer = 1.35
 		elif enemy.kind == "ranged" and tower_at_range(pos, 155.0) >= 0:
 			# 远程敌人会攻击靠近道路的炮塔，维修因此具有实际防守用途。
@@ -201,13 +213,15 @@ func update_enemies(delta: float) -> void:
 				timer = 1.35
 		elif pos.distance_to(player_pos) < enemy.radius + 15.0:
 			if timer <= 0.0:
-				player_hp -= 18.0 if enemy.kind == "boss" else 9.0
-				add_damage_text(player_pos, 18.0 if enemy.kind == "boss" else 9.0, Color("ff7777"))
+				var damage: float = maxf(1.0, (18.0 if enemy.kind == "boss" else 9.0) - player_armor)
+				player_hp -= damage
+				add_damage_text(player_pos, damage, Color("ff7777"))
 				timer = 0.9
 		elif enemy.segment >= PATH.size():
 			if timer <= 0.0:
-				core_hp -= 30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0
-				add_damage_text(CORE_POS, 30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0, Color("ff7777"))
+				var damage: float = maxf(1.0, (30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0) - core_armor)
+				core_hp -= damage
+				add_damage_text(CORE_POS, damage, Color("ff7777"))
 				timer = 1.0
 		else:
 			var remaining: float = enemy.speed * delta
@@ -234,9 +248,12 @@ func shoot_player(delta: float) -> void:
 	var aim := get_global_mouse_position() - player_pos
 	if aim.length() < 4.0:
 		return
-	bullets.append({"pos": player_pos, "velocity": aim.normalized() * BULLET_SPEED, "damage": player_damage, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": 14.0})
+	var velocity := aim.normalized() * BULLET_SPEED * bullet_speed_multiplier
+	bullets.append({"pos": player_pos, "velocity": velocity, "damage": player_damage, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
+	if multishot:
+		bullets.append({"pos": player_pos, "velocity": velocity.rotated(0.17), "damage": player_damage * 0.7, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": bullet_knockback})
 	impacts.append({"pos": player_pos + aim.normalized() * 24.0, "time": 0.12, "color": Color("ffe074")})
-	fire_timer = 0.19
+	fire_timer = 0.19 / gun_rate_multiplier
 
 ## 炮塔自动选取范围内最近敌人；速射塔与重炮塔有不同射程、伤害及射速。
 ## @param delta 本帧经过的秒数。
@@ -251,7 +268,7 @@ func update_towers(delta: float) -> void:
 		var best := INF
 		for j in enemies.size():
 			var distance: float = tower.pos.distance_to(enemies[j].pos)
-			if distance > tower.range:
+			if distance > tower.range + tower_range_bonus:
 				continue
 			var score := distance
 			if tower.priority == "front": score = -float(enemies[j].segment) * 1000.0 - enemies[j].pos.x
@@ -262,7 +279,7 @@ func update_towers(delta: float) -> void:
 		if target >= 0:
 			var direction: Vector2 = (enemies[target].pos - tower.pos).normalized()
 			bullets.append({"pos": tower.pos, "velocity": direction * 520.0, "damage": tower.damage * tower_multiplier, "life": 1.0, "radius": 6.0 if tower.kind == 1 else 10.0, "color": Color("7fffd4") if tower.kind == 1 else Color("ff9b71"), "knockback": 7.0 if tower.kind == 1 else 26.0})
-			tower.cooldown = 0.42 if tower.kind == 1 else 1.15
+			tower.cooldown = (0.42 if tower.kind == 1 else 1.15) / tower_rate_multiplier
 		towers[i] = tower
 
 ## 更新弹丸并执行命中结算；倒序删除防止跳过元素。
@@ -280,14 +297,14 @@ func update_bullets(delta: float) -> void:
 		if hit >= 0:
 			var enemy := enemies[hit]
 			# 重甲减伤在命中结算时统一应用，避免玩家枪械和炮塔攻击语义不一致。
-			var dealt: float = bullet.damage * (0.55 if enemy.kind == "armored" else 1.0)
+			var dealt: float = bullet.damage * (maxf(0.55, armor_penetration) if enemy.kind == "armored" else 1.0) * (boss_bonus if enemy.kind == "boss" else 1.0)
 			enemy.hp -= dealt
 			enemy.pos -= bullet.velocity.normalized() * bullet.knockback
 			add_damage_text(enemy.pos, dealt, Color("ffe074"))
 			impacts.append({"pos": bullet.pos, "time": 0.2, "color": bullet.color})
 			if enemy.hp <= 0.0:
 				enemies.remove_at(hit)
-				gold += enemy.reward
+				gold += enemy.reward + gold_bonus
 			else:
 				enemies[hit] = enemy
 			bullets.remove_at(i)
@@ -340,7 +357,7 @@ func build_tower(pos: Vector2) -> void:
 	if gold < cost:
 		return
 	gold -= cost
-	towers.append({"pos": pos, "kind": selected_tower, "range": 180.0 if selected_tower == 1 else 225.0, "damage": 11.0 if selected_tower == 1 else 34.0, "cooldown": 0.0, "level": 1, "hp": 75.0, "max_hp": 75.0, "priority": "nearest", "spent": cost})
+	towers.append({"pos": pos, "kind": selected_tower, "range": 180.0 if selected_tower == 1 else 225.0, "damage": 11.0 if selected_tower == 1 else 34.0, "cooldown": 0.0, "level": 1, "hp": 75.0 * tower_hp_multiplier, "max_hp": 75.0 * tower_hp_multiplier, "priority": "nearest", "spent": cost})
 	selected_tower_index = towers.size() - 1
 
 ## 查找点击位置内的炮塔，用于选中后管理。
@@ -419,10 +436,37 @@ func apply_upgrade(choice: String) -> void:
 		"生命补给":
 			max_player_hp += 20.0
 			player_hp = minf(max_player_hp, player_hp + 45.0)
+		"急救包":
+			max_player_hp += 5.0
+			player_hp = minf(max_player_hp, player_hp + 60.0)
 		"枪械增幅": player_damage += 8.0
+		"快速扳机": gun_rate_multiplier += 0.2
+		"高速弹头": bullet_speed_multiplier += 0.25
+		"冲击弹": bullet_knockback += 12.0
+		"双重射击":
+			if multishot: player_damage += 4.0
+			else: multishot = true
 		"炮塔增幅": tower_multiplier += 0.3
-		"核心修复": core_hp = minf(max_core_hp, core_hp + 45.0)
+		"射程扩展": tower_range_bonus += 25.0
+		"机械润滑": tower_rate_multiplier += 0.2
+		"核心修复":
+			max_core_hp += 5.0
+			core_hp = minf(max_core_hp, core_hp + 45.0)
+		"核心加固":
+			max_core_hp += 30.0
+			core_hp += 30.0
 		"移动训练": move_multiplier += 0.18
+		"赏金猎人": gold_bonus += 5
+		"军需补给": gold += 45
+		"防弹衣": player_armor += 2.0
+		"核心装甲": core_armor += 3.0
+		"塔体加固":
+			tower_hp_multiplier += 0.25
+			for tower in towers:
+				tower.max_hp += 20.0
+				tower.hp += 20.0
+		"穿甲弹": armor_penetration = minf(1.0, armor_penetration + 0.2)
+		"巨兽克星": boss_bonus += 0.3
 	upgrade_choices.clear()
 	state = "ready"
 
@@ -477,7 +521,7 @@ func _draw() -> void:
 		var mouse := get_global_mouse_position()
 		draw_arc(mouse, 21.0, 0.0, TAU, 36, Color("7fffd4") if can_build_at(mouse) else Color("ff7777"), 2.0)
 	var message := "SPACE: Start wave" if state == "ready" else ""
-	if state == "upgrade": message = "Choose upgrade: Q  %s      E  %s" % upgrade_choices
+	if state == "upgrade" and upgrade_choices.size() == 2: message = "Choose upgrade: Q  %s      E  %s" % upgrade_choices
 	if state == "won": message = "VICTORY!  Eight nights survived.  Press R to restart"
 	if state == "lost": message = "DEFEAT!  Press R to restart"
 	if message != "":

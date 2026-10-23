@@ -18,7 +18,7 @@ func _initialize() -> void:
 	assert(game.enemy_kind_for(8, game.wave_enemy_count(8) - 1) == "boss")
 	assert(not game.can_build_at(Vector2(80, 350)))
 	assert(game.can_build_at(Vector2(300, 120)))
-	assert(game.upgrade_pool.size() >= 4)
+	assert(game.upgrade_pool.size() >= 20)
 	game.start_wave()
 	assert(game.state == "fighting" and game.wave == 1)
 	game.update_spawning(0.1)
@@ -46,4 +46,15 @@ func _initialize() -> void:
 	assert(game.upgrade_choices.size() == 2 and game.upgrade_choices[0] != game.upgrade_choices[1])
 	game.apply_upgrade(game.upgrade_choices[0])
 	assert(game.state == "ready")
+	# 每种强化都必须至少改变一个当前数值或后续战斗所用的属性。
+	for choice in game.upgrade_pool:
+		var candidate: Node2D = script.new()
+		candidate.state = "upgrade"
+		candidate.upgrade_choices.append(choice)
+		candidate.upgrade_choices.append("占位")
+		var before := [candidate.max_player_hp, candidate.player_damage, candidate.gun_rate_multiplier, candidate.bullet_speed_multiplier, candidate.bullet_knockback, candidate.multishot, candidate.tower_multiplier, candidate.tower_range_bonus, candidate.tower_rate_multiplier, candidate.max_core_hp, candidate.move_multiplier, candidate.gold_bonus, candidate.gold, candidate.player_armor, candidate.core_armor, candidate.tower_hp_multiplier, candidate.armor_penetration, candidate.boss_bonus]
+		candidate.apply_upgrade(choice)
+		var after := [candidate.max_player_hp, candidate.player_damage, candidate.gun_rate_multiplier, candidate.bullet_speed_multiplier, candidate.bullet_knockback, candidate.multishot, candidate.tower_multiplier, candidate.tower_range_bonus, candidate.tower_rate_multiplier, candidate.max_core_hp, candidate.move_multiplier, candidate.gold_bonus, candidate.gold, candidate.player_armor, candidate.core_armor, candidate.tower_hp_multiplier, candidate.armor_penetration, candidate.boss_bonus]
+		assert(before != after, "强化未生效: " + choice)
+		candidate.free()
 	quit(0)
