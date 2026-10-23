@@ -650,6 +650,7 @@ func _draw() -> void:
 		draw_rect(Rect2(tower.pos + Vector2(-20, -31), Vector2(40.0 * tower.hp / tower.max_hp, 3)), Color("7fffd4"))
 		if i == selected_tower_index:
 			draw_arc(tower.pos, 27.0, 0.0, TAU, 32, Color.WHITE, 2.0)
+			draw_arc(tower.pos, tower.range + tower_range_bonus, 0.0, TAU, 72, Color("80deff", 0.55), 1.5)
 	for enemy in enemies:
 		var color := Color("e46d75")
 		if enemy.kind == "runner": color = Color("f5ba69")
@@ -659,8 +660,18 @@ func _draw() -> void:
 		if enemy.kind == "boss": color = Color("ec5370")
 		draw_circle(enemy.pos, enemy.radius, color)
 		draw_rect(Rect2(enemy.pos + Vector2(-enemy.radius, -enemy.radius - 9.0), Vector2(enemy.radius * 2.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
+		if enemy.windup > 0.0:
+			draw_line(enemy.pos, enemy.aim, Color("ff7272", 0.7), 2.0)
+			draw_arc(enemy.aim, 18.0, 0.0, TAU, 24, Color("ff7272"), 2.0)
+		if enemy.kind == "boss":
+			draw_rect(Rect2(400, 676, 480, 26), Color("182b41"))
+			draw_rect(Rect2(408, 683, 464.0 * maxf(0.0, enemy.hp) / enemy.max_hp, 11), Color("ec5370"))
+			draw_string(ThemeDB.fallback_font, Vector2(400, 667), "BOSS - dodge the warning spread", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffd2a8"))
 	for bullet in bullets:
 		draw_circle(bullet.pos, bullet.radius, bullet.color)
+	for bullet in hostile_bullets:
+		draw_circle(bullet.pos, bullet.radius, Color("ff7777"))
+		draw_arc(bullet.pos, bullet.radius + 3.0, 0.0, TAU, 16, Color("ffd2a8"), 2.0)
 	for impact in impacts:
 		draw_arc(impact.pos, 9.0 + 40.0 * (0.2 - impact.time), 0.0, TAU, 16, impact.color, 2.0)
 	for item in hit_texts:
@@ -668,21 +679,32 @@ func _draw() -> void:
 		tint.a = clampf(item.time / 0.65, 0.0, 1.0)
 		draw_string(ThemeDB.fallback_font, item.pos, str(item.value), HORIZONTAL_ALIGNMENT_LEFT, -1, 17, tint)
 	draw_circle(player_pos, 17.0, Color("ffe074"))
+	if dodge_timer > 0.0:
+		draw_arc(player_pos, 23.0, 0.0, TAU, 24, Color("80deff"), 3.0)
 	draw_line(player_pos, player_pos + (get_global_mouse_position() - player_pos).normalized() * 27.0, Color.WHITE, 5.0)
 	draw_rect(Rect2(0, 0, 1280, 85), Color("182b41"))
 	var font := ThemeDB.fallback_font
 	draw_string(font, Vector2(25, 33), "FRONTLINE GUARDIAN", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color.WHITE)
-	draw_string(font, Vector2(25, 65), "WASD Move  |  Mouse Fire  |  1 Rapid $40  |  2 Cannon $65  |  Right Click Cancel", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("b6c8d7"))
+	draw_string(font, Vector2(25, 65), "WASD Move  |  Mouse Fire  |  F Dodge  |  1 Rapid $40  |  2 Cannon $55", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("b6c8d7"))
 	if selected_tower_index >= 0 and selected_tower_index < towers.size():
 		var selected := towers[selected_tower_index]
-		draw_string(font, Vector2(25, 118), "Tower Lv%d  HP %d/%d  Target %s  |  U Upgrade  H Repair  X Sell  P Priority" % [selected.level, ceili(selected.hp), ceili(selected.max_hp), selected.priority], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
+		var upgrade_cost: int = 30 * selected.level
+		var next_stats := "MAX LEVEL" if selected.level >= 3 else "U $%d: DMG %.0f -> %.0f  RNG %.0f -> %.0f" % [upgrade_cost, selected.damage, selected.damage * 1.35, selected.range + tower_range_bonus, selected.range + tower_range_bonus + 20.0]
+		draw_rect(Rect2(18, 91, 760, 65), Color("182b41", 0.9))
+		draw_string(font, Vector2(25, 117), "Tower Lv%d  HP %d/%d  Target %s | H Repair $15  X Sell  P Priority" % [selected.level, ceili(selected.hp), ceili(selected.max_hp), selected.priority], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
+		draw_string(font, Vector2(25, 142), next_stats, HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
 	draw_string(font, Vector2(825, 32), "Night %d/%d   Gold %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 	draw_string(font, Vector2(825, 62), "HP %d/%d   Core %d/%d" % [ceili(player_hp), ceili(max_player_hp), ceili(core_hp), ceili(max_core_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+	draw_string(font, Vector2(575, 65), "F Dodge %s" % ("READY" if dodge_cooldown <= 0.0 else "%.1fs" % dodge_cooldown), HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("80deff"))
 	draw_rect(Rect2(825, 73, 180.0 * maxf(0.0, player_hp) / max_player_hp, 5), Color("ffe074"))
 	draw_rect(Rect2(1020, 73, 180.0 * maxf(0.0, core_hp) / max_core_hp, 5), Color("638cff"))
 	if selected_tower > 0:
 		var mouse := get_global_mouse_position()
-		draw_arc(mouse, 21.0, 0.0, TAU, 36, Color("7fffd4") if can_build_at(mouse) else Color("ff7777"), 2.0)
+		var legal := can_build_at(mouse) and gold >= (40 if selected_tower == 1 else 55)
+		var tint := Color("7fffd4") if legal else Color("ff7777")
+		draw_arc(mouse, 21.0, 0.0, TAU, 36, tint, 2.0)
+		draw_arc(mouse, (180.0 if selected_tower == 1 else 225.0) + tower_range_bonus, 0.0, TAU, 72, Color(tint, 0.45), 1.5)
+		draw_string(font, mouse + Vector2(26, -20), "BUILD $%d" % (40 if selected_tower == 1 else 55) if legal else "BLOCKED / NO GOLD", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, tint)
 	var message := "SPACE: Start wave" if state == "ready" else ""
 	if state == "upgrade" and upgrade_choices.size() == 2:
 		draw_rect(Rect2(300, 470, 680, 200), Color("182b41"))
