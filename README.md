@@ -17,8 +17,8 @@ Godot 4.7 的 2D 即时战斗、塔防与 Roguelite 八夜防守 Demo，现加�
 
 ## 运行
 
-使用 Godot 4.7 或同系列稳定版导入 `project.godot`，按 F6/F5 运行。命令行可执行 `godot --headless --path . --editor --quit` 验证导入，再分别运行 `tests/smoke.gd`、`tests/hero_rpg.gd`、`tests/dungeon.gd`、`tests/playthrough.gd`、`tests/economy.gd` 和 `tests/performance.gd`，例如 `godot --headless --path . --script res://tests/dungeon.gd`。
+使用 Godot 4.7 或同系列稳定版导入 `project.godot`，按 F6/F5 运行。命令行可执行 `godot --headless --path . --editor --quit` 验证导入，再分别运行 `tests/smoke.gd`、`tests/hero_rpg.gd`、`tests/dungeon.gd`、`tests/phase4_full_run.gd`、`tests/playthrough.gd`、`tests/economy.gd` 和 `tests/performance.gd`，例如 `godot --headless --path . --script res://tests/dungeon.gd`。
 
 ## 验证边界
 
-冒烟测试检查夜次编排、敌人类型、建造绕路与封路保护、预警弹丸与闪避、炮塔管理和 20 种强化的属性变化。英雄测试检查实际伤害、减速、装备词条与三个特殊效果、经验升级及购买失败；副本测试用真实飞行弹丸击败小 Boss、拾取奖励并检查防重、返回后炮塔开火与第 3 夜启动。八夜通关与经济策略测试均从默认 100 金币开始，只使用实际击杀奖励；脚本会按固定位置自动建塔和选强化，不模拟人的瞄准、移动与操作时机。性能测试测量 headless 战斗逻辑，不代表图形帧率。图形启动可检查渲染器和主场景加载，但完整人手操作、技能手感、副本难度与经济平衡仍需试玩。
+冒烟测试检查夜次编排、敌人类型、建造绕路与封路保护、预警弹丸与闪避、炮塔管理和 20 种强化的属性变化。英雄测试检查八个技能的实际伤害、减速、装备词条与三个特殊效果、经验升级及购买失败；副本测试用真实飞行弹丸击败小 Boss、拾取奖励并检查防重、返回后炮塔开火与第 3 夜启动。连贯回归测试从默认金币依次完成两夜、副本和余下六夜，并检查核心被毁的失败判定。八夜通关与经济策略测试均从默认 100 金币开始，只使用实际击杀奖励；脚本会按固定位置自动建塔和选强化，副本测试会自动摆放英雄和瞄准 Boss，不模拟人的移动、操作时机与手感。性能测试测量 headless 战斗逻辑，不代表图形帧率。图形启动与截图可检查渲染器和场景布局，但完整人手操作、技能手感、副本难度与经济平衡仍需试玩。
