@@ -24,6 +24,8 @@ var hero_pos := Vector2(170, 375)
 var enemies: Array[Dictionary] = []
 var bullets: Array[Dictionary] = []
 var hostile_bullets: Array[Dictionary] = []
+## 怪物真实死亡后保留的短暂淡出帧，不再参与副本战斗。
+var death_frames: Array[Dictionary] = []
 var fire_timer := 0.0
 var reward_pos := Vector2.ZERO
 ## 只有 Boss 生命真实归零后才置位，防止提前领取。
@@ -59,6 +61,9 @@ func _process(delta: float) -> void:
 	if game == null: return
 	# 1. 仅推进副本内的英雄、怪物和弹丸，基地的波次与炮塔保持暂停。
 	game.hero.tick(delta)
+	for i in range(death_frames.size() - 1, -1, -1):
+		death_frames[i].time -= delta
+		if death_frames[i].time <= 0.0: death_frames.remove_at(i)
 	var move: Vector2 = game.movement_vector()
 	hero_pos = (hero_pos + move * game.hero.stats().speed * delta).clamp(ARENA.position + Vector2(15, 15), ARENA.end - Vector2(15, 15))
 	fire_timer = maxf(0.0, fire_timer - delta)
@@ -122,10 +127,12 @@ func damage_enemy(index: int, damage: float) -> void:
 	if index < 0 or index >= enemies.size(): return
 	var enemy := enemies[index]
 	enemy.hp -= damage * (0.75 if enemy.kind == "elite" else 1.0)
+	enemy.hit_time = 0.16
 	if enemy.hp > 0.0:
 		enemies[index] = enemy
 		return
 	enemies.remove_at(index)
+	death_frames.append({"pos": enemy.pos, "kind": enemy.kind, "time": 0.35})
 	game.kills += 1
 	game.gold += 8 if enemy.kind == "grunt" else 20 if enemy.kind == "elite" else 45
 	if game.hero.gain_xp(12 if enemy.kind == "grunt" else 28 if enemy.kind == "elite" else 60) > 0: game.sync_hero_stats()
@@ -139,6 +146,7 @@ func damage_enemy(index: int, damage: float) -> void:
 func update_enemies(delta: float) -> void:
 	for i in enemies.size():
 		var enemy := enemies[i]
+		enemy.hit_time = maxf(0.0, enemy.get("hit_time", 0.0) - delta)
 		enemy.attack_timer = maxf(0.0, enemy.attack_timer - delta)
 		enemy.slow_time = maxf(0.0, enemy.slow_time - delta)
 		if enemy.windup > 0.0:
@@ -203,9 +211,14 @@ func _draw() -> void:
 		# 普通怪、精英与首领共用同一画风；蓄力时用颜色反馈区分攻击阶段。
 		var art: Texture2D = GOBLIN if enemy.kind == "grunt" else GOBLIN_ELITE if enemy.kind == "elite" else GOBLIN_BOSS
 		var bob := sin(Time.get_ticks_msec() * 0.009 + enemy.pos.x) * 2.0
-		draw_texture_rect(art, Rect2(enemy.pos + Vector2(-radius, -radius + bob), Vector2(radius * 2.0, radius * 2.0)), false, Color.WHITE if enemy.windup <= 0.0 else color)
+		draw_texture_rect(art, Rect2(enemy.pos + Vector2(-radius, -radius + bob), Vector2(radius * 2.0, radius * 2.0)), false, Color("ff8e8e") if enemy.get("hit_time", 0.0) > 0.0 else Color.WHITE if enemy.windup <= 0.0 else color)
 		draw_rect(Rect2(enemy.pos + Vector2(-radius, -radius - 11), Vector2(radius * 2.0 * enemy.hp / enemy.max_hp, 5)), Color("ffe074"))
 		if enemy.windup > 0.0: draw_line(enemy.pos, enemy.aim, Color("ff7777"), 2.0)
+	# 死亡帧与真实敌人数组隔离，奖励仍只由实际击杀路径发放一次。
+	for frame in death_frames:
+		var art: Texture2D = GOBLIN if frame.kind == "grunt" else GOBLIN_ELITE if frame.kind == "elite" else GOBLIN_BOSS
+		var size: float = 42.0 * frame.time / 0.35
+		draw_texture_rect(art, Rect2(frame.pos - Vector2(size, size) / 2.0, Vector2(size, size)), false, Color(1, 1, 1, frame.time / 0.35))
 	for bullet in bullets: draw_circle(bullet.pos, 6.0, Color("ffe074"))
 	for bullet in hostile_bullets: draw_circle(bullet.pos, 8.0, Color("ff7777"))
 	draw_texture_rect(HERO_MAGE if game.hero.hero_id == "frost_mage" else HERO_WARRIOR, Rect2(hero_pos - Vector2(22, 22), Vector2(44, 44)), false)

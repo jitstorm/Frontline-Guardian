@@ -59,6 +59,8 @@ var bullets: Array[Dictionary] = []
 var hostile_bullets: Array[Dictionary] = []
 var hit_texts: Array[Dictionary] = []
 var impacts: Array[Dictionary] = []
+## 敌人死亡后的短暂残影，不参与碰撞与奖励结算。
+var death_frames: Array[Dictionary] = []
 var spawn_left := 0
 var spawned_this_wave := 0
 var spawn_timer := 0.0
@@ -274,12 +276,14 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 		var dealt: float = damage * (0.65 if enemy.kind == "armored" else 1.0)
 		if hero.has_effect("rage_chain") and hero.hero_id == "berserker" and index == 2: dealt *= 1.45
 		enemy.hp -= dealt
+		enemy.hit_time = 0.16
 		enemy.pos += (enemy.pos - center).normalized() * (38.0 if hero.hero_id == "berserker" else 8.0)
 		if hero.hero_id == "frost_mage":
 			enemy.slow_time = 2.5 if index != 3 else 4.0
 			enemy.slow_factor = 0.45
 		add_damage_text(enemy.pos, dealt, Color("80deff") if hero.hero_id == "frost_mage" else Color("ffbd7a"))
 		if enemy.hp <= 0.0:
+			death_frames.append({"pos": enemy.pos, "kind": enemy.kind, "time": 0.35})
 			enemies.remove_at(i)
 			reward_enemy(enemy)
 		else: enemies[i] = enemy
@@ -720,10 +724,12 @@ func update_bullets(delta: float) -> void:
 			# 重甲减伤在命中结算时统一应用，避免玩家枪械和炮塔攻击语义不一致。
 			var dealt: float = bullet.damage * (maxf(0.55, armor_penetration) if enemy.kind == "armored" else 1.0) * (boss_bonus if enemy.kind == "boss" else 1.0)
 			enemy.hp -= dealt
+			enemy.hit_time = 0.16
 			enemy.pos -= bullet.velocity.normalized() * bullet.knockback
 			add_damage_text(enemy.pos, dealt, Color("ffe074"))
 			impacts.append({"pos": bullet.pos, "time": 0.2, "color": bullet.color})
 			if enemy.hp <= 0.0:
+				death_frames.append({"pos": enemy.pos, "kind": enemy.kind, "time": 0.35})
 				enemies.remove_at(hit)
 				reward_enemy(enemy)
 			else:
@@ -744,6 +750,12 @@ func add_damage_text(pos: Vector2, amount: float, color: Color) -> void:
 ## 逐帧消退枪口闪光、命中光圈和飘字，避免特效无限累积。
 ## @param delta 本帧经过的秒数。
 func update_feedback(delta: float) -> void:
+	# 残影与真实敌人分开推进，避免视觉死亡帧重复触发奖励。
+	for i in range(death_frames.size() - 1, -1, -1):
+		death_frames[i].time -= delta
+		if death_frames[i].time <= 0.0: death_frames.remove_at(i)
+	for enemy in enemies:
+		enemy.hit_time = maxf(0.0, enemy.get("hit_time", 0.0) - delta)
 	for i in range(hit_texts.size() - 1, -1, -1):
 		hit_texts[i].time -= delta
 		hit_texts[i].pos.y -= 36.0 * delta
@@ -983,7 +995,7 @@ func _draw() -> void:
 			"elite": art = ENEMY_ELITE
 			"boss": art = ENEMY_BOSS
 		# 受击时短暂发亮，蓄力时用原有预警线表示攻击状态。
-		draw_unit(art, enemy.pos, enemy.radius * 2.4, Color.WHITE if enemy.windup <= 0.0 else color)
+		draw_unit(art, enemy.pos, enemy.radius * 2.4, Color("ff8e8e") if enemy.get("hit_time", 0.0) > 0.0 else Color.WHITE if enemy.windup <= 0.0 else color)
 		draw_rect(Rect2(enemy.pos + Vector2(-enemy.radius, -enemy.radius - 9.0), Vector2(enemy.radius * 2.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
 		if enemy.windup > 0.0:
 			draw_line(enemy.pos, enemy.aim, Color("ff7272", 0.7), 2.0)
@@ -992,6 +1004,11 @@ func _draw() -> void:
 			draw_rect(Rect2(400, 676, 480, 26), Color("182b41"))
 			draw_rect(Rect2(408, 683, 464.0 * maxf(0.0, enemy.hp) / enemy.max_hp, 11), Color("ec5370"))
 			draw_string(UI_FONT, Vector2(400, 667), "首领：躲开预警范围", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffd2a8"))
+	# 敌人移出战斗数组后缩小淡出，表示死亡且不会继续受击。
+	for frame in death_frames:
+		var art: Texture2D = ENEMY_BOSS if frame.kind == "boss" else ENEMY_ELITE if frame.kind == "elite" else ENEMY_GRUNT
+		var size: float = 45.0 * frame.time / 0.35
+		draw_texture_rect(art, Rect2(frame.pos - Vector2(size, size) / 2.0, Vector2(size, size)), false, Color(1, 1, 1, frame.time / 0.35))
 	for bullet in bullets:
 		draw_circle(bullet.pos, bullet.radius, bullet.color)
 	for bullet in hostile_bullets:
