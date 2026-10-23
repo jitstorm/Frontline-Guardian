@@ -1,11 +1,11 @@
 extends Node2D
-## 管理三波守卫战的角色、道路敌人、炮塔和波间强化；核心被毁或角色阵亡时结束本局。
+## 管理八夜守卫战的角色、道路敌人、炮塔和波间强化；核心被毁或角色阵亡时结束本局。
 
 const PATH: Array[Vector2] = [Vector2(-30, 350), Vector2(230, 350), Vector2(230, 520), Vector2(550, 520), Vector2(550, 250), Vector2(880, 250), Vector2(880, 350), Vector2(1190, 350)]
 const CORE_POS := Vector2(1190, 350)
 const PLAYER_SPEED := 255.0
 const BULLET_SPEED := 650.0
-const MAX_WAVES := 3
+const MAX_WAVES := 8
 const BG := Color("101a29")
 const ROAD := Color("34475a")
 
@@ -23,6 +23,7 @@ var enemies: Array[Dictionary] = []
 var towers: Array[Dictionary] = []
 var bullets: Array[Dictionary] = []
 var spawn_left := 0
+var spawned_this_wave := 0
 var spawn_timer := 0.0
 var fire_timer := 0.0
 var selected_tower := 0
@@ -94,12 +95,30 @@ func move_player(delta: float) -> void:
 func wave_enemy_count(number: int) -> int:
 	return 4 + number * 2
 
+## 根据夜次和生成顺序安排敌人类型；第 4 夜的精英和第 8 夜的 Boss 固定在最后登场。
+## @param night 当前夜次，从 1 开始。
+## @param index 当前夜已生成的敌人数量，从 0 开始。
+## @return 用于生成属性和攻击行为的敌人类型。
+func enemy_kind_for(night: int, index: int) -> String:
+	if night == 8 and index == wave_enemy_count(night) - 1:
+		return "boss"
+	if night == 4 and index == wave_enemy_count(night) - 1:
+		return "elite"
+	if night >= 5 and index % 5 == 3:
+		return "ranged"
+	if night >= 3 and index % 4 == 2:
+		return "armored"
+	if night >= 2 and index % 3 == 1:
+		return "runner"
+	return "grunt"
+
 ## 开始下一波并重置生成计时；只有准备状态能开波。
 func start_wave() -> void:
 	if state != "ready" or wave >= MAX_WAVES:
 		return
 	wave += 1
 	spawn_left = wave_enemy_count(wave)
+	spawned_this_wave = 0
 	spawn_timer = 0.0
 	state = "fighting"
 
@@ -110,9 +129,38 @@ func update_spawning(delta: float) -> void:
 		return
 	spawn_timer -= delta
 	if spawn_timer <= 0.0:
+		# 类型按夜次逐步解锁，精英和 Boss 只在对应事件夜出现。
+		var kind := enemy_kind_for(wave, spawned_this_wave)
 		var hp := 34.0 + wave * 14.0
-		enemies.append({"pos": PATH[0], "segment": 1, "hp": hp, "max_hp": hp, "speed": 65.0 + wave * 12.0, "attack_timer": 0.0})
+		var speed := 65.0 + wave * 12.0
+		var radius := 17.0
+		var reward := 12
+		if kind == "runner":
+			hp *= 0.65
+			speed *= 1.55
+			radius = 14.0
+			reward = 15
+		elif kind == "armored":
+			hp *= 1.7
+			speed *= 0.7
+			radius = 20.0
+			reward = 22
+		elif kind == "ranged":
+			hp *= 0.8
+			reward = 20
+		elif kind == "elite":
+			hp *= 5.0
+			speed *= 0.7
+			radius = 25.0
+			reward = 60
+		elif kind == "boss":
+			hp *= 13.0
+			speed *= 0.48
+			radius = 35.0
+			reward = 200
+		enemies.append({"pos": PATH[0], "segment": 1, "hp": hp, "max_hp": hp, "speed": speed, "attack_timer": 0.0, "kind": kind, "radius": radius, "reward": reward})
 		spawn_left -= 1
+		spawned_this_wave += 1
 		spawn_timer = 1.15
 
 ## 沿折线推进敌人；靠近玩家时先攻击玩家，抵达核心后持续攻击核心。
@@ -122,13 +170,17 @@ func update_enemies(delta: float) -> void:
 		var enemy := enemies[i]
 		var pos: Vector2 = enemy.pos
 		var timer: float = maxf(0.0, enemy.attack_timer - delta)
-		if pos.distance_to(player_pos) < 30.0:
+		if enemy.kind == "ranged" and pos.distance_to(player_pos) < 180.0:
 			if timer <= 0.0:
-				player_hp -= 9.0
+				player_hp -= 6.0
+				timer = 1.35
+		elif pos.distance_to(player_pos) < enemy.radius + 15.0:
+			if timer <= 0.0:
+				player_hp -= 18.0 if enemy.kind == "boss" else 9.0
 				timer = 0.9
 		elif enemy.segment >= PATH.size():
 			if timer <= 0.0:
-				core_hp -= 11.0
+				core_hp -= 30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0
 				timer = 1.0
 		else:
 			var remaining: float = enemy.speed * delta
@@ -189,15 +241,16 @@ func update_bullets(delta: float) -> void:
 		bullet.life -= delta
 		var hit := -1
 		for j in enemies.size():
-			if bullet.pos.distance_to(enemies[j].pos) < 17.0 + bullet.radius:
+			if bullet.pos.distance_to(enemies[j].pos) < enemies[j].radius + bullet.radius:
 				hit = j
 				break
 		if hit >= 0:
 			var enemy := enemies[hit]
-			enemy.hp -= bullet.damage
+			# 重甲减伤在命中结算时统一应用，避免玩家枪械和炮塔攻击语义不一致。
+			enemy.hp -= bullet.damage * (0.55 if enemy.kind == "armored" else 1.0)
 			if enemy.hp <= 0.0:
 				enemies.remove_at(hit)
-				gold += 12
+				gold += enemy.reward
 			else:
 				enemies[hit] = enemy
 			bullets.remove_at(i)
@@ -270,8 +323,14 @@ func _draw() -> void:
 		draw_circle(tower.pos, 21.0, Color("247e79") if tower.kind == 1 else Color("995642"))
 		draw_circle(tower.pos, 12.0, Color("7fffd4") if tower.kind == 1 else Color("ff9b71"))
 	for enemy in enemies:
-		draw_circle(enemy.pos, 17.0, Color("e46d75"))
-		draw_rect(Rect2(enemy.pos + Vector2(-17, -25), Vector2(34.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
+		var color := Color("e46d75")
+		if enemy.kind == "runner": color = Color("f5ba69")
+		if enemy.kind == "armored": color = Color("779cae")
+		if enemy.kind == "ranged": color = Color("c98bbb")
+		if enemy.kind == "elite": color = Color("ae79e9")
+		if enemy.kind == "boss": color = Color("ec5370")
+		draw_circle(enemy.pos, enemy.radius, color)
+		draw_rect(Rect2(enemy.pos + Vector2(-enemy.radius, -enemy.radius - 9.0), Vector2(enemy.radius * 2.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
 	for bullet in bullets:
 		draw_circle(bullet.pos, bullet.radius, bullet.color)
 	draw_circle(player_pos, 17.0, Color("ffe074"))
@@ -280,14 +339,14 @@ func _draw() -> void:
 	var font := ThemeDB.fallback_font
 	draw_string(font, Vector2(25, 33), "FRONTLINE GUARDIAN", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color.WHITE)
 	draw_string(font, Vector2(25, 65), "WASD Move  |  Mouse Fire  |  1 Rapid $40  |  2 Cannon $65  |  Right Click Cancel", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("b6c8d7"))
-	draw_string(font, Vector2(825, 32), "Wave %d/%d   Gold %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
+	draw_string(font, Vector2(825, 32), "Night %d/%d   Gold %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 	draw_string(font, Vector2(825, 62), "HP %d/%d   Core %d/%d" % [ceili(player_hp), ceili(max_player_hp), ceili(core_hp), ceili(max_core_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 	if selected_tower > 0:
 		var mouse := get_global_mouse_position()
 		draw_arc(mouse, 21.0, 0.0, TAU, 36, Color("7fffd4") if can_build_at(mouse) else Color("ff7777"), 2.0)
 	var message := "SPACE: Start wave" if state == "ready" else ""
 	if state == "upgrade": message = "Choose upgrade: Q  %s      E  %s" % upgrade_choices
-	if state == "won": message = "VICTORY!  Three waves cleared.  Press R to restart"
+	if state == "won": message = "VICTORY!  Eight nights survived.  Press R to restart"
 	if state == "lost": message = "DEFEAT!  Press R to restart"
 	if message != "":
 		draw_rect(Rect2(240, 635, 800, 55), Color("253e59"))
