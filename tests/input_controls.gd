@@ -70,6 +70,25 @@ func _initialize() -> void:
 		if choice == KEY_2: assert(game.hero.cooldowns[0] == 0.0)
 		if choice == KEY_3: assert(game.combat_builds.familiars.size() == 2)
 		game.free()
+	var evolved: Node2D = load("res://scripts/game.gd").new()
+	root.add_child(evolved)
+	await process_frame
+	evolved.set_process(false)
+	await press_key(KEY_1)
+	evolved.wave = 2
+	evolved.state = "upgrade"
+	await press_key(KEY_V)
+	assert(evolved.evolution_open)
+	await press_key(KEY_2)
+	assert(evolved.hero.evolution == "nova" and not evolved.evolution_open)
+	evolved.state = "ready"
+	await press_key(KEY_B)
+	await press_key(KEY_T)
+	assert(evolved.gold == 50 and evolved.hero.inventory_affixes.size() == 1)
+	await press_key(KEY_T)
+	assert(evolved.gold == 50 and evolved.hero.inventory.size() == 1)
+	await press_key(KEY_B)
+	evolved.free()
 	print("input_controls=PASS 双英雄 面板 方向键 空格 鼠标普攻 QWER 闪避")
 	quit(0)
 

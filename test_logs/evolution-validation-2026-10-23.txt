@@ -1,0 +1,347 @@
+【import out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started 项目初始化 (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | 正在扫描文件结构……[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | 正在加载全局类名……[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | 正在校验 GDExtension……[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | 正在创建自动加载脚本……[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | 正在初始化插件……[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | 正在启动文件扫描……[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started 正在注册全局类…… (11 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started 正在扫描动作…… (12 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | balance_combat.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | boss_break.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | boss_guard.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | build_passive.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | build_selection.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | build_summon.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | defeat.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | goblin_camp.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | hero_selection.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | inventory.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | shop.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | victory.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started 正在导入或重新导入资产 (12 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[   7% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  15% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  23% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  30% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  38% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  46% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  53% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  61% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  69% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  76% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[  84% ] [90m[1mreimport[22m | 正在准备重新导入文件……[39m[0m
+[   0% ] [90m[1mreimport[22m | 正在执行重新导入的前置操作……[39m[0m
+[   0% ] [90m[1mreimport[22m | balance_combat.png[39m[0m
+[   7% ] [90m[1mreimport[22m | boss_break.png[39m[0m
+[  15% ] [90m[1mreimport[22m | boss_guard.png[39m[0m
+[  23% ] [90m[1mreimport[22m | build_passive.png[39m[0m
+[  30% ] [90m[1mreimport[22m | build_selection.png[39m[0m
+[  38% ] [90m[1mreimport[22m | build_summon.png[39m[0m
+[  46% ] [90m[1mreimport[22m | defeat.png[39m[0m
+[  53% ] [90m[1mreimport[22m | goblin_camp.png[39m[0m
+[  61% ] [90m[1mreimport[22m | hero_selection.png[39m[0m
+[  69% ] [90m[1mreimport[22m | inventory.png[39m[0m
+[  76% ] [90m[1mreimport[22m | shop.png[39m[0m
+[  84% ] [90m[1mreimport[22m | victory.png[39m[0m
+[  92% ] [90m[1mreimport[22m | 正在结束资产导入……[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started 正在导入或重新导入资产 (12 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | 正在执行重新导入的后置操作……[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started 正在加载编辑器 (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | 正在加载编辑器布局……[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | 正在加载停靠面板……[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+
+【import err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【smoke out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+【smoke err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【economy out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+strategy=rapid/attack result=lost night=2 kills=25 towers=4 gold=19 core_hp=-1.0 ticks=802
+strategy=rapid/defense result=lost night=2 kills=19 towers=3 gold=38 core_hp=-1.0 ticks=601
+strategy=cannon/attack result=lost night=8 kills=289 towers=5 gold=126 core_hp=-1.0 ticks=5964
+strategy=cannon/defense result=lost night=7 kills=212 towers=5 gold=47 core_hp=-4.0 ticks=5808
+
+【economy err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【hero_rpg out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+hero_rpg=PASS skills=2 damage_and_slow xp_level=3 gold=68
+
+【hero_rpg err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【dungeon out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+dungeon=PASS boss_damage=real gold=105 tower_resumed=1
+
+【dungeon err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【playthrough out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+normal_playthrough=won night=8 kills=290 gold=598 core_hp=120.0 ticks=2727
+
+【playthrough err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【phase4_full_run out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+phase4_full_run=PASS night=8 kills=295 core_hp=120.0 ticks=2775
+
+【phase4_full_run err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【balance_mechanics out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+wave_budget night=1 count=10 hp=440.0 gold=30 spawn_seconds=4.85
+wave_budget night=2 count=16 hp=826.5 gold=53 spawn_seconds=7.95
+wave_budget night=3 count=24 hp=1879.2 gold=96 spawn_seconds=11.40
+wave_budget night=4 count=32 hp=3336.8 gold=150 spawn_seconds=14.40
+wave_budget night=5 count=40 hp=4120.0 gold=168 spawn_seconds=16.85
+wave_budget night=6 count=48 hp=5705.7 gold=201 spawn_seconds=17.60
+wave_budget night=7 count=56 hp=7424.0 gold=238 spawn_seconds=19.05
+wave_budget night=8 count=64 hp=12091.3 gold=335 spawn_seconds=20.60
+balance_mechanics=PASS 武器取舍 护甲递减 赏金上限 重炮穿甲与溅射
+
+【balance_mechanics err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【input_controls out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+input_controls=PASS 双英雄 面板 方向键 空格 鼠标普攻 QWER 闪避
+
+【input_controls err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【balance_matrix out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+balance_case form= build=skill hero=berserker plan=hero seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=25950 tower_damage=9874
+balance_case form= build=skill hero=berserker plan=hero seed=7 active=true skills=false camp=false/false result=lost night=3 core=-4.0 hero_damage=1990 tower_damage=809
+balance_case form= build=skill hero=berserker plan=hero seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=25205 tower_damage=10619
+balance_case form= build=skill hero=berserker plan=hero seed=23 active=true skills=false camp=false/false result=lost night=4 core=-8.9 hero_damage=3669 tower_damage=1122
+balance_case form= build=skill hero=berserker plan=hero seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=26507 tower_damage=9317
+balance_case form= build=skill hero=berserker plan=hero seed=91 active=true skills=false camp=false/false result=lost night=3 core=-1.0 hero_damage=1926 tower_damage=809
+balance_case form= build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=22758 tower_damage=13065
+balance_case form= build=skill hero=berserker plan=mixed seed=7 active=true skills=false camp=false/false result=lost night=4 core=52.6 hero_damage=2630 tower_damage=3765
+balance_case form= build=skill hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=21372 tower_damage=14452
+balance_case form= build=skill hero=berserker plan=mixed seed=23 active=true skills=false camp=false/false result=lost night=4 core=27.6 hero_damage=2630 tower_damage=3765
+balance_case form= build=skill hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=22166 tower_damage=13657
+balance_case form= build=skill hero=berserker plan=mixed seed=91 active=true skills=false camp=false/false result=lost night=4 core=-8.0 hero_damage=2422 tower_damage=3725
+balance_case form= build=skill hero=berserker plan=towers seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=17462 tower_damage=18362
+balance_case form= build=skill hero=berserker plan=towers seed=7 active=true skills=false camp=false/false result=lost night=4 core=0.0 hero_damage=1805 tower_damage=4343
+balance_case form= build=skill hero=berserker plan=towers seed=23 active=true skills=true camp=false/false result=won night=8 core=185.0 hero_damage=18836 tower_damage=16988
+balance_case form= build=skill hero=berserker plan=towers seed=23 active=true skills=false camp=false/false result=lost night=4 core=13.7 hero_damage=2066 tower_damage=4293
+balance_case form= build=skill hero=berserker plan=towers seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=16475 tower_damage=19349
+balance_case form= build=skill hero=berserker plan=towers seed=91 active=true skills=false camp=false/false result=lost night=4 core=-8.0 hero_damage=1776 tower_damage=4360
+balance_case form= build=skill hero=berserker plan=mixed seed=7 active=false skills=true camp=false/false result=lost night=2 core=-1.0 hero_damage=0 tower_damage=1168
+balance_case form= build=skill hero=berserker plan=mixed seed=23 active=false skills=true camp=false/false result=lost night=2 core=-7.0 hero_damage=0 tower_damage=1168
+balance_case form= build=skill hero=berserker plan=mixed seed=91 active=false skills=true camp=false/false result=lost night=2 core=-1.0 hero_damage=0 tower_damage=1168
+balance_case form= build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=25378 tower_damage=10446
+balance_case form= build=skill hero=berserker plan=mixed seed=23 active=true skills=true camp=true/true result=won night=8 core=155.0 hero_damage=23088 tower_damage=12735
+balance_case form= build=skill hero=frost_mage plan=hero seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=25381 tower_damage=10442
+balance_case form= build=skill hero=frost_mage plan=hero seed=7 active=true skills=false camp=false/false result=lost night=3 core=-4.0 hero_damage=1981 tower_damage=809
+balance_case form= build=skill hero=frost_mage plan=hero seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=25639 tower_damage=10184
+balance_case form= build=skill hero=frost_mage plan=hero seed=23 active=true skills=false camp=false/false result=lost night=3 core=-7.0 hero_damage=2011 tower_damage=809
+balance_case form= build=skill hero=frost_mage plan=hero seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=23036 tower_damage=12788
+balance_case form= build=skill hero=frost_mage plan=hero seed=91 active=true skills=false camp=false/false result=lost night=3 core=-1.0 hero_damage=1938 tower_damage=809
+balance_case form= build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=24583 tower_damage=11240
+balance_case form= build=skill hero=frost_mage plan=mixed seed=7 active=true skills=false camp=false/false result=lost night=4 core=52.6 hero_damage=2380 tower_damage=3998
+balance_case form= build=skill hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=21434 tower_damage=14389
+balance_case form= build=skill hero=frost_mage plan=mixed seed=23 active=true skills=false camp=false/false result=lost night=4 core=27.6 hero_damage=2380 tower_damage=3998
+balance_case form= build=skill hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=25044 tower_damage=10780
+balance_case form= build=skill hero=frost_mage plan=mixed seed=91 active=true skills=false camp=false/false result=lost night=4 core=8.0 hero_damage=2351 tower_damage=4018
+balance_case form= build=skill hero=frost_mage plan=towers seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=17017 tower_damage=18807
+balance_case form= build=skill hero=frost_mage plan=towers seed=7 active=true skills=false camp=false/false result=lost night=4 core=-11.0 hero_damage=1642 tower_damage=4500
+balance_case form= build=skill hero=frost_mage plan=towers seed=23 active=true skills=true camp=false/false result=won night=8 core=185.0 hero_damage=16534 tower_damage=19289
+balance_case form= build=skill hero=frost_mage plan=towers seed=23 active=true skills=false camp=false/false result=lost night=4 core=13.7 hero_damage=1827 tower_damage=4518
+balance_case form= build=skill hero=frost_mage plan=towers seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=16037 tower_damage=19787
+balance_case form= build=skill hero=frost_mage plan=towers seed=91 active=true skills=false camp=false/false result=lost night=4 core=-8.0 hero_damage=1720 tower_damage=4409
+balance_case form= build=skill hero=frost_mage plan=mixed seed=7 active=false skills=true camp=false/false result=lost night=2 core=-1.0 hero_damage=0 tower_damage=1168
+balance_case form= build=skill hero=frost_mage plan=mixed seed=23 active=false skills=true camp=false/false result=lost night=2 core=-7.0 hero_damage=0 tower_damage=1168
+balance_case form= build=skill hero=frost_mage plan=mixed seed=91 active=false skills=true camp=false/false result=lost night=2 core=-1.0 hero_damage=0 tower_damage=1168
+balance_case form= build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=24803 tower_damage=11021
+balance_case form= build=skill hero=frost_mage plan=mixed seed=23 active=true skills=true camp=true/true result=won night=8 core=155.0 hero_damage=21177 tower_damage=14646
+balance_matrix=COMPLETE cases=46
+
+【balance_matrix err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【build_mechanics out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+build_mechanics=PASS 三连真实命中 破甲回血 升级同步 空枪失效 幻影碰撞 集火 寿命 地图隔离 中文字形
+
+【build_mechanics err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【build_matrix out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+balance_case form= build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=22758 tower_damage=13065
+balance_case form= build=skill hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=21372 tower_damage=14452
+balance_case form= build=skill hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=22166 tower_damage=13657
+balance_case form= build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=24583 tower_damage=11240
+balance_case form= build=skill hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=21434 tower_damage=14389
+balance_case form= build=skill hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=25044 tower_damage=10780
+balance_case form= build=passive hero=berserker plan=mixed seed=7 active=true skills=false camp=false/false result=won night=8 core=150.0 hero_damage=31012 tower_damage=4812
+balance_case form= build=passive hero=berserker plan=mixed seed=23 active=true skills=false camp=false/false result=won night=8 core=155.0 hero_damage=29336 tower_damage=6488
+balance_case form= build=passive hero=berserker plan=mixed seed=91 active=true skills=false camp=false/false result=won night=8 core=120.0 hero_damage=31312 tower_damage=4511
+balance_case form= build=passive hero=berserker plan=mixed seed=7 active=true skills=false camp=true/true result=won night=8 core=150.0 hero_damage=31871 tower_damage=3953
+balance_case form= build=passive hero=frost_mage plan=mixed seed=7 active=true skills=false camp=false/false result=won night=8 core=150.0 hero_damage=29861 tower_damage=5962
+balance_case form= build=passive hero=frost_mage plan=mixed seed=23 active=true skills=false camp=false/false result=won night=8 core=155.0 hero_damage=27560 tower_damage=8263
+balance_case form= build=passive hero=frost_mage plan=mixed seed=91 active=true skills=false camp=false/false result=won night=8 core=120.0 hero_damage=29342 tower_damage=6481
+balance_case form= build=passive hero=frost_mage plan=mixed seed=7 active=true skills=false camp=true/true result=won night=8 core=150.0 hero_damage=29346 tower_damage=6477
+balance_case form= build=summon hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=1837 tower_damage=7703
+balance_case form= build=summon hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=1631 tower_damage=8478
+balance_case form= build=summon hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=1600 tower_damage=7163
+balance_case form= build=summon hero=berserker plan=mixed seed=7 active=true skills=false camp=false/false result=lost night=3 core=-4.0 hero_damage=477 tower_damage=2349
+balance_case form= build=summon hero=berserker plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=1774 tower_damage=6861
+balance_case form= build=summon hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=4931 tower_damage=6408
+balance_case form= build=summon hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=3997 tower_damage=7143
+balance_case form= build=summon hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=4651 tower_damage=6852
+balance_case form= build=summon hero=frost_mage plan=mixed seed=7 active=true skills=false camp=false/false result=lost night=4 core=52.6 hero_damage=2137 tower_damage=4171
+balance_case form= build=summon hero=frost_mage plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=5318 tower_damage=6011
+build_matrix=COMPLETE cases=24 failures=0
+
+【build_matrix err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【evolution_mechanics out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+evolution_mechanics=PASS 词缀交换出售 六种词缀 六种形态 预警锁定 躲避 破甲打断 架盾
+
+【evolution_mechanics err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【evolution_matrix out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+balance_case form=echo build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=26367 tower_damage=9456
+balance_case form=echo build=skill hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=21515 tower_damage=14308
+balance_case form=echo build=skill hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=25640 tower_damage=10184
+balance_case form=echo build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=25261 tower_damage=10563
+balance_case form=echo build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=25007 tower_damage=10817
+balance_case form=echo build=skill hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=21201 tower_damage=14622
+balance_case form=echo build=skill hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=20663 tower_damage=15160
+balance_case form=echo build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=25389 tower_damage=10435
+balance_case form=nova build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=26864 tower_damage=8960
+balance_case form=nova build=skill hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=24097 tower_damage=11727
+balance_case form=nova build=skill hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=26081 tower_damage=9743
+balance_case form=nova build=skill hero=berserker plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=26989 tower_damage=8835
+balance_case form=nova build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=24256 tower_damage=11568
+balance_case form=nova build=skill hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=22421 tower_damage=13403
+balance_case form=nova build=skill hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=24249 tower_damage=11574
+balance_case form=nova build=skill hero=frost_mage plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=25391 tower_damage=10432
+balance_case form=chain build=passive hero=berserker plan=mixed seed=7 active=true skills=false camp=false/false result=won night=8 core=150.0 hero_damage=30019 tower_damage=5805
+balance_case form=chain build=passive hero=berserker plan=mixed seed=23 active=true skills=false camp=false/false result=won night=8 core=155.0 hero_damage=27703 tower_damage=8120
+balance_case form=chain build=passive hero=berserker plan=mixed seed=91 active=true skills=false camp=false/false result=won night=8 core=120.0 hero_damage=30208 tower_damage=5616
+balance_case form=chain build=passive hero=berserker plan=mixed seed=7 active=true skills=false camp=true/true result=won night=8 core=150.0 hero_damage=30454 tower_damage=5369
+balance_case form=chain build=passive hero=frost_mage plan=mixed seed=7 active=true skills=false camp=false/false result=won night=8 core=150.0 hero_damage=27851 tower_damage=7972
+balance_case form=chain build=passive hero=frost_mage plan=mixed seed=23 active=true skills=false camp=false/false result=won night=8 core=155.0 hero_damage=25920 tower_damage=9903
+balance_case form=chain build=passive hero=frost_mage plan=mixed seed=91 active=true skills=false camp=false/false result=won night=8 core=120.0 hero_damage=27775 tower_damage=8049
+balance_case form=chain build=passive hero=frost_mage plan=mixed seed=7 active=true skills=false camp=true/true result=won night=8 core=150.0 hero_damage=27661 tower_damage=8162
+balance_case form=reaper build=passive hero=berserker plan=mixed seed=7 active=true skills=false camp=false/false result=won night=8 core=150.0 hero_damage=32321 tower_damage=3503
+balance_case form=reaper build=passive hero=berserker plan=mixed seed=23 active=true skills=false camp=false/false result=won night=8 core=155.0 hero_damage=30291 tower_damage=5533
+balance_case form=reaper build=passive hero=berserker plan=mixed seed=91 active=true skills=false camp=false/false result=won night=8 core=120.0 hero_damage=32015 tower_damage=3808
+balance_case form=reaper build=passive hero=berserker plan=mixed seed=7 active=true skills=false camp=true/true result=won night=8 core=150.0 hero_damage=32514 tower_damage=3309
+balance_case form=reaper build=passive hero=frost_mage plan=mixed seed=7 active=true skills=false camp=false/false result=won night=8 core=150.0 hero_damage=30525 tower_damage=5299
+balance_case form=reaper build=passive hero=frost_mage plan=mixed seed=23 active=true skills=false camp=false/false result=won night=8 core=155.0 hero_damage=28867 tower_damage=6956
+balance_case form=reaper build=passive hero=frost_mage plan=mixed seed=91 active=true skills=false camp=false/false result=won night=8 core=120.0 hero_damage=30690 tower_damage=5134
+balance_case form=reaper build=passive hero=frost_mage plan=mixed seed=7 active=true skills=false camp=true/true result=won night=8 core=150.0 hero_damage=30414 tower_damage=5409
+balance_case form=hunter build=summon hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=1996 tower_damage=10127
+balance_case form=hunter build=summon hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=1967 tower_damage=11479
+balance_case form=hunter build=summon hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=2558 tower_damage=10598
+balance_case form=hunter build=summon hero=berserker plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=3306 tower_damage=9270
+balance_case form=hunter build=summon hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=6166 tower_damage=8602
+balance_case form=hunter build=summon hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=5171 tower_damage=9805
+balance_case form=hunter build=summon hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=6163 tower_damage=8973
+balance_case form=hunter build=summon hero=frost_mage plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=6873 tower_damage=8476
+balance_case form=sacrifice build=summon hero=berserker plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=1974 tower_damage=6139
+balance_case form=sacrifice build=summon hero=berserker plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=1499 tower_damage=7644
+balance_case form=sacrifice build=summon hero=berserker plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=1601 tower_damage=7434
+balance_case form=sacrifice build=summon hero=berserker plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=2048 tower_damage=6254
+balance_case form=sacrifice build=summon hero=frost_mage plan=mixed seed=7 active=true skills=true camp=false/false result=won night=8 core=150.0 hero_damage=4917 tower_damage=5849
+balance_case form=sacrifice build=summon hero=frost_mage plan=mixed seed=23 active=true skills=true camp=false/false result=won night=8 core=155.0 hero_damage=3839 tower_damage=6066
+balance_case form=sacrifice build=summon hero=frost_mage plan=mixed seed=91 active=true skills=true camp=false/false result=won night=8 core=120.0 hero_damage=4832 tower_damage=6222
+balance_case form=sacrifice build=summon hero=frost_mage plan=mixed seed=7 active=true skills=true camp=true/true result=won night=8 core=150.0 hero_damage=4882 tower_damage=4977
+evolution_matrix=COMPLETE cases=48 failures=0
+
+【evolution_matrix err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【performance out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+headless_combat_1000_ticks_ms=984.51 avg_tick_ms=0.9845
+
+【performance err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)
+
+【visual_capture out】
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 512.95 - Compatibility - Using Device: NVIDIA - NVIDIA RTX A2000
+
+visual_capture=PASS hero_selection shop inventory goblin_camp balance_combat boss_guard boss_break victory defeat
+
+【visual_capture err】
+ERROR: Failed to read the root certificate store.
+   at: get_system_ca_certificates (platform/windows/os_windows.cpp:2582)

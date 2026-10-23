@@ -10,7 +10,7 @@
 #>
 param(
     [Parameter(Mandatory = $true)][string]$GodotPath,
-    [string[]]$Cases = @('import', 'smoke', 'economy', 'hero_rpg', 'dungeon', 'playthrough', 'phase4_full_run', 'balance_mechanics', 'input_controls', 'balance_matrix', 'build_mechanics', 'build_matrix', 'performance', 'visual_capture'),
+    [string[]]$Cases = @('import', 'smoke', 'economy', 'hero_rpg', 'dungeon', 'playthrough', 'phase4_full_run', 'balance_mechanics', 'input_controls', 'balance_matrix', 'build_mechanics', 'build_matrix', 'evolution_mechanics', 'evolution_matrix', 'performance', 'visual_capture'),
     [int]$MaxSeconds = 30
 )
 

@@ -79,7 +79,7 @@ func _initialize() -> void:
 	game.leave_dungeon()
 	assert(game.combat_builds.familiars.is_empty() and game.hero.cooldowns[0] == cooldown)
 	# 新增中文字符逐字检查字体字形；界面布局另由实际渲染截图检查。
-	for path in ["res://scripts/game.gd", "res://scripts/hero_rpg.gd", "res://scripts/combat_builds.gd", "res://scripts/dungeon.gd"]:
+	for path in ["res://scripts/game.gd", "res://scripts/hero_rpg.gd", "res://scripts/combat_builds.gd", "res://scripts/build_evolution.gd", "res://scripts/dungeon.gd"]:
 		for character in FileAccess.get_file_as_string(path):
 			var code := character.unicode_at(0)
 			if code >= 0x4e00 and code <= 0x9fff: assert(game.UI_FONT.has_char(code), "字体缺字：" + character)

@@ -1,14 +1,23 @@
 [
 	{
 		"active": true,
-		"basic_damage": 11423.8413625,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
+		"basic_damage": 11086.50337,
 		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
-		"gold": 453,
+		"form": "",
+		"gold": 468,
 		"hero": "berserker",
-		"hero_damage": 22127.4020125,
+		"hero_damage": 22758.3869725,
 		"hp": 291.0,
 		"kills": 290,
 		"level": 10,
@@ -94,7 +103,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 1105.444,
+				"basic_damage": 1022.08525,
 				"basic_start": 1076.949,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -104,12 +113,12 @@
 					"weapon": "rust_axe"
 				},
 				"gold_end": 174,
-				"hero_damage": 2480.938,
+				"hero_damage": 2431.65475,
 				"hero_start": 1939.591,
 				"night": 4,
 				"peak_alive": 9,
 				"seconds": 19.1,
-				"skill_damage": 1375.494,
+				"skill_damage": 1409.5695,
 				"skill_levels": [
 					4,
 					1,
@@ -118,13 +127,13 @@
 				],
 				"skill_start": 862.642,
 				"start_tick": 598,
-				"tower_damage": 855.861999999999,
+				"tower_damage": 905.145249999999,
 				"tower_start": 1206.109,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1510.1,
-				"basic_start": 2182.393,
+				"basic_damage": 1668.105,
+				"basic_start": 2099.03425,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -134,27 +143,27 @@
 					"weapon": "steel_blade"
 				},
 				"gold_end": 182,
-				"hero_damage": 2927.28000000001,
-				"hero_start": 4420.529,
+				"hero_damage": 3032.05350000001,
+				"hero_start": 4371.24575,
 				"night": 5,
-				"peak_alive": 11,
-				"seconds": 19.8,
-				"skill_damage": 1417.18,
+				"peak_alive": 9,
+				"seconds": 20.1,
+				"skill_damage": 1363.9485,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					1
 				],
-				"skill_start": 2238.136,
+				"skill_start": 2272.2115,
 				"start_tick": 980,
-				"tower_damage": 1192.72000000001,
-				"tower_start": 2061.971,
+				"tower_damage": 1087.94650000001,
+				"tower_start": 2111.25425,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1942.058,
-				"basic_start": 3692.493,
+				"basic_damage": 1839.2752375,
+				"basic_start": 3767.13925,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -165,27 +174,27 @@
 					"weapon": "steel_blade"
 				},
 				"gold_end": 230,
-				"hero_damage": 3704.9805,
-				"hero_start": 7347.809,
+				"hero_damage": 3957.9602125,
+				"hero_start": 7403.29925,
 				"night": 6,
-				"peak_alive": 14,
-				"seconds": 22.3,
-				"skill_damage": 1762.9225,
+				"peak_alive": 12,
+				"seconds": 22.0,
+				"skill_damage": 2118.684975,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					2
 				],
-				"skill_start": 3655.316,
-				"start_tick": 1376,
-				"tower_damage": 2000.7195,
-				"tower_start": 3254.69100000001,
+				"skill_start": 3636.16,
+				"start_tick": 1382,
+				"tower_damage": 1747.7397875,
+				"tower_start": 3199.20075,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1579.2367875,
-				"basic_start": 5634.55100000001,
+				"basic_damage": 1776.49441625,
+				"basic_start": 5606.4144875,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -195,28 +204,28 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 268,
-				"hero_damage": 4128.7106125,
-				"hero_start": 11052.7895,
+				"gold_end": 283,
+				"hero_damage": 4120.08735687501,
+				"hero_start": 11361.2594625,
 				"night": 7,
 				"peak_alive": 17,
-				"seconds": 22.0,
-				"skill_damage": 2549.473825,
+				"seconds": 23.55,
+				"skill_damage": 2343.592940625,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					3
 				],
-				"skill_start": 5418.2385,
+				"skill_start": 5754.844975,
 				"start_tick": 1822,
-				"tower_damage": 3295.2893875,
-				"tower_start": 5255.4105,
+				"tower_damage": 3303.912643125,
+				"tower_start": 4946.9405375,
 				"towers": 4
 			},
 			{
-				"basic_damage": 4210.05357499997,
-				"basic_start": 7213.78778750001,
+				"basic_damage": 3703.59446624999,
+				"basic_start": 7382.90890375001,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -226,23 +235,23 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 453,
-				"hero_damage": 6945.9019,
-				"hero_start": 15181.5001125,
+				"gold_end": 468,
+				"hero_damage": 7277.040153125,
+				"hero_start": 15481.346819375,
 				"night": 8,
-				"peak_alive": 17,
-				"seconds": 36.3,
-				"skill_damage": 2735.848325,
+				"peak_alive": 19,
+				"seconds": 34.55,
+				"skill_damage": 3573.445686875,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					5
 				],
-				"skill_start": 7967.71232500001,
-				"start_tick": 2262,
-				"tower_damage": 5145.39809999998,
-				"tower_start": 8550.6998875,
+				"skill_start": 8098.43791562501,
+				"start_tick": 2293,
+				"tower_damage": 4814.25984687498,
+				"tower_start": 8250.853180625,
 				"towers": 4
 			}
 		],
@@ -250,22 +259,31 @@
 		"plan": "mixed",
 		"result": "won",
 		"seed": 7,
-		"skill_damage": 10703.56065,
+		"skill_damage": 11671.8836025,
 		"skills": true,
 		"summon_damage": 0.0,
-		"tower_damage": 13696.0979875
+		"tower_damage": 13065.1130275
 	},
 	{
 		"active": true,
-		"basic_damage": 9989.5084,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
+		"basic_damage": 9002.94715375001,
 		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
-		"gold": 588,
+		"form": "",
+		"gold": 473,
 		"hero": "berserker",
-		"hero_damage": 23759.0824875,
-		"hp": 311.0,
+		"hero_damage": 21371.963115625,
+		"hp": 308.714285714286,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -352,7 +370,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 1105.444,
+				"basic_damage": 1022.08525,
 				"basic_start": 1076.949,
 				"core_end": 125.0,
 				"core_start": 125.0,
@@ -363,12 +381,12 @@
 					"weapon": "rust_axe"
 				},
 				"gold_end": 161,
-				"hero_damage": 2480.938,
+				"hero_damage": 2431.65475,
 				"hero_start": 1939.591,
 				"night": 4,
 				"peak_alive": 9,
 				"seconds": 19.1,
-				"skill_damage": 1375.494,
+				"skill_damage": 1409.5695,
 				"skill_levels": [
 					4,
 					1,
@@ -377,13 +395,13 @@
 				],
 				"skill_start": 862.642,
 				"start_tick": 598,
-				"tower_damage": 855.861999999999,
+				"tower_damage": 905.145249999999,
 				"tower_start": 1206.109,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1361.82,
-				"basic_start": 2182.393,
+				"basic_damage": 1340.5245,
+				"basic_start": 2099.03425,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -393,27 +411,27 @@
 					"weapon": "steel_blade"
 				},
 				"gold_end": 189,
-				"hero_damage": 2993.59000000001,
-				"hero_start": 4420.529,
+				"hero_damage": 2952.94450000001,
+				"hero_start": 4371.24575,
 				"night": 5,
-				"peak_alive": 10,
+				"peak_alive": 12,
 				"seconds": 20.1,
-				"skill_damage": 1631.77,
+				"skill_damage": 1612.42,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					1
 				],
-				"skill_start": 2238.136,
+				"skill_start": 2272.2115,
 				"start_tick": 980,
-				"tower_damage": 1126.41000000001,
-				"tower_start": 2061.971,
+				"tower_damage": 1167.05550000001,
+				"tower_start": 2111.25425,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1570.81825,
-				"basic_start": 3544.21300000001,
+				"basic_damage": 1306.9278625,
+				"basic_start": 3439.55875,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -424,27 +442,27 @@
 					"weapon": "steel_blade"
 				},
 				"gold_end": 270,
-				"hero_damage": 4321.46225,
-				"hero_start": 7414.119,
+				"hero_damage": 3492.8824375,
+				"hero_start": 7324.19025,
 				"night": 6,
-				"peak_alive": 13,
-				"seconds": 20.65,
-				"skill_damage": 2750.644,
+				"peak_alive": 14,
+				"seconds": 22.0,
+				"skill_damage": 2185.954575,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					2
 				],
-				"skill_start": 3869.906,
+				"skill_start": 3884.6315,
 				"start_tick": 1382,
-				"tower_damage": 1384.23774999999,
-				"tower_start": 3188.381,
+				"tower_damage": 2212.8175625,
+				"tower_start": 3278.30975000001,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1531.2714,
-				"basic_start": 5115.03125000001,
+				"basic_damage": 1564.735,
+				"basic_start": 4746.4866125,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -454,28 +472,28 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 253,
-				"hero_damage": 4631.4261125,
-				"hero_start": 11735.58125,
+				"gold_end": 238,
+				"hero_damage": 3927.15567562501,
+				"hero_start": 10817.0726875,
 				"night": 7,
-				"peak_alive": 13,
-				"seconds": 23.35,
-				"skill_damage": 3100.1547125,
+				"peak_alive": 17,
+				"seconds": 22.0,
+				"skill_damage": 2362.420675625,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					3
 				],
-				"skill_start": 6620.55,
-				"start_tick": 1795,
-				"tower_damage": 2792.57388749999,
-				"tower_start": 4572.61875,
+				"skill_start": 6070.586075,
+				"start_tick": 1822,
+				"tower_damage": 3496.84432437499,
+				"tower_start": 5491.1273125,
 				"towers": 4
 			},
 			{
-				"basic_damage": 3343.20574999999,
-				"basic_start": 6646.30265000001,
+				"basic_damage": 2691.72554125,
+				"basic_start": 6311.2216125,
 				"core_end": 155.0,
 				"core_start": 155.0,
 				"equipment": {
@@ -485,23 +503,23 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 588,
-				"hero_damage": 7392.07512499998,
-				"hero_start": 16367.0073625,
+				"gold_end": 473,
+				"hero_damage": 6627.73475249999,
+				"hero_start": 14744.228363125,
 				"night": 8,
-				"peak_alive": 17,
-				"seconds": 35.7,
-				"skill_damage": 4048.869375,
+				"peak_alive": 18,
+				"seconds": 31.65,
+				"skill_damage": 3936.00921125,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					5
 				],
-				"skill_start": 9720.7047125,
+				"skill_start": 8433.00675062501,
 				"start_tick": 2262,
-				"tower_damage": 4699.22487499996,
-				"tower_start": 7365.19263749999,
+				"tower_damage": 5463.56524749998,
+				"tower_start": 8987.97163687499,
 				"towers": 4
 			}
 		],
@@ -509,22 +527,31 @@
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
-		"skill_damage": 13769.5740875,
+		"skill_damage": 12369.015961875,
 		"skills": true,
 		"summon_damage": 0.0,
-		"tower_damage": 12064.4175125
+		"tower_damage": 14451.536884375
 	},
 	{
 		"active": true,
-		"basic_damage": 10849.9074375,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
+		"basic_damage": 10414.1494825,
 		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
-		"gold": 573,
+		"form": "",
+		"gold": 458,
 		"hero": "berserker",
-		"hero_damage": 23971.4824875,
-		"hp": 331.0,
+		"hero_damage": 22166.048905,
+		"hp": 325.857142857143,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -609,7 +636,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 1038.27,
+				"basic_damage": 1033.195,
 				"basic_start": 1076.949,
 				"core_end": 120.0,
 				"core_start": 120.0,
@@ -619,11 +646,11 @@
 					"weapon": "rust_axe"
 				},
 				"gold_end": 164,
-				"hero_damage": 2469.03899999999,
+				"hero_damage": 2463.964,
 				"hero_start": 1939.591,
 				"night": 4,
 				"peak_alive": 7,
-				"seconds": 19.25,
+				"seconds": 19.2,
 				"skill_damage": 1430.769,
 				"skill_levels": [
 					4,
@@ -633,13 +660,13 @@
 				],
 				"skill_start": 862.642,
 				"start_tick": 598,
-				"tower_damage": 867.760999999999,
+				"tower_damage": 872.836,
 				"tower_start": 1206.109,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1394.775,
-				"basic_start": 2115.219,
+				"basic_damage": 1155.10875,
+				"basic_start": 2110.144,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -648,12 +675,12 @@
 					"weapon": "steel_blade"
 				},
 				"gold_end": 202,
-				"hero_damage": 3273.765,
-				"hero_start": 4408.62999999999,
+				"hero_damage": 3140.96850000001,
+				"hero_start": 4403.555,
 				"night": 5,
-				"peak_alive": 7,
-				"seconds": 19.3,
-				"skill_damage": 1878.99,
+				"peak_alive": 11,
+				"seconds": 20.0,
+				"skill_damage": 1985.85975,
 				"skill_levels": [
 					5,
 					1,
@@ -661,14 +688,14 @@
 					1
 				],
 				"skill_start": 2293.411,
-				"start_tick": 983,
-				"tower_damage": 846.235000000006,
-				"tower_start": 2073.87,
+				"start_tick": 982,
+				"tower_damage": 979.031500000004,
+				"tower_start": 2078.945,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1822.17025,
-				"basic_start": 3509.994,
+				"basic_damage": 1656.9892375,
+				"basic_start": 3265.25275,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -678,28 +705,28 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 235,
-				"hero_damage": 4211.0405,
-				"hero_start": 7682.395,
+				"gold_end": 220,
+				"hero_damage": 3716.1212375,
+				"hero_start": 7544.5235,
 				"night": 6,
-				"peak_alive": 10,
-				"seconds": 21.0,
-				"skill_damage": 2388.87025,
+				"peak_alive": 13,
+				"seconds": 22.75,
+				"skill_damage": 2059.132,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					2
 				],
-				"skill_start": 4172.401,
-				"start_tick": 1369,
-				"tower_damage": 1494.6595,
-				"tower_start": 2920.105,
+				"skill_start": 4279.27075,
+				"start_tick": 1382,
+				"tower_damage": 1989.5787625,
+				"tower_start": 3057.9765,
 				"towers": 4
 			},
 			{
-				"basic_damage": 2004.619775,
-				"basic_start": 5332.16425,
+				"basic_damage": 1702.08465,
+				"basic_start": 4922.2419875,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -709,28 +736,28 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 303,
-				"hero_damage": 4608.937225,
-				"hero_start": 11893.4355,
+				"gold_end": 273,
+				"hero_damage": 3974.38025062501,
+				"hero_start": 11260.6447375,
 				"night": 7,
-				"peak_alive": 15,
-				"seconds": 23.65,
-				"skill_damage": 2604.31745,
+				"peak_alive": 17,
+				"seconds": 23.9,
+				"skill_damage": 2272.295600625,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					3
 				],
-				"skill_start": 6561.27125,
-				"start_tick": 1789,
-				"tower_damage": 2815.062775,
-				"tower_start": 4414.7645,
+				"skill_start": 6338.40275,
+				"start_tick": 1837,
+				"tower_damage": 3449.619749375,
+				"tower_start": 5047.5552625,
 				"towers": 4
 			},
 			{
-				"basic_damage": 3513.1234125,
-				"basic_start": 7336.784025,
+				"basic_damage": 3789.82284500001,
+				"basic_start": 6624.3266375,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -740,23 +767,23 @@
 					"legs": "runner_boots",
 					"weapon": "steel_blade"
 				},
-				"gold_end": 573,
-				"hero_damage": 7469.1097625,
-				"hero_start": 16502.372725,
+				"gold_end": 458,
+				"hero_damage": 6931.02391687499,
+				"hero_start": 15235.024988125,
 				"night": 8,
-				"peak_alive": 21,
-				"seconds": 37.6,
-				"skill_damage": 3955.98634999999,
+				"peak_alive": 19,
+				"seconds": 32.9,
+				"skill_damage": 3141.201071875,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					5
 				],
-				"skill_start": 9165.5887,
-				"start_tick": 2262,
-				"tower_damage": 4622.19023749999,
-				"tower_start": 7229.827275,
+				"skill_start": 8610.698350625,
+				"start_tick": 2315,
+				"tower_damage": 5160.27608312498,
+				"tower_start": 8497.175011875,
 				"towers": 4
 			}
 		],
@@ -764,22 +791,32 @@
 		"plan": "mixed",
 		"result": "won",
 		"seed": 91,
-		"skill_damage": 13121.57505,
+		"skill_damage": 11751.8994225,
 		"skills": true,
 		"summon_damage": 0.0,
-		"tower_damage": 11852.0175125
+		"tower_damage": 13657.451095
 	},
 	{
 		"active": true,
-		"basic_damage": 8487.46620000001,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 8246.79427500001,
 		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
-		"gold": 558,
+		"form": "",
+		"gold": 503,
 		"hero": "frost_mage",
-		"hero_damage": 23420.74165,
-		"hp": 205.0,
+		"hero_damage": 24583.38983875,
+		"hp": 199.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -864,7 +901,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 785.4875,
+				"basic_damage": 854.0225,
 				"basic_start": 646.27,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -874,12 +911,12 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 174,
-				"hero_damage": 2413.555,
+				"hero_damage": 2348.58925,
 				"hero_start": 2060.1645,
 				"night": 4,
 				"peak_alive": 9,
-				"seconds": 19.9,
-				"skill_damage": 1628.0675,
+				"seconds": 21.8,
+				"skill_damage": 1494.56675,
 				"skill_levels": [
 					4,
 					1,
@@ -888,13 +925,13 @@
 				],
 				"skill_start": 1413.8945,
 				"start_tick": 544,
-				"tower_damage": 923.244999999999,
+				"tower_damage": 988.21075,
 				"tower_start": 1085.5355,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1248.32875,
-				"basic_start": 1431.7575,
+				"basic_damage": 1142.469,
+				"basic_start": 1500.2925,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -906,27 +943,27 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 184,
-				"hero_damage": 2829.54075,
-				"hero_start": 4473.7195,
+				"hero_damage": 3182.82825,
+				"hero_start": 4408.75375,
 				"night": 5,
-				"peak_alive": 12,
-				"seconds": 22.55,
-				"skill_damage": 1581.212,
+				"peak_alive": 9,
+				"seconds": 20.8,
+				"skill_damage": 2040.35925,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					1
 				],
-				"skill_start": 3041.962,
-				"start_tick": 942,
-				"tower_damage": 1290.45925000001,
-				"tower_start": 2008.7805,
+				"skill_start": 2908.46125,
+				"start_tick": 980,
+				"tower_damage": 937.171750000005,
+				"tower_start": 2073.74625,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1575.5734,
-				"basic_start": 2680.08625,
+				"basic_damage": 1380.11,
+				"basic_start": 2642.7615,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -937,28 +974,28 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 220,
-				"hero_damage": 3459.13710000001,
-				"hero_start": 7303.26024999999,
+				"gold_end": 235,
+				"hero_damage": 3483.60155,
+				"hero_start": 7591.58199999999,
 				"night": 6,
 				"peak_alive": 14,
-				"seconds": 24.3,
-				"skill_damage": 1883.5637,
+				"seconds": 23.7,
+				"skill_damage": 2103.49155,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					2
 				],
-				"skill_start": 4623.174,
-				"start_tick": 1393,
-				"tower_damage": 2246.56289999999,
-				"tower_start": 3299.23975000001,
+				"skill_start": 4948.8205,
+				"start_tick": 1396,
+				"tower_damage": 2222.09845,
+				"tower_start": 3010.918,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1322.9579,
-				"basic_start": 4255.65965,
+				"basic_damage": 1300.5926375,
+				"basic_start": 4022.8715,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -970,27 +1007,27 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 273,
-				"hero_damage": 3932.91515000001,
-				"hero_start": 10762.39735,
+				"hero_damage": 4981.10521375002,
+				"hero_start": 11075.18355,
 				"night": 7,
-				"peak_alive": 17,
-				"seconds": 24.05,
-				"skill_damage": 2609.95725,
+				"peak_alive": 15,
+				"seconds": 23.75,
+				"skill_damage": 3680.51257625001,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					3
 				],
-				"skill_start": 6506.7377,
-				"start_tick": 1879,
-				"tower_damage": 3491.08484999999,
-				"tower_start": 5545.80265,
+				"skill_start": 7052.31205,
+				"start_tick": 1870,
+				"tower_damage": 2442.89478625,
+				"tower_start": 5233.01645,
 				"towers": 4
 			},
 			{
-				"basic_damage": 2908.84865,
-				"basic_start": 5578.61755,
+				"basic_damage": 2923.3301375,
+				"basic_start": 5323.4641375,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -1001,23 +1038,23 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 558,
-				"hero_damage": 8725.42914999999,
-				"hero_start": 14695.3125,
+				"gold_end": 503,
+				"hero_damage": 8527.10107499998,
+				"hero_start": 16056.28876375,
 				"night": 8,
-				"peak_alive": 20,
-				"seconds": 31.1,
-				"skill_damage": 5816.58050000001,
+				"peak_alive": 11,
+				"seconds": 26.9,
+				"skill_damage": 5603.7709375,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					5
 				],
-				"skill_start": 9116.69495,
-				"start_tick": 2360,
-				"tower_damage": 3365.87084999999,
-				"tower_start": 9036.88749999999,
+				"skill_start": 10732.82462625,
+				"start_tick": 2345,
+				"tower_damage": 3564.19892499999,
+				"tower_start": 7675.91123625,
 				"towers": 4
 			}
 		],
@@ -1025,21 +1062,31 @@
 		"plan": "mixed",
 		"result": "won",
 		"seed": 7,
-		"skill_damage": 14933.27545,
+		"skill_damage": 16336.59556375,
 		"skills": true,
 		"summon_damage": 0.0,
-		"tower_damage": 12402.75835
+		"tower_damage": 11240.11016125
 	},
 	{
 		"active": true,
-		"basic_damage": 6957.858425,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 7176.05762250001,
 		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
-		"gold": 548,
+		"form": "",
+		"gold": 478,
 		"hero": "frost_mage",
-		"hero_damage": 22554.104675,
+		"hero_damage": 21434.285308125,
 		"hp": 225.0,
 		"kills": 290,
 		"level": 10,
@@ -1127,7 +1174,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 785.4875,
+				"basic_damage": 854.0225,
 				"basic_start": 646.27,
 				"core_end": 125.0,
 				"core_start": 125.0,
@@ -1138,12 +1185,12 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 161,
-				"hero_damage": 2413.555,
+				"hero_damage": 2348.58925,
 				"hero_start": 2060.1645,
 				"night": 4,
 				"peak_alive": 9,
-				"seconds": 19.9,
-				"skill_damage": 1628.0675,
+				"seconds": 21.8,
+				"skill_damage": 1494.56675,
 				"skill_levels": [
 					4,
 					1,
@@ -1152,13 +1199,13 @@
 				],
 				"skill_start": 1413.8945,
 				"start_tick": 544,
-				"tower_damage": 923.244999999999,
+				"tower_damage": 988.21075,
 				"tower_start": 1085.5355,
 				"towers": 4
 			},
 			{
-				"basic_damage": 948.295000000002,
-				"basic_start": 1431.7575,
+				"basic_damage": 1055.46,
+				"basic_start": 1500.2925,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -1170,27 +1217,27 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 189,
-				"hero_damage": 3199.787,
-				"hero_start": 4473.7195,
+				"hero_damage": 2217.29449999999,
+				"hero_start": 4408.75375,
 				"night": 5,
-				"peak_alive": 8,
-				"seconds": 20.2,
-				"skill_damage": 2251.492,
+				"peak_alive": 14,
+				"seconds": 23.0,
+				"skill_damage": 1161.8345,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					1
 				],
-				"skill_start": 3041.962,
-				"start_tick": 942,
-				"tower_damage": 920.213000000005,
-				"tower_start": 2008.7805,
+				"skill_start": 2908.46125,
+				"start_tick": 980,
+				"tower_damage": 1902.70550000001,
+				"tower_start": 2073.74625,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1055.1389,
-				"basic_start": 2380.0525,
+				"basic_damage": 1103.95,
+				"basic_start": 2555.7525,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -1201,28 +1248,28 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 245,
-				"hero_damage": 4204.23525,
-				"hero_start": 7673.5065,
+				"gold_end": 215,
+				"hero_damage": 3236.54631250001,
+				"hero_start": 6626.04824999999,
 				"night": 6,
-				"peak_alive": 10,
-				"seconds": 21.2,
-				"skill_damage": 3149.09635,
+				"peak_alive": 16,
+				"seconds": 23.0,
+				"skill_damage": 2132.5963125,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					2
 				],
-				"skill_start": 5293.454,
-				"start_tick": 1346,
-				"tower_damage": 1501.46475,
-				"tower_start": 2928.9935,
+				"skill_start": 4070.29575,
+				"start_tick": 1440,
+				"tower_damage": 2469.15368749999,
+				"tower_start": 3976.45175000001,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1362.841625,
-				"basic_start": 3435.1914,
+				"basic_damage": 1177.49725,
+				"basic_start": 3659.7025,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -1233,28 +1280,28 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 288,
-				"hero_damage": 4592.63167500001,
-				"hero_start": 11877.74175,
+				"gold_end": 263,
+				"hero_damage": 4469.56311875,
+				"hero_start": 9862.5945625,
 				"night": 7,
 				"peak_alive": 14,
-				"seconds": 24.2,
-				"skill_damage": 3229.79005000001,
+				"seconds": 23.0,
+				"skill_damage": 3292.06586875,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					3
 				],
-				"skill_start": 8442.55035,
-				"start_tick": 1770,
-				"tower_damage": 2831.368325,
-				"tower_start": 4430.45825,
+				"skill_start": 6202.8920625,
+				"start_tick": 1900,
+				"tower_damage": 2954.43688124998,
+				"tower_start": 6445.6054375,
 				"towers": 4
 			},
 			{
-				"basic_damage": 2159.8254,
-				"basic_start": 4798.033025,
+				"basic_damage": 2338.8578725,
+				"basic_start": 4837.19975,
 				"core_end": 155.0,
 				"core_start": 155.0,
 				"equipment": {
@@ -1265,23 +1312,23 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 548,
-				"hero_damage": 6083.73125000001,
-				"hero_start": 16470.373425,
+				"gold_end": 478,
+				"hero_damage": 7102.12762687501,
+				"hero_start": 14332.15768125,
 				"night": 8,
-				"peak_alive": 22,
-				"seconds": 37.1,
-				"skill_damage": 3923.90585,
+				"peak_alive": 19,
+				"seconds": 32.65,
+				"skill_damage": 4763.269754375,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					5
 				],
-				"skill_start": 11672.3404,
-				"start_tick": 2254,
-				"tower_damage": 6007.56874999997,
-				"tower_start": 7261.826575,
+				"skill_start": 9494.95793125,
+				"start_tick": 2360,
+				"tower_damage": 4989.17237312497,
+				"tower_start": 9400.04231874998,
 				"towers": 4
 			}
 		],
@@ -1289,22 +1336,32 @@
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
-		"skill_damage": 15596.24625,
+		"skill_damage": 14258.227685625,
 		"skills": true,
 		"summon_damage": 0.0,
-		"tower_damage": 13269.395325
+		"tower_damage": 14389.214691875
 	},
 	{
 		"active": true,
-		"basic_damage": 8301.432125,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 8096.039425,
 		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"form": "",
 		"gold": 518,
 		"hero": "frost_mage",
-		"hero_damage": 24690.9484375,
-		"hp": 241.769230769231,
+		"hero_damage": 25043.86038375,
+		"hp": 245.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -1389,7 +1446,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 745.7985,
+				"basic_damage": 750.033500000001,
 				"basic_start": 646.27,
 				"core_end": 120.0,
 				"core_start": 120.0,
@@ -1399,12 +1456,12 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 164,
-				"hero_damage": 2214.66075,
+				"hero_damage": 2231.12825,
 				"hero_start": 2060.1645,
 				"night": 4,
 				"peak_alive": 9,
 				"seconds": 18.95,
-				"skill_damage": 1468.86225,
+				"skill_damage": 1481.09475,
 				"skill_levels": [
 					4,
 					1,
@@ -1413,13 +1470,13 @@
 				],
 				"skill_start": 1413.8945,
 				"start_tick": 544,
-				"tower_damage": 1122.13925,
+				"tower_damage": 1105.67175,
 				"tower_start": 1085.5355,
 				"towers": 4
 			},
 			{
-				"basic_damage": 971.863250000001,
-				"basic_start": 1392.0685,
+				"basic_damage": 921.7075,
+				"basic_start": 1396.3035,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -1430,27 +1487,27 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 202,
-				"hero_damage": 3150.52,
-				"hero_start": 4274.82525,
+				"hero_damage": 2890.61775,
+				"hero_start": 4291.29275,
 				"night": 5,
-				"peak_alive": 12,
-				"seconds": 19.55,
-				"skill_damage": 2178.65675,
+				"peak_alive": 14,
+				"seconds": 21.7,
+				"skill_damage": 1968.91025,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					1
 				],
-				"skill_start": 2882.75675,
+				"skill_start": 2894.98925,
 				"start_tick": 923,
-				"tower_damage": 969.480000000005,
-				"tower_start": 2207.67475,
+				"tower_damage": 1229.38225,
+				"tower_start": 2191.20725,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1631.9514,
-				"basic_start": 2363.93175,
+				"basic_damage": 1530.986,
+				"basic_start": 2318.011,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -1462,27 +1519,27 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 225,
-				"hero_damage": 3767.84210000001,
-				"hero_start": 7425.34524999999,
+				"hero_damage": 4038.112075,
+				"hero_start": 7181.91049999999,
 				"night": 6,
-				"peak_alive": 16,
-				"seconds": 23.1,
-				"skill_damage": 2135.8907,
+				"peak_alive": 10,
+				"seconds": 24.0,
+				"skill_damage": 2507.126075,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					2
 				],
-				"skill_start": 5061.4135,
-				"start_tick": 1314,
-				"tower_damage": 1937.85789999999,
-				"tower_start": 3177.15475000001,
+				"skill_start": 4863.8995,
+				"start_tick": 1357,
+				"tower_damage": 1667.587925,
+				"tower_start": 3420.5895,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1481.699625,
-				"basic_start": 3995.88315,
+				"basic_damage": 1453.058175,
+				"basic_start": 3848.997,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -1494,27 +1551,27 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 248,
-				"hero_damage": 5152.19792500001,
-				"hero_start": 11193.18735,
+				"hero_damage": 4661.970849375,
+				"hero_start": 11220.022575,
 				"night": 7,
-				"peak_alive": 9,
-				"seconds": 23.0,
-				"skill_damage": 3670.4983,
+				"peak_alive": 14,
+				"seconds": 24.55,
+				"skill_damage": 3208.912674375,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					3
 				],
-				"skill_start": 7197.3042,
-				"start_tick": 1776,
-				"tower_damage": 2271.802075,
-				"tower_start": 5115.01265,
+				"skill_start": 7371.025575,
+				"start_tick": 1837,
+				"tower_damage": 2762.029150625,
+				"tower_start": 5088.177425,
 				"towers": 4
 			},
 			{
-				"basic_damage": 2823.84935,
-				"basic_start": 5477.582775,
+				"basic_damage": 2793.98425,
+				"basic_start": 5302.055175,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -1526,22 +1583,22 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 518,
-				"hero_damage": 8345.56316249999,
-				"hero_start": 16345.385275,
+				"hero_damage": 9161.86695937498,
+				"hero_start": 15881.993424375,
 				"night": 8,
-				"peak_alive": 15,
-				"seconds": 30.6,
-				"skill_damage": 5521.7138125,
+				"peak_alive": 16,
+				"seconds": 29.65,
+				"skill_damage": 6367.88270937501,
 				"skill_levels": [
 					5,
 					1,
 					1,
 					5
 				],
-				"skill_start": 10867.8025,
-				"start_tick": 2236,
-				"tower_damage": 3745.73683749999,
-				"tower_start": 7386.81472499999,
+				"skill_start": 10579.938249375,
+				"start_tick": 2328,
+				"tower_damage": 2929.43304062499,
+				"tower_start": 7850.206575625,
 				"towers": 4
 			}
 		],
@@ -1549,18 +1606,27 @@
 		"plan": "mixed",
 		"result": "won",
 		"seed": 91,
-		"skill_damage": 16389.5163125,
+		"skill_damage": 16947.82095875,
 		"skills": true,
 		"summon_damage": 0.0,
-		"tower_damage": 11132.5515625
+		"tower_damage": 10779.63961625
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 13866.923625,
 		"build": "passive",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"form": "",
 		"gold": 598,
 		"hero": "berserker",
 		"hero_damage": 31011.7735249999,
@@ -1812,11 +1878,20 @@
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 12814.9155125,
 		"build": "passive",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"form": "",
 		"gold": 618,
 		"hero": "berserker",
 		"hero_damage": 29335.65345,
@@ -2071,11 +2146,20 @@
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 13085.89825,
 		"build": "passive",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"form": "",
 		"gold": 588,
 		"hero": "berserker",
 		"hero_damage": 31312.01715,
@@ -2326,11 +2410,20 @@
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 14617.064875,
 		"build": "passive",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"form": "",
 		"gold": 687,
 		"hero": "berserker",
 		"hero_damage": 31870.8743874999,
@@ -2587,11 +2680,20 @@
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 12464.109175,
 		"build": "passive",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"form": "",
 		"gold": 598,
 		"hero": "frost_mage",
 		"hero_damage": 29861.3697,
@@ -2843,14 +2945,23 @@
 	},
 	{
 		"active": true,
-		"basic_damage": 10951.6140625,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
+		"basic_damage": 10941.6040625,
 		"build": "passive",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"form": "",
 		"gold": 603,
 		"hero": "frost_mage",
-		"hero_damage": 27541.6611499999,
+		"hero_damage": 27560.0957374999,
 		"hp": 225.0,
 		"kills": 290,
 		"level": 10,
@@ -3029,7 +3140,7 @@
 				"towers": 4
 			},
 			{
-				"basic_damage": 1865.150425,
+				"basic_damage": 1855.140425,
 				"basic_start": 5256.63825,
 				"core_end": 125.0,
 				"core_start": 125.0,
@@ -3041,7 +3152,7 @@
 					"weapon": "steel_blade"
 				},
 				"gold_end": 283,
-				"hero_damage": 5255.286575,
+				"hero_damage": 5273.7211625,
 				"hero_start": 12906.97125,
 				"night": 7,
 				"peak_alive": 9,
@@ -3055,13 +3166,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 1638,
-				"tower_damage": 2168.713425,
+				"tower_damage": 2150.27883750001,
 				"tower_start": 3401.22875,
 				"towers": 4
 			},
 			{
 				"basic_damage": 3829.82538750001,
-				"basic_start": 7121.788675,
+				"basic_start": 7111.778675,
 				"core_end": 155.0,
 				"core_start": 155.0,
 				"equipment": {
@@ -3073,7 +3184,7 @@
 				},
 				"gold_end": 603,
 				"hero_damage": 9379.40332499996,
-				"hero_start": 18162.257825,
+				"hero_start": 18180.6924125,
 				"night": 8,
 				"peak_alive": 7,
 				"seconds": 27.3,
@@ -3087,26 +3198,35 @@
 				"skill_start": 0.0,
 				"start_tick": 2084,
 				"tower_damage": 2711.896675,
-				"tower_start": 5569.94217500001,
+				"tower_start": 5551.50758750001,
 				"towers": 4
 			}
 		],
-		"passive_damage": 16590.0470875,
+		"passive_damage": 16618.491675,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
-		"tower_damage": 8281.83885000001
+		"tower_damage": 8263.40426250001
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 11928.4229125,
 		"build": "passive",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"form": "",
 		"gold": 588,
 		"hero": "frost_mage",
 		"hero_damage": 29342.0461875,
@@ -3357,11 +3477,20 @@
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"weapon": ""
+		},
 		"basic_damage": 12457.963175,
 		"build": "passive",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"form": "",
 		"gold": 687,
 		"hero": "frost_mage",
 		"hero_damage": 29346.4041249999,
@@ -3618,15 +3747,25 @@
 	},
 	{
 		"active": true,
-		"basic_damage": 1831.387772,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 1836.85626925,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
-		"gold": 558,
+		"form": "",
+		"gold": 543,
 		"hero": "berserker",
-		"hero_damage": 1831.387772,
-		"hp": 282.428571428571,
+		"hero_damage": 1836.85626925,
+		"hp": 285.428571428571,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -3684,7 +3823,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 120.569312,
+				"basic_damage": 128.663474,
 				"basic_start": 74.27,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -3692,11 +3831,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 129,
-				"hero_damage": 120.569312,
+				"hero_damage": 128.663474,
 				"hero_start": 74.27,
 				"night": 3,
 				"peak_alive": 10,
-				"seconds": 14.95,
+				"seconds": 17.4,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -3706,13 +3845,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 319,
-				"tower_damage": 691.304144,
+				"tower_damage": 665.229721999999,
 				"tower_start": 653.6948,
 				"towers": 3
 			},
 			{
-				"basic_damage": 250.3999,
-				"basic_start": 194.839312,
+				"basic_damage": 135.56,
+				"basic_start": 202.933474,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3721,11 +3860,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 174,
-				"hero_damage": 250.3999,
-				"hero_start": 194.839312,
+				"hero_damage": 135.56,
+				"hero_start": 202.933474,
 				"night": 4,
-				"peak_alive": 8,
-				"seconds": 16.9,
+				"peak_alive": 6,
+				"seconds": 17.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -3734,14 +3873,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 618,
-				"tower_damage": 575.560667999999,
-				"tower_start": 1344.998944,
+				"start_tick": 667,
+				"tower_damage": 738.23944,
+				"tower_start": 1318.924522,
 				"towers": 4
 			},
 			{
-				"basic_damage": 205.55882,
-				"basic_start": 445.239212,
+				"basic_damage": 360.52596,
+				"basic_start": 338.493474,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3753,11 +3892,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 184,
-				"hero_damage": 205.55882,
-				"hero_start": 445.239212,
+				"hero_damage": 360.52596,
+				"hero_start": 338.493474,
 				"night": 5,
-				"peak_alive": 6,
-				"seconds": 17.45,
+				"peak_alive": 4,
+				"seconds": 17.4,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3766,14 +3905,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 956,
-				"tower_damage": 531.310696000002,
-				"tower_start": 1920.559612,
+				"start_tick": 1018,
+				"tower_damage": 403.552608,
+				"tower_start": 2057.163962,
 				"towers": 4
 			},
 			{
-				"basic_damage": 314.45952,
-				"basic_start": 650.798032,
+				"basic_damage": 329.96504,
+				"basic_start": 699.019434,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3785,11 +3924,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 235,
-				"hero_damage": 314.45952,
-				"hero_start": 650.798032,
+				"hero_damage": 329.96504,
+				"hero_start": 699.019434,
 				"night": 6,
-				"peak_alive": 5,
-				"seconds": 19.35,
+				"peak_alive": 9,
+				"seconds": 19.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3798,14 +3937,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1305,
-				"tower_damage": 728.97642,
-				"tower_start": 2451.870308,
+				"start_tick": 1366,
+				"tower_damage": 1243.55171,
+				"tower_start": 2460.71657,
 				"towers": 4
 			},
 			{
-				"basic_damage": 222.5833,
-				"basic_start": 965.257552,
+				"basic_damage": 306.69318725,
+				"basic_start": 1028.984474,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3816,12 +3955,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 273,
-				"hero_damage": 222.5833,
-				"hero_start": 965.257552,
+				"gold_end": 258,
+				"hero_damage": 306.69318725,
+				"hero_start": 1028.984474,
 				"night": 7,
-				"peak_alive": 5,
-				"seconds": 21.55,
+				"peak_alive": 10,
+				"seconds": 22.45,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3830,14 +3969,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1692,
-				"tower_damage": 1157.603776,
-				"tower_start": 3180.846728,
+				"start_tick": 1756,
+				"tower_damage": 1914.06915425001,
+				"tower_start": 3704.26828,
 				"towers": 4
 			},
 			{
-				"basic_damage": 643.54692,
-				"basic_start": 1187.840852,
+				"basic_damage": 501.178608,
+				"basic_start": 1335.67766125,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3848,12 +3987,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 558,
-				"hero_damage": 643.54692,
-				"hero_start": 1187.840852,
+				"gold_end": 543,
+				"hero_damage": 501.178608,
+				"hero_start": 1335.67766125,
 				"night": 8,
-				"peak_alive": 10,
-				"seconds": 26.6,
+				"peak_alive": 8,
+				"seconds": 26.1,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3862,9 +4001,9 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2123,
-				"tower_damage": 2432.8121365,
-				"tower_start": 4338.450504,
+				"start_tick": 2205,
+				"tower_damage": 2084.839384,
+				"tower_start": 5618.33743425001,
 				"towers": 4
 			}
 		],
@@ -3874,20 +4013,30 @@
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 27220.8495875001,
-		"tower_damage": 6771.2626405
+		"summon_damage": 26283.4669125001,
+		"tower_damage": 7703.17681825001
 	},
 	{
 		"active": true,
-		"basic_damage": 1574.67704,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 1631.447824,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
-		"gold": 563,
+		"form": "",
+		"gold": 548,
 		"hero": "berserker",
-		"hero_damage": 1574.67704,
-		"hp": 302.428571428571,
+		"hero_damage": 1631.447824,
+		"hp": 311.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -3945,7 +4094,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 120.569312,
+				"basic_damage": 128.663474,
 				"basic_start": 74.27,
 				"core_end": 125.0,
 				"core_start": 125.0,
@@ -3955,11 +4104,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 96,
-				"hero_damage": 120.569312,
+				"hero_damage": 128.663474,
 				"hero_start": 74.27,
 				"night": 3,
 				"peak_alive": 10,
-				"seconds": 14.95,
+				"seconds": 17.4,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -3969,13 +4118,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 319,
-				"tower_damage": 691.304144,
+				"tower_damage": 665.229721999999,
 				"tower_start": 653.6948,
 				"towers": 3
 			},
 			{
-				"basic_damage": 250.3999,
-				"basic_start": 194.839312,
+				"basic_damage": 135.56,
+				"basic_start": 202.933474,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -3985,11 +4134,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 161,
-				"hero_damage": 250.3999,
-				"hero_start": 194.839312,
+				"hero_damage": 135.56,
+				"hero_start": 202.933474,
 				"night": 4,
-				"peak_alive": 8,
-				"seconds": 16.9,
+				"peak_alive": 6,
+				"seconds": 17.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -3998,14 +4147,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 618,
-				"tower_damage": 575.560667999999,
-				"tower_start": 1344.998944,
+				"start_tick": 667,
+				"tower_damage": 738.23944,
+				"tower_start": 1318.924522,
 				"towers": 4
 			},
 			{
-				"basic_damage": 105.358368,
-				"basic_start": 445.239212,
+				"basic_damage": 226.67304,
+				"basic_start": 338.493474,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4017,11 +4166,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 189,
-				"hero_damage": 105.358368,
-				"hero_start": 445.239212,
+				"hero_damage": 226.67304,
+				"hero_start": 338.493474,
 				"night": 5,
-				"peak_alive": 5,
-				"seconds": 19.3,
+				"peak_alive": 4,
+				"seconds": 17.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4030,14 +4179,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 956,
-				"tower_damage": 609.549228000002,
-				"tower_start": 1920.559612,
+				"start_tick": 1018,
+				"tower_damage": 418.348892000003,
+				"tower_start": 2057.163962,
 				"towers": 4
 			},
 			{
-				"basic_damage": 312.55922,
-				"basic_start": 550.59758,
+				"basic_damage": 179.27452,
+				"basic_start": 565.166514,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4049,11 +4198,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 245,
-				"hero_damage": 312.55922,
-				"hero_start": 550.59758,
+				"hero_damage": 179.27452,
+				"hero_start": 565.166514,
 				"night": 6,
-				"peak_alive": 6,
-				"seconds": 19.45,
+				"peak_alive": 8,
+				"seconds": 19.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4062,14 +4211,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1342,
-				"tower_damage": 1004.20773,
-				"tower_start": 2530.10884,
+				"start_tick": 1368,
+				"tower_damage": 1190.64654,
+				"tower_start": 2475.512854,
 				"towers": 4
 			},
 			{
-				"basic_damage": 291.692805,
-				"basic_start": 863.1568,
+				"basic_damage": 387.606052,
+				"basic_start": 744.441034,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4080,12 +4229,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 243,
-				"hero_damage": 291.692805,
-				"hero_start": 863.1568,
+				"gold_end": 288,
+				"hero_damage": 387.606052,
+				"hero_start": 744.441034,
 				"night": 7,
 				"peak_alive": 7,
-				"seconds": 21.2,
+				"seconds": 21.15,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4094,14 +4243,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1731,
-				"tower_damage": 1376.192185,
-				"tower_start": 3534.31657,
+				"start_tick": 1758,
+				"tower_damage": 1653.143848,
+				"tower_start": 3666.159394,
 				"towers": 4
 			},
 			{
-				"basic_damage": 419.827435,
-				"basic_start": 1154.849605,
+				"basic_damage": 499.400738,
+				"basic_start": 1132.047086,
 				"core_end": 155.0,
 				"core_start": 155.0,
 				"equipment": {
@@ -4112,12 +4261,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 563,
-				"hero_damage": 419.827435,
-				"hero_start": 1154.849605,
+				"gold_end": 548,
+				"hero_damage": 499.400738,
+				"hero_start": 1132.047086,
 				"night": 8,
-				"peak_alive": 7,
-				"seconds": 25.55,
+				"peak_alive": 13,
+				"seconds": 29.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4126,9 +4275,9 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2155,
-				"tower_damage": 2269.0729485,
-				"tower_start": 4910.508755,
+				"start_tick": 2181,
+				"tower_damage": 3158.38641100001,
+				"tower_start": 5319.303242,
 				"towers": 4
 			}
 		],
@@ -4138,20 +4287,30 @@
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 27069.2412565001,
-		"tower_damage": 7179.5817035
+		"summon_damage": 25714.3625230001,
+		"tower_damage": 8477.68965300001
 	},
 	{
 		"active": true,
-		"basic_damage": 1481.443569,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 1599.610736,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
-		"gold": 533,
+		"form": "",
+		"gold": 548,
 		"hero": "berserker",
-		"hero_damage": 1481.443569,
-		"hp": 322.428571428571,
+		"hero_damage": 1599.610736,
+		"hp": 328.428571428571,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -4209,7 +4368,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 120.569312,
+				"basic_damage": 128.663474,
 				"basic_start": 74.27,
 				"core_end": 120.0,
 				"core_start": 120.0,
@@ -4217,11 +4376,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 119,
-				"hero_damage": 120.569312,
+				"hero_damage": 128.663474,
 				"hero_start": 74.27,
 				"night": 3,
 				"peak_alive": 10,
-				"seconds": 14.95,
+				"seconds": 17.4,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -4231,13 +4390,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 319,
-				"tower_damage": 691.304144,
+				"tower_damage": 665.229721999999,
 				"tower_start": 653.6948,
 				"towers": 3
 			},
 			{
-				"basic_damage": 179.8727,
-				"basic_start": 194.839312,
+				"basic_damage": 273.8624,
+				"basic_start": 202.933474,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4246,11 +4405,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 164,
-				"hero_damage": 179.8727,
-				"hero_start": 194.839312,
+				"hero_damage": 273.8624,
+				"hero_start": 202.933474,
 				"night": 4,
-				"peak_alive": 8,
-				"seconds": 17.25,
+				"peak_alive": 5,
+				"seconds": 16.7,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -4259,14 +4418,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 618,
-				"tower_damage": 591.458587999999,
-				"tower_start": 1344.998944,
+				"start_tick": 667,
+				"tower_damage": 721.300343999999,
+				"tower_start": 1318.924522,
 				"towers": 4
 			},
 			{
-				"basic_damage": 188.70868,
-				"basic_start": 374.712012,
+				"basic_damage": 114.13798,
+				"basic_start": 476.795874,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4277,11 +4436,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 202,
-				"hero_damage": 188.70868,
-				"hero_start": 374.712012,
+				"hero_damage": 114.13798,
+				"hero_start": 476.795874,
 				"night": 5,
-				"peak_alive": 7,
-				"seconds": 18.6,
+				"peak_alive": 6,
+				"seconds": 17.75,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4290,14 +4449,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 963,
-				"tower_damage": 774.701244000003,
-				"tower_start": 1936.457532,
+				"start_tick": 1001,
+				"tower_damage": 470.019928000003,
+				"tower_start": 2040.224866,
 				"towers": 4
 			},
 			{
-				"basic_damage": 194.7748,
-				"basic_start": 563.420692,
+				"basic_damage": 177.0091,
+				"basic_start": 590.933854,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4309,11 +4468,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 225,
-				"hero_damage": 194.7748,
-				"hero_start": 563.420692,
+				"hero_damage": 177.0091,
+				"hero_start": 590.933854,
 				"night": 6,
-				"peak_alive": 8,
-				"seconds": 19.55,
+				"peak_alive": 6,
+				"seconds": 18.6,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4322,14 +4481,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1335,
-				"tower_damage": 1009.21927,
-				"tower_start": 2711.158776,
+				"start_tick": 1356,
+				"tower_damage": 1004.49314,
+				"tower_start": 2510.244794,
 				"towers": 4
 			},
 			{
-				"basic_damage": 270.414861,
-				"basic_start": 758.195492,
+				"basic_damage": 361.313052,
+				"basic_start": 767.942954,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4341,11 +4500,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 263,
-				"hero_damage": 270.414861,
-				"hero_start": 758.195492,
+				"hero_damage": 361.313052,
+				"hero_start": 767.942954,
 				"night": 7,
-				"peak_alive": 7,
-				"seconds": 20.3,
+				"peak_alive": 5,
+				"seconds": 21.7,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4354,14 +4513,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1726,
-				"tower_damage": 1116.87848,
-				"tower_start": 3720.378046,
+				"start_tick": 1728,
+				"tower_damage": 1386.016749,
+				"tower_start": 3514.737934,
 				"towers": 4
 			},
 			{
-				"basic_damage": 452.833216,
-				"basic_start": 1028.610353,
+				"basic_damage": 470.35473,
+				"basic_start": 1129.256006,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4372,12 +4531,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 533,
-				"hero_damage": 452.833216,
-				"hero_start": 1028.610353,
+				"gold_end": 548,
+				"hero_damage": 470.35473,
+				"hero_start": 1129.256006,
 				"night": 8,
 				"peak_alive": 10,
-				"seconds": 26.8,
+				"seconds": 28.3,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4386,9 +4545,9 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2132,
-				"tower_damage": 2194.7289095,
-				"tower_start": 4837.25652600001,
+				"start_tick": 2162,
+				"tower_damage": 2262.6188935,
+				"tower_start": 4900.754683,
 				"towers": 4
 			}
 		],
@@ -4398,19 +4557,24 @@
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 27310.0709955001,
-		"tower_damage": 7031.9854355
+		"summon_damage": 27060.5156875001,
+		"tower_damage": 7163.3735765
 	},
 	{
 		"active": true,
-		"basic_damage": 472.845,
+		"affix_damage": 0.0,
+		"affixes": {
+			"weapon": ""
+		},
+		"basic_damage": 477.39675,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": -4.0,
+		"form": "",
 		"gold": 88,
 		"hero": "berserker",
-		"hero_damage": 472.845,
+		"hero_damage": 477.39675,
 		"hp": 169.0,
 		"kills": 41,
 		"level": 3,
@@ -4469,7 +4633,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 237.945,
+				"basic_damage": 242.49675,
 				"basic_start": 234.9,
 				"core_end": -4.0,
 				"core_start": 106.0,
@@ -4477,7 +4641,7 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 88,
-				"hero_damage": 237.945,
+				"hero_damage": 242.49675,
 				"hero_start": 234.9,
 				"night": 3,
 				"peak_alive": 15,
@@ -4491,7 +4655,7 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 617,
-				"tower_damage": 1392.935,
+				"tower_damage": 1316.997,
 				"tower_start": 1031.6,
 				"towers": 3
 			}
@@ -4503,18 +4667,28 @@
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
-		"tower_damage": 2424.535
+		"tower_damage": 2348.597
 	},
 	{
 		"active": true,
-		"basic_damage": 1781.5737725,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 1773.6427725,
 		"build": "summon",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"form": "",
 		"gold": 647,
 		"hero": "berserker",
-		"hero_damage": 1781.5737725,
+		"hero_damage": 1773.6427725,
 		"hp": 303.0,
 		"kills": 295,
 		"level": 11,
@@ -4729,7 +4903,7 @@
 				"towers": 4
 			},
 			{
-				"basic_damage": 757.843562500001,
+				"basic_damage": 749.9125625,
 				"basic_start": 1023.73021,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -4742,7 +4916,7 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 647,
-				"hero_damage": 757.843562500001,
+				"hero_damage": 749.9125625,
 				"hero_start": 1023.73021,
 				"night": 8,
 				"peak_alive": 10,
@@ -4756,7 +4930,7 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 2090,
-				"tower_damage": 2434.390719,
+				"tower_damage": 2442.321719,
 				"tower_start": 4418.6621975,
 				"towers": 4
 			}
@@ -4768,15 +4942,25 @@
 		"skill_damage": 0.0,
 		"skills": true,
 		"summon_damage": 27188.8733110001,
-		"tower_damage": 6853.0529165
+		"tower_damage": 6860.9839165
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
 		"basic_damage": 4931.22743399999,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"form": "",
 		"gold": 558,
 		"hero": "frost_mage",
 		"hero_damage": 4931.22743399999,
@@ -4860,7 +5044,7 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 312,
-				"tower_damage": 648.355448,
+				"tower_damage": 646.237948,
 				"tower_start": 667.999,
 				"towers": 3
 			},
@@ -4889,8 +5073,8 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 600,
-				"tower_damage": 716.408312,
-				"tower_start": 1316.354448,
+				"tower_damage": 716.408311999999,
+				"tower_start": 1314.236948,
 				"towers": 4
 			},
 			{
@@ -4922,7 +5106,7 @@
 				"skill_start": 0.0,
 				"start_tick": 938,
 				"tower_damage": 449.837280000003,
-				"tower_start": 2032.76276,
+				"tower_start": 2030.64526,
 				"towers": 4
 			},
 			{
@@ -4954,7 +5138,7 @@
 				"skill_start": 0.0,
 				"start_tick": 1294,
 				"tower_damage": 683.218789999999,
-				"tower_start": 2482.60004,
+				"tower_start": 2480.48254,
 				"towers": 4
 			},
 			{
@@ -4986,7 +5170,7 @@
 				"skill_start": 0.0,
 				"start_tick": 1666,
 				"tower_damage": 1338.4886085,
-				"tower_start": 3165.81883,
+				"tower_start": 3163.70133,
 				"towers": 4
 			},
 			{
@@ -5018,7 +5202,7 @@
 				"skill_start": 0.0,
 				"start_tick": 2078,
 				"tower_damage": 1905.3611275,
-				"tower_start": 4504.3074385,
+				"tower_start": 4502.1899385,
 				"towers": 4
 			}
 		],
@@ -5028,16 +5212,26 @@
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24482.604,
-		"tower_damage": 6409.668566
+		"summon_damage": 24484.7215,
+		"tower_damage": 6407.551066
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
 		"basic_damage": 3996.5094585,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"form": "",
 		"gold": 563,
 		"hero": "frost_mage",
 		"hero_damage": 3996.5094585,
@@ -5123,7 +5317,7 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 312,
-				"tower_damage": 648.355448,
+				"tower_damage": 646.237948,
 				"tower_start": 667.999,
 				"towers": 3
 			},
@@ -5153,8 +5347,8 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 600,
-				"tower_damage": 716.408312,
-				"tower_start": 1316.354448,
+				"tower_damage": 716.408311999999,
+				"tower_start": 1314.236948,
 				"towers": 4
 			},
 			{
@@ -5185,8 +5379,8 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 938,
-				"tower_damage": 215.294400000002,
-				"tower_start": 2032.76276,
+				"tower_damage": 215.294400000001,
+				"tower_start": 2030.64526,
 				"towers": 4
 			},
 			{
@@ -5218,7 +5412,7 @@
 				"skill_start": 0.0,
 				"start_tick": 1289,
 				"tower_damage": 715.946359999999,
-				"tower_start": 2248.05716,
+				"tower_start": 2245.93966,
 				"towers": 4
 			},
 			{
@@ -5250,7 +5444,7 @@
 				"skill_start": 0.0,
 				"start_tick": 1650,
 				"tower_damage": 1871.4800015,
-				"tower_start": 2964.00352,
+				"tower_start": 2961.88602,
 				"towers": 4
 			},
 			{
@@ -5282,7 +5476,7 @@
 				"skill_start": 0.0,
 				"start_tick": 2059,
 				"tower_damage": 2309.62465,
-				"tower_start": 4835.4835215,
+				"tower_start": 4833.3660215,
 				"towers": 4
 			}
 		],
@@ -5292,16 +5486,26 @@
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24681.88237,
-		"tower_damage": 7145.1081715
+		"summon_damage": 24683.99987,
+		"tower_damage": 7142.9906715
 	},
 	{
 		"active": true,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
 		"basic_damage": 4651.472847,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"form": "",
 		"gold": 548,
 		"hero": "frost_mage",
 		"hero_damage": 4651.472847,
@@ -5385,7 +5589,7 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 312,
-				"tower_damage": 648.355448,
+				"tower_damage": 646.237948,
 				"tower_start": 667.999,
 				"towers": 3
 			},
@@ -5415,7 +5619,7 @@
 				"skill_start": 0.0,
 				"start_tick": 600,
 				"tower_damage": 626.296215999999,
-				"tower_start": 1316.354448,
+				"tower_start": 1314.236948,
 				"towers": 4
 			},
 			{
@@ -5446,7 +5650,7 @@
 				"skill_start": 0.0,
 				"start_tick": 923,
 				"tower_damage": 369.817600000002,
-				"tower_start": 1942.650664,
+				"tower_start": 1940.533164,
 				"towers": 4
 			},
 			{
@@ -5478,7 +5682,7 @@
 				"skill_start": 0.0,
 				"start_tick": 1271,
 				"tower_damage": 918.43565,
-				"tower_start": 2312.468264,
+				"tower_start": 2310.350764,
 				"towers": 4
 			},
 			{
@@ -5510,7 +5714,7 @@
 				"skill_start": 0.0,
 				"start_tick": 1644,
 				"tower_damage": 1479.263083,
-				"tower_start": 3230.903914,
+				"tower_start": 3228.786414,
 				"towers": 4
 			},
 			{
@@ -5542,7 +5746,7 @@
 				"skill_start": 0.0,
 				"start_tick": 2060,
 				"tower_damage": 2143.5357175,
-				"tower_start": 4710.166997,
+				"tower_start": 4708.049497,
 				"towers": 4
 			}
 		],
@@ -5552,19 +5756,26 @@
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24318.3244385,
-		"tower_damage": 6853.7027145
+		"summon_damage": 24320.4419385,
+		"tower_damage": 6851.5852145
 	},
 	{
 		"active": true,
-		"basic_damage": 1961.575,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"weapon": ""
+		},
+		"basic_damage": 2137.18000000001,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 52.6086956521739,
+		"form": "",
 		"gold": 149,
 		"hero": "frost_mage",
-		"hero_damage": 1961.575,
+		"hero_damage": 2137.18000000001,
 		"hp": -6.04347826086954,
 		"kills": 81,
 		"level": 5,
@@ -5623,7 +5834,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 594.655,
+				"basic_damage": 691.235750000001,
 				"basic_start": 366.1,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -5631,11 +5842,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 129,
-				"hero_damage": 594.655,
+				"hero_damage": 691.235750000001,
 				"hero_start": 366.1,
 				"night": 3,
 				"peak_alive": 15,
-				"seconds": 25.85,
+				"seconds": 32.95,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -5645,13 +5856,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 393,
-				"tower_damage": 1284.545,
+				"tower_damage": 1187.96425,
 				"tower_start": 900.4,
 				"towers": 3
 			},
 			{
-				"basic_damage": 1000.81999999999,
-				"basic_start": 960.755,
+				"basic_damage": 1079.84425000001,
+				"basic_start": 1057.33575,
 				"core_end": 52.6086956521739,
 				"core_start": 150.0,
 				"equipment": {
@@ -5660,11 +5871,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 149,
-				"hero_damage": 1000.81999999999,
-				"hero_start": 960.755,
+				"hero_damage": 1079.84425000001,
+				"hero_start": 1057.33575,
 				"night": 4,
-				"peak_alive": 16,
-				"seconds": 119.7,
+				"peak_alive": 17,
+				"seconds": 120.2,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -5673,9 +5884,9 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 910,
-				"tower_damage": 2172.37000000002,
-				"tower_start": 2184.945,
+				"start_tick": 1052,
+				"tower_damage": 2082.38575000001,
+				"tower_start": 2088.36425,
 				"towers": 4
 			}
 		],
@@ -5686,19 +5897,29 @@
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
-		"tower_damage": 4357.31500000002
+		"tower_damage": 4170.75000000001
 	},
 	{
 		"active": true,
-		"basic_damage": 5050.261121,
+		"affix_damage": 0.0,
+		"affixes": {
+			"chest": "",
+			"hands": "",
+			"head": "",
+			"legs": "",
+			"relic": "",
+			"weapon": ""
+		},
+		"basic_damage": 5317.98217599999,
 		"build": "summon",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"form": "",
 		"gold": 632,
 		"hero": "frost_mage",
-		"hero_damage": 5050.261121,
-		"hp": 208.531707317073,
+		"hero_damage": 5317.98217599999,
+		"hp": 211.409005628518,
 		"kills": 295,
 		"level": 11,
 		"night": 8,
@@ -5756,7 +5977,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 379.98192,
+				"basic_damage": 352.58367,
 				"basic_start": 282.3982,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -5767,11 +5988,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 128,
-				"hero_damage": 379.98192,
+				"hero_damage": 352.58367,
 				"hero_start": 282.3982,
 				"night": 3,
 				"peak_alive": 8,
-				"seconds": 12.2,
+				"seconds": 12.15,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -5781,13 +6002,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 312,
-				"tower_damage": 573.148799999999,
+				"tower_damage": 600.547049999999,
 				"tower_start": 667.999,
 				"towers": 3
 			},
 			{
-				"basic_damage": 416.816872,
-				"basic_start": 662.38012,
+				"basic_damage": 448.33548,
+				"basic_start": 634.98187,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5797,8 +6018,8 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 163,
-				"hero_damage": 416.816872,
-				"hero_start": 662.38012,
+				"hero_damage": 448.33548,
+				"hero_start": 634.98187,
 				"night": 4,
 				"peak_alive": 3,
 				"seconds": 16.1,
@@ -5810,14 +6031,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 556,
-				"tower_damage": 349.4332,
-				"tower_start": 1241.1478,
+				"start_tick": 555,
+				"tower_damage": 358.94008,
+				"tower_start": 1268.54605,
 				"towers": 4
 			},
 			{
-				"basic_damage": 559.36768,
-				"basic_start": 1079.196992,
+				"basic_damage": 670.648719999999,
+				"basic_start": 1083.31735,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5829,10 +6050,10 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 203,
-				"hero_damage": 559.36768,
-				"hero_start": 1079.196992,
+				"hero_damage": 670.648719999999,
+				"hero_start": 1083.31735,
 				"night": 5,
-				"peak_alive": 4,
+				"peak_alive": 5,
 				"seconds": 17.45,
 				"skill_damage": 0.0,
 				"skill_levels": [
@@ -5842,14 +6063,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 878,
-				"tower_damage": 412.9476,
-				"tower_start": 1590.581,
+				"start_tick": 877,
+				"tower_damage": 431.455239999999,
+				"tower_start": 1627.48613,
 				"towers": 4
 			},
 			{
-				"basic_damage": 606.830611999999,
-				"basic_start": 1638.564672,
+				"basic_damage": 560.508479999998,
+				"basic_start": 1753.96607,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5861,10 +6082,10 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 294,
-				"hero_damage": 606.830611999999,
-				"hero_start": 1638.564672,
+				"hero_damage": 560.508479999998,
+				"hero_start": 1753.96607,
 				"night": 6,
-				"peak_alive": 5,
+				"peak_alive": 4,
 				"seconds": 18.65,
 				"skill_damage": 0.0,
 				"skill_levels": [
@@ -5874,14 +6095,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1227,
-				"tower_damage": 891.118970000001,
-				"tower_start": 2003.5286,
+				"start_tick": 1226,
+				"tower_damage": 740.12846,
+				"tower_start": 2058.94137,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1079.8992545,
-				"basic_start": 2245.395284,
+				"basic_damage": 1048.199492,
+				"basic_start": 2314.47455,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5893,11 +6114,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 302,
-				"hero_damage": 1079.8992545,
-				"hero_start": 2245.395284,
+				"hero_damage": 1048.199492,
+				"hero_start": 2314.47455,
 				"night": 7,
 				"peak_alive": 6,
-				"seconds": 19.9,
+				"seconds": 20.0,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5906,14 +6127,14 @@
 					4
 				],
 				"skill_start": 0.0,
-				"start_tick": 1600,
-				"tower_damage": 1349.257086,
-				"tower_start": 2894.64757,
+				"start_tick": 1599,
+				"tower_damage": 1339.8385985,
+				"tower_start": 2799.06983,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1724.9665825,
-				"basic_start": 3325.2945385,
+				"basic_damage": 1955.30813399999,
+				"basic_start": 3362.674042,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5925,11 +6146,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 632,
-				"hero_damage": 1724.9665825,
-				"hero_start": 3325.2945385,
+				"hero_damage": 1955.30813399999,
+				"hero_start": 3362.674042,
 				"night": 8,
-				"peak_alive": 8,
-				"seconds": 25.6,
+				"peak_alive": 5,
+				"seconds": 27.0,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5938,9 +6159,9 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 1998,
-				"tower_damage": 1618.112815,
-				"tower_start": 4243.904656,
+				"start_tick": 1999,
+				"tower_damage": 1871.941465,
+				"tower_start": 4138.9084285,
 				"towers": 4
 			}
 		],
@@ -5950,7 +6171,7 @@
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24911.2214079999,
-		"tower_damage": 5862.017471
+		"summon_damage": 24494.6679304999,
+		"tower_damage": 6010.8498935
 	}
 ]

@@ -104,5 +104,34 @@ func _initialize() -> void:
 				saved = true
 		assert(saved and game.state == "won")
 		game.free()
+	# 下列为界面夹具截图，解锁与完整通关另由形态矩阵验证。
+	game = load("res://scripts/game.gd").new()
+	root.add_child(game)
+	game.set_process(false)
+	game.select_hero("frost_mage")
+	game.rng.seed = 7
+	assert(game.buy_affix_chest())
+	game.equip_item(0)
+	game.inventory_open = true
+	game.queue_redraw()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://test_logs/affix_inventory.png")
+	game.inventory_open = false
+	game.wave = 2
+	game.evolution_open = true
+	game.queue_redraw()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://test_logs/evolution_selection.png")
+	game.evolution_open = false
+	game.wave = 5
+	game.start_wave()
+	game.update_spawning(0.05)
+	game.enemies[0].pos = game.player_pos + Vector2(-100, 0)
+	game.enemies[0].role = "shock"
+	game.evolution_system.tick(game, 4.1)
+	game.queue_redraw()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://test_logs/enemy_counter.png")
+	game.free()
 	print("visual_capture=PASS hero_selection shop inventory goblin_camp balance_combat boss_guard boss_break victory defeat")
 	quit(0)

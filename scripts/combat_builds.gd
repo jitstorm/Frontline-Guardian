@@ -12,7 +12,7 @@ func clear() -> void:
 	familiars.clear()
 	command_time = 0.0
 
-## 对真实命中的普攻累计连击，第三击触发追击、破甲与续航，空枪不能累计。
+## 对真实命中的普攻累计连击，默认第三击触发追击、破甲与续航；收割形态改为第五击，空枪不能累计。
 ## @param game 本局战场，保存英雄与唯一生命状态。
 ## @param center 实际命中位置，单位为世界像素。
 ## @param camp 当前营地；为空表示基地。
@@ -21,14 +21,32 @@ func on_basic_hit(game: Node2D, center: Vector2, camp: Node2D = null) -> void:
 	game.hero.fervor_stacks = mini(8, game.hero.fervor_stacks + 1)
 	game.hero.fervor_time = 3.0
 	game.hero.combo_hits += 1
-	if game.hero.combo_hits < 3: return
+	if game.hero.combo_hits < (5 if game.hero.evolution == "reaper" else 3): return
 	game.hero.combo_hits = 0
 	# 追击是独立的被动伤害来源，不能再次触发连击，否则范围命中会无限递归。
 	var power: float = game.hero.stats().attack * (0.80 + 0.18 * (game.hero.skill_levels[0] - 1))
 	var radius: float = 65.0 + 5.0 * game.hero.skill_levels[0]
 	if game.hero.has_effect("wide_sweep"): radius *= 1.4
 	if game.hero.has_effect("rage_chain"): power *= 1.25
+	if game.hero.evolution == "reaper":
+		power *= 2.0
+		radius = 140.0
 	var targets: Array = game.enemies if camp == null else camp.enemies
+	var chained: Array = targets.duplicate()
+	chained.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.pos.distance_to(center) < b.pos.distance_to(center))
+	if game.hero.evolution == "chain":
+		# 连锁按最近距离最多跳向三名敌人；保存对象后重新查索引，击杀不能错伤后移的敌人。
+		var previous: Vector2 = center
+		for target in chained.slice(0, 3):
+			if target.pos.distance_to(center) > 180.0: continue
+			var index := targets.find(target)
+			if index < 0: continue
+			game.evolution_system.arcs.append({"start": previous, "end": target.pos, "time": 0.2})
+			previous = target.pos
+			if camp == null: game.apply_bullet_damage(index, {"damage": power * 0.7, "velocity": Vector2.ZERO, "knockback": 0.0, "source": "passive", "magic": true, "break_seconds": game.ARMOR_BREAK_SECONDS}, 1.0)
+			else: camp.damage_enemy(index, power * 0.7, true)
+		game.player_hp = minf(game.max_player_hp, game.player_hp + 2.0 * game.hero.skill_levels[1])
+		return
 	for index in range(targets.size() - 1, -1, -1):
 		if targets[index].pos.distance_to(center) > radius: continue
 		if camp == null:
@@ -50,13 +68,16 @@ func cast(game: Node2D, index: int, aim: Vector2, camp: Node2D = null) -> bool:
 	match index:
 		0:
 			var limit := 3 if game.hero.skill_levels[0] >= 3 else 2
+			if game.hero.evolution == "sacrifice" and familiars.size() >= limit: return false
 			while familiars.size() < limit:
-				familiars.append({"pos": pos, "life": 14.0, "fire_timer": 0.0})
-			for familiar in familiars: familiar.life = 14.0
+				familiars.append({"pos": pos, "life": 6.0 if game.hero.evolution == "sacrifice" else 10.0 if game.hero.evolution == "hunter" else 14.0, "fire_timer": 0.0})
+			if game.hero.evolution != "sacrifice":
+				for familiar in familiars: familiar.life = 10.0 if game.hero.evolution == "hunter" else 14.0
 		1:
 			game.hero.ward_time = 5.0
 			game.player_hp = minf(game.max_player_hp, game.player_hp + 6.0 * game.hero.skill_levels[1])
-			for familiar in familiars: familiar.life = minf(17.0, familiar.life + 3.0)
+			for familiar in familiars:
+				if game.hero.evolution != "sacrifice": familiar.life = minf(17.0, familiar.life + 3.0)
 		2:
 			var destination: Vector2 = (pos + (aim - pos).normalized() * (95.0 + 10.0 * game.hero.skill_levels[2])).clamp(Vector2(50, 110), Vector2(1230, 650))
 			if camp == null: game.player_pos = destination
@@ -65,7 +86,7 @@ func cast(game: Node2D, index: int, aim: Vector2, camp: Node2D = null) -> bool:
 		3:
 			command_time = 5.0
 			command_pos = aim
-	game.hero.cooldowns[index] = [8.0, 10.0, 8.0, 18.0][index]
+	game.hero.cooldowns[index] = [6.0 if game.hero.evolution == "sacrifice" else 8.0, 10.0, 8.0, 18.0][index]
 	game.show_notice(game.hero.skill_names()[index])
 	return true
 
@@ -83,6 +104,7 @@ func tick(game: Node2D, delta: float, camp: Node2D = null) -> void:
 		var familiar := familiars[i]
 		familiar.life -= delta
 		if familiar.life <= 0.0:
+			if game.hero.evolution == "sacrifice": game.evolution_system.burst(game, camp, familiar.pos, 150.0, game.hero.stats().attack * (1.0 + game.hero.stats().skill_power) * 1.5, "summon")
 			familiars.remove_at(i)
 			continue
 		var offset := Vector2(-45 + i * 45, -42)
@@ -101,9 +123,10 @@ func tick(game: Node2D, delta: float, camp: Node2D = null) -> void:
 		# 幻影法弹通过正式碰撞结算破甲与伤害，不能直接隔空扣除目标生命。
 		var direction: Vector2 = (targets[target].pos - familiar.pos).normalized()
 		var power: float = game.hero.stats().attack * (1.0 + game.hero.stats().skill_power) * (0.75 + 0.18 * (game.hero.skill_levels[0] - 1))
+		if game.hero.evolution == "hunter": power *= 0.8
 		if command_time > 0.0: power *= 1.3 + 0.1 * game.hero.skill_levels[3]
-		projectiles.append({"pos": familiar.pos, "velocity": direction * 520.0, "damage": power, "life": 0.8, "radius": 6.0, "color": Color("a1e9ff"), "knockback": 0.0, "source": "summon", "magic": true, "break_seconds": game.ARMOR_BREAK_SECONDS, "splash": 65.0 if game.hero.has_effect("frost_burst") else 45.0})
-		familiar.fire_timer = 0.80
+		projectiles.append({"pos": familiar.pos, "velocity": direction * 520.0, "damage": power, "life": 0.8, "radius": 6.0, "color": Color("a1e9ff"), "knockback": 0.0, "source": "summon", "magic": true, "break_seconds": game.ARMOR_BREAK_SECONDS, "splash": 0.0 if game.hero.evolution == "hunter" else 65.0 if game.hero.has_effect("frost_burst") else 45.0})
+		familiar.fire_timer = 0.5 if game.hero.evolution == "hunter" else 0.80
 
 ## 在当前地图绘制带持续时间条的半透明幻影，与真实敌人及本体区分。
 ## @param game 提供本局合法贴图的战场。
@@ -112,4 +135,4 @@ func draw(game: Node2D, canvas: Node2D) -> void:
 	for familiar in familiars:
 		canvas.draw_arc(familiar.pos, 17, 0, TAU, 20, Color("a1e9ff"), 1.5)
 		canvas.draw_texture_rect(game.HERO_MAGE, Rect2(familiar.pos - Vector2(15, 15), Vector2(30, 30)), false, Color(0.55, 0.9, 1.0, 0.8))
-		canvas.draw_rect(Rect2(familiar.pos + Vector2(-15, -22), Vector2(30.0 * minf(1.0, familiar.life / 14.0), 3)), Color("a1e9ff"))
+		canvas.draw_rect(Rect2(familiar.pos + Vector2(-15, -22), Vector2(30.0 * minf(1.0, familiar.life / (6.0 if game.hero.evolution == "sacrifice" else 10.0 if game.hero.evolution == "hunter" else 14.0)), 3)), Color("a1e9ff"))

@@ -44,6 +44,8 @@ func _ready() -> void:
 		make_goblin(Vector2(850, 510), "elite", 170.0, 12.0),
 		make_goblin(Vector2(1050, 365), "boss", 340.0, 16.0)
 	]
+	enemies[3].role = "shield"
+	enemies[4].role = "shock"
 	queue_redraw()
 
 ## 创建副本敌人的生命、攻击和冷却字段，供逐帧战斗结算使用。
@@ -69,6 +71,7 @@ func _process(delta: float) -> void:
 	fire_timer = maxf(0.0, fire_timer - delta)
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and fire_timer <= 0.0 and not reward_spawned:
 		fire_at(get_global_mouse_position())
+	game.evolution_system.tick(game, delta, self)
 	update_enemies(delta)
 	game.combat_builds.tick(game, delta, self)
 	update_bullets(delta)
@@ -113,9 +116,13 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	if game.hero.has_effect("frost_burst") and game.hero.hero_id == "frost_mage" and index == 1: radius *= 1.4
 	var power: float = game.hero.skill_damage(index)
 	if game.hero.has_effect("rage_chain") and game.hero.hero_id == "berserker" and index == 2: power *= 1.45
+	if index == 0 and game.hero.evolution == "nova":
+		center = hero_pos
+		radius = 115.0
+		power *= 0.8
 	for i in range(enemies.size() - 1, -1, -1):
 		if enemies[i].pos.distance_to(center) > radius + 18.0: continue
-		if game.hero.hero_id == "berserker" and index == 0 and (enemies[i].pos - hero_pos).normalized().dot(direction) < 0.0: continue
+		if game.hero.hero_id == "berserker" and game.hero.evolution != "nova" and index == 0 and (enemies[i].pos - hero_pos).normalized().dot(direction) < 0.0: continue
 		var target := enemies[i]
 		damage_enemy(i, power, index != (1 if game.hero.hero_id == "berserker" else 2))
 		# 保存实际命中对象，击杀删除后不能把减速错误施加给移到此索引的另一只怪。
@@ -124,6 +131,9 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	if game.hero.hero_id == "berserker" and index == 1: game.player_hp = minf(game.max_player_hp, game.player_hp + 12.0)
 	if game.hero.hero_id == "frost_mage" and index == 2: game.player_hp = minf(game.max_player_hp, game.player_hp + 6.0)
 	game.hero.cooldowns[index] = [3.0, 9.0, 8.0, 22.0][index] if game.hero.hero_id == "berserker" else [2.8, 10.0, 9.0, 23.0][index]
+	if index == 0 and game.hero.evolution == "echo":
+		game.evolution_system.burst(game, self, center + direction * 120.0, radius, power * 0.7, "skill")
+		game.hero.cooldowns[index] += 1.0
 	return true
 
 ## 扣除真实敌人生命并处理击杀；Boss 击杀才创建可拾取奖励。
@@ -134,7 +144,10 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 func damage_enemy(index: int, damage: float, offensive_skill: bool = false) -> void:
 	if index < 0 or index >= enemies.size(): return
 	var enemy := enemies[index]
-	if offensive_skill: enemy.exposed_time = game.ARMOR_BREAK_SECONDS
+	if offensive_skill:
+		enemy.exposed_time = game.ARMOR_BREAK_SECONDS
+		game.evolution_system.interrupt(enemy)
+	elif enemy.get("shield_time", 0.0) > 0.0: damage *= 0.65
 	var guarded: bool = enemy.kind in ["elite", "boss"] and enemy.get("exposed_time", 0.0) <= 0.0
 	enemy.hp -= damage * (0.75 if enemy.kind == "elite" else 1.0) * (game.GUARD_DAMAGE_MULTIPLIER if guarded else 1.0)
 	enemy.hit_time = 0.16
@@ -174,7 +187,7 @@ func update_enemies(delta: float) -> void:
 			enemy.attack_timer = 1.8 if enemy.kind == "boss" else 1.1
 		else:
 			var speed := 68.0 if enemy.kind == "boss" else 95.0 if enemy.kind == "elite" else 115.0
-			if enemy.slow_time > 0.0: speed *= 0.45
+			if enemy.slow_time > 0.0: speed *= enemy.get("slow_factor", 0.45)
 			enemy.pos = enemy.pos.move_toward(hero_pos, speed * delta)
 		enemies[i] = enemy
 
@@ -194,7 +207,9 @@ func update_bullets(delta: float) -> void:
 				for target in range(enemies.size() - 1, -1, -1):
 					if target == j or (radius > 0.0 and enemies[target].pos.distance_to(center) <= radius):
 						damage_enemy(target, bullet.damage, bullet.get("break_seconds", 0.0) > 0.0)
-				if bullet.get("source", "hero") == "hero": game.combat_builds.on_basic_hit(game, center, self)
+				if bullet.get("source", "hero") == "hero":
+					game.combat_builds.on_basic_hit(game, center, self)
+					game.evolution_system.on_hit(game, center, self)
 				consumed = true
 				break
 		if consumed: bullets.remove_at(i)
@@ -243,6 +258,7 @@ func _draw() -> void:
 	for bullet in bullets: draw_circle(bullet.pos, 6.0, Color("ffe074"))
 	for bullet in hostile_bullets: draw_circle(bullet.pos, 8.0, Color("ff7777"))
 	game.combat_builds.draw(game, self)
+	game.evolution_system.draw(self, enemies, UI_FONT)
 	draw_texture_rect(HERO_MAGE if game.hero.hero_id == "frost_mage" else HERO_WARRIOR, Rect2(hero_pos - Vector2(22, 22), Vector2(44, 44)), false)
 	if reward_spawned and not reward_taken:
 		draw_texture_rect(LOOT_ART, Rect2(reward_pos - Vector2(22, 22), Vector2(44, 44)), false)
