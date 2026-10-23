@@ -22,6 +22,8 @@ var state := "ready"
 var enemies: Array[Dictionary] = []
 var towers: Array[Dictionary] = []
 var bullets: Array[Dictionary] = []
+var hit_texts: Array[Dictionary] = []
+var impacts: Array[Dictionary] = []
 var spawn_left := 0
 var spawned_this_wave := 0
 var spawn_timer := 0.0
@@ -44,6 +46,7 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		return
 	move_player(delta)
+	update_feedback(delta)
 	if state == "fighting":
 		update_spawning(delta)
 		update_enemies(delta)
@@ -173,14 +176,17 @@ func update_enemies(delta: float) -> void:
 		if enemy.kind == "ranged" and pos.distance_to(player_pos) < 180.0:
 			if timer <= 0.0:
 				player_hp -= 6.0
+				add_damage_text(player_pos, 6.0, Color("ff7777"))
 				timer = 1.35
 		elif pos.distance_to(player_pos) < enemy.radius + 15.0:
 			if timer <= 0.0:
 				player_hp -= 18.0 if enemy.kind == "boss" else 9.0
+				add_damage_text(player_pos, 18.0 if enemy.kind == "boss" else 9.0, Color("ff7777"))
 				timer = 0.9
 		elif enemy.segment >= PATH.size():
 			if timer <= 0.0:
 				core_hp -= 30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0
+				add_damage_text(CORE_POS, 30.0 if enemy.kind == "boss" else 16.0 if enemy.kind == "elite" else 11.0, Color("ff7777"))
 				timer = 1.0
 		else:
 			var remaining: float = enemy.speed * delta
@@ -207,7 +213,8 @@ func shoot_player(delta: float) -> void:
 	var aim := get_global_mouse_position() - player_pos
 	if aim.length() < 4.0:
 		return
-	bullets.append({"pos": player_pos, "velocity": aim.normalized() * BULLET_SPEED, "damage": player_damage, "life": 1.6, "radius": 5.0, "color": Color("ffe074")})
+	bullets.append({"pos": player_pos, "velocity": aim.normalized() * BULLET_SPEED, "damage": player_damage, "life": 1.6, "radius": 5.0, "color": Color("ffe074"), "knockback": 14.0})
+	impacts.append({"pos": player_pos + aim.normalized() * 24.0, "time": 0.12, "color": Color("ffe074")})
 	fire_timer = 0.19
 
 ## 炮塔自动选取范围内最近敌人；速射塔与重炮塔有不同射程、伤害及射速。
@@ -228,7 +235,7 @@ func update_towers(delta: float) -> void:
 				target = j
 		if target >= 0:
 			var direction: Vector2 = (enemies[target].pos - tower.pos).normalized()
-			bullets.append({"pos": tower.pos, "velocity": direction * 520.0, "damage": tower.damage * tower_multiplier, "life": 1.0, "radius": 6.0 if tower.kind == 1 else 10.0, "color": Color("7fffd4") if tower.kind == 1 else Color("ff9b71")})
+			bullets.append({"pos": tower.pos, "velocity": direction * 520.0, "damage": tower.damage * tower_multiplier, "life": 1.0, "radius": 6.0 if tower.kind == 1 else 10.0, "color": Color("7fffd4") if tower.kind == 1 else Color("ff9b71"), "knockback": 7.0 if tower.kind == 1 else 26.0})
 			tower.cooldown = 0.42 if tower.kind == 1 else 1.15
 		towers[i] = tower
 
@@ -247,7 +254,11 @@ func update_bullets(delta: float) -> void:
 		if hit >= 0:
 			var enemy := enemies[hit]
 			# 重甲减伤在命中结算时统一应用，避免玩家枪械和炮塔攻击语义不一致。
-			enemy.hp -= bullet.damage * (0.55 if enemy.kind == "armored" else 1.0)
+			var dealt: float = bullet.damage * (0.55 if enemy.kind == "armored" else 1.0)
+			enemy.hp -= dealt
+			enemy.pos -= bullet.velocity.normalized() * bullet.knockback
+			add_damage_text(enemy.pos, dealt, Color("ffe074"))
+			impacts.append({"pos": bullet.pos, "time": 0.2, "color": bullet.color})
 			if enemy.hp <= 0.0:
 				enemies.remove_at(hit)
 				gold += enemy.reward
@@ -258,6 +269,26 @@ func update_bullets(delta: float) -> void:
 			bullets.remove_at(i)
 		else:
 			bullets[i] = bullet
+
+## 记录一次命中数字，显示实际结算伤害而非武器面板值。
+## @param pos 命中位置，单位为画面像素。
+## @param amount 扣除的生命值。
+## @param color 区分我方和敌方伤害的颜色。
+func add_damage_text(pos: Vector2, amount: float, color: Color) -> void:
+	hit_texts.append({"pos": pos, "value": ceili(amount), "time": 0.65, "color": color})
+
+## 逐帧消退枪口闪光、命中光圈和飘字，避免特效无限累积。
+## @param delta 本帧经过的秒数。
+func update_feedback(delta: float) -> void:
+	for i in range(hit_texts.size() - 1, -1, -1):
+		hit_texts[i].time -= delta
+		hit_texts[i].pos.y -= 36.0 * delta
+		if hit_texts[i].time <= 0.0:
+			hit_texts.remove_at(i)
+	for i in range(impacts.size() - 1, -1, -1):
+		impacts[i].time -= delta
+		if impacts[i].time <= 0.0:
+			impacts.remove_at(i)
 
 ## 检查目标是否远离道路、核心、玩家与其他塔，避免堵住通路。
 ## @param pos 待放置炮塔的世界坐标，单位为画面像素。
@@ -333,6 +364,12 @@ func _draw() -> void:
 		draw_rect(Rect2(enemy.pos + Vector2(-enemy.radius, -enemy.radius - 9.0), Vector2(enemy.radius * 2.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
 	for bullet in bullets:
 		draw_circle(bullet.pos, bullet.radius, bullet.color)
+	for impact in impacts:
+		draw_arc(impact.pos, 9.0 + 40.0 * (0.2 - impact.time), 0.0, TAU, 16, impact.color, 2.0)
+	for item in hit_texts:
+		var tint: Color = item.color
+		tint.a = clampf(item.time / 0.65, 0.0, 1.0)
+		draw_string(ThemeDB.fallback_font, item.pos, str(item.value), HORIZONTAL_ALIGNMENT_LEFT, -1, 17, tint)
 	draw_circle(player_pos, 17.0, Color("ffe074"))
 	draw_line(player_pos, player_pos + (get_global_mouse_position() - player_pos).normalized() * 27.0, Color.WHITE, 5.0)
 	draw_rect(Rect2(0, 0, 1280, 85), Color("182b41"))

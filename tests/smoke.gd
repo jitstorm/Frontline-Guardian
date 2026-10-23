@@ -23,6 +23,11 @@ func _initialize() -> void:
 	assert(game.state == "fighting" and game.wave == 1)
 	game.update_spawning(0.1)
 	assert(game.enemies.size() == 1 and game.spawn_left == 5)
+	var enemy_pos: Vector2 = game.enemies[0].pos
+	game.bullets.append({"pos": enemy_pos, "velocity": Vector2.RIGHT, "damage": 10.0, "life": 1.0, "radius": 5.0, "color": Color.WHITE, "knockback": 12.0})
+	game.update_bullets(0.0)
+	assert(game.enemies[0].hp < game.enemies[0].max_hp)
+	assert(game.enemies[0].pos != enemy_pos and game.hit_texts.size() == 1)
 	game.selected_tower = 1
 	game.build_tower(Vector2(300, 120))
 	assert(game.towers.size() == 1 and game.gold == 60)
