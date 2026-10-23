@@ -8,6 +8,11 @@ func _initialize() -> void:
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://test_logs/hero_selection.png")
 	game.select_hero("berserker")
+	game.build_open = true
+	game.queue_redraw()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://test_logs/build_selection.png")
+	game.build_open = false
 	game.shop_open = true
 	game.queue_redraw()
 	await RenderingServer.frame_post_draw
@@ -73,5 +78,31 @@ func _initialize() -> void:
 	game.queue_redraw()
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://test_logs/defeat.png")
+	game.free()
+	# 新流派截图通过正常开局与控制器推进，幻影和被动数据来自正式命中。
+	for build_id in ["passive", "summon"]:
+		seed(7)
+		game = load("res://scripts/game.gd").new()
+		root.add_child(game)
+		game.set_process(false)
+		game.select_hero("frost_mage")
+		game.select_build(build_id)
+		var saved := false
+		for tick in 16000:
+			if game.state in ["won", "lost"]: break
+			if game.state == "ready":
+				controller.prepare(game, "mixed")
+				game.start_wave()
+			elif game.state == "upgrade": controller.choose_upgrade(game, "mixed")
+			controller.act(game, null, build_id != "passive")
+			game._process(0.05)
+			var visible: bool = game.hero_passive_damage > 0.0 if build_id == "passive" else game.combat_builds.familiars.size() > 0
+			if not saved and game.wave >= 4 and game.enemies.size() >= 3 and visible:
+				game.queue_redraw()
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png("res://test_logs/build_%s.png" % build_id)
+				saved = true
+		assert(saved and game.state == "won")
+		game.free()
 	print("visual_capture=PASS hero_selection shop inventory goblin_camp balance_combat boss_guard boss_break victory defeat")
 	quit(0)

@@ -2,6 +2,7 @@
 	{
 		"active": true,
 		"basic_damage": 12629.4841375,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
@@ -255,16 +256,19 @@
 				"towers": 3
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 13327.1451125,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 9866.87075
 	},
 	{
 		"active": true,
 		"basic_damage": 2014.4,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -4.0,
@@ -363,16 +367,19 @@
 				"towers": 1
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 820.049999999999
 	},
 	{
 		"active": true,
 		"basic_damage": 11777.0419625,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 30.6521739130435,
@@ -623,16 +630,19 @@
 				"towers": 3
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 13233.324125,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 10813.1339125
 	},
 	{
 		"active": true,
 		"basic_damage": 3637.15,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -8.91304347826084,
@@ -759,16 +769,19 @@
 				"towers": 1
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 1132.45
 	},
 	{
 		"active": true,
 		"basic_damage": 12682.0775875,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
@@ -1021,16 +1034,19 @@
 				"towers": 3
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "won",
 		"seed": 91,
 		"skill_damage": 13795.8886375,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 9345.53377499999
 	},
 	{
 		"active": true,
 		"basic_damage": 1993.75,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -1.0,
@@ -1128,16 +1144,19 @@
 				"towers": 1
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 820.049999999999
 	},
 	{
 		"active": true,
 		"basic_damage": 11423.8413625,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
@@ -1381,16 +1400,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 10703.56065,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 13696.0979875
 	},
 	{
 		"active": true,
 		"basic_damage": 2387.41499999997,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 52.6086956521739,
@@ -1511,16 +1533,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4020.06500000002
 	},
 	{
 		"active": true,
 		"basic_damage": 9989.5084,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
@@ -1767,16 +1792,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 13769.5740875,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 12064.4175125
 	},
 	{
 		"active": true,
 		"basic_damage": 2387.41499999997,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 27.6086956521739,
@@ -1900,16 +1928,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4020.06500000002
 	},
 	{
 		"active": true,
 		"basic_damage": 10849.9074375,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
@@ -2152,16 +2183,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 91,
 		"skill_damage": 13121.57505,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 11852.0175125
 	},
 	{
 		"active": true,
 		"basic_damage": 2433.72999999997,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 8.0,
@@ -2282,16 +2316,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 3966.95000000002
 	},
 	{
 		"active": true,
 		"basic_damage": 6856.8500625,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
@@ -2504,16 +2541,19 @@
 				"towers": 8
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 10880.838525,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 18085.8114125
 	},
 	{
 		"active": true,
 		"basic_damage": 1875.12325000001,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 22.0,
@@ -2626,16 +2666,19 @@
 				"towers": 5
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4495.82450000001
 	},
 	{
 		"active": true,
 		"basic_damage": 6326.31782499999,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 185.0,
@@ -2848,16 +2891,19 @@
 				"towers": 8
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 12788.9807875,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 16708.2013874999
 	},
 	{
 		"active": true,
 		"basic_damage": 2077.34500000001,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 13.695652173913,
@@ -2970,16 +3016,19 @@
 				"towers": 6
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4295.28250000001
 	},
 	{
 		"active": true,
 		"basic_damage": 6345.28088124999,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
@@ -3192,16 +3241,19 @@
 				"towers": 8
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "won",
 		"seed": 91,
 		"skill_damage": 12598.9950725,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 16879.2240462501
 	},
 	{
 		"active": true,
 		"basic_damage": 1754.5975,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -8.0,
@@ -3314,16 +3366,19 @@
 				"towers": 5
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4390.88000000001
 	},
 	{
 		"active": false,
 		"basic_damage": 0.0,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -1.0,
@@ -3388,16 +3443,19 @@
 				"towers": 2
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 1167.9
 	},
 	{
 		"active": false,
 		"basic_damage": 0.0,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -7.0,
@@ -3462,16 +3520,19 @@
 				"towers": 2
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 1167.9
 	},
 	{
 		"active": false,
 		"basic_damage": 0.0,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -1.0,
@@ -3536,16 +3597,19 @@
 				"towers": 2
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 1167.9
 	},
 	{
 		"active": true,
 		"basic_damage": 11369.1483625,
+		"build": "skill",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
@@ -3794,16 +3858,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 12488.6071625,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 11965.744475
 	},
 	{
 		"active": true,
 		"basic_damage": 9187.35215,
+		"build": "skill",
 		"camp": true,
 		"camp_success": true,
 		"core": 155.0,
@@ -4052,16 +4119,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 12333.3240625,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 14302.8237875
 	},
 	{
 		"active": true,
 		"basic_damage": 9191.4081625,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
@@ -4319,16 +4389,19 @@
 				"towers": 3
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 15971.1633375,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 10660.9285
 	},
 	{
 		"active": true,
 		"basic_damage": 3380.5325,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -7.82608695652174,
@@ -4458,16 +4531,19 @@
 				"towers": 1
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 1248.315
 	},
 	{
 		"active": true,
 		"basic_damage": 8093.8664,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
@@ -4722,16 +4798,19 @@
 				"towers": 3
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 16587.0782625,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 11142.5553375
 	},
 	{
 		"active": true,
 		"basic_damage": 2090.6,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -7.0,
@@ -4828,16 +4907,19 @@
 				"towers": 1
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 819.149999999999
 	},
 	{
 		"active": true,
 		"basic_damage": 9699.1676625,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
@@ -5094,16 +5176,19 @@
 				"towers": 3
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "won",
 		"seed": 91,
 		"skill_damage": 16219.8495375,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 9904.48280000003
 	},
 	{
 		"active": true,
 		"basic_damage": 3501.75,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -1.0,
@@ -5232,16 +5317,19 @@
 				"towers": 1
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "hero",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 1131.55
 	},
 	{
 		"active": true,
 		"basic_damage": 8487.46620000001,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
@@ -5490,16 +5578,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 14933.27545,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 12402.75835
 	},
 	{
 		"active": true,
 		"basic_damage": 2259.54499999998,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 52.6086956521739,
@@ -5620,16 +5711,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4127.38500000002
 	},
 	{
 		"active": true,
 		"basic_damage": 6957.858425,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
@@ -5881,16 +5975,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 15596.24625,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 13269.395325
 	},
 	{
 		"active": true,
 		"basic_damage": 2259.54499999998,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 27.6086956521739,
@@ -6014,16 +6111,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4127.38500000002
 	},
 	{
 		"active": true,
 		"basic_damage": 8301.432125,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
@@ -6271,16 +6371,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 91,
 		"skill_damage": 16389.5163125,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 11132.5515625
 	},
 	{
 		"active": true,
 		"basic_damage": 2315.20999999998,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 8.0,
@@ -6401,16 +6504,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4065.32000000002
 	},
 	{
 		"active": true,
 		"basic_damage": 4972.917225,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
@@ -6623,16 +6729,19 @@
 				"towers": 8
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 12792.9413125,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 18057.6414625
 	},
 	{
 		"active": true,
 		"basic_damage": 1700.77625000002,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 6.0,
@@ -6745,16 +6854,19 @@
 				"towers": 5
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4658.02150000001
 	},
 	{
 		"active": true,
 		"basic_damage": 5478.4574,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 185.0,
@@ -6967,16 +7079,19 @@
 				"towers": 8
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 13502.85375,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 16842.18885
 	},
 	{
 		"active": true,
 		"basic_damage": 1529.915,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -0.217391304347839,
@@ -7089,16 +7204,19 @@
 				"towers": 6
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4619.66250000001
 	},
 	{
 		"active": true,
 		"basic_damage": 4902.34501,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
@@ -7311,16 +7429,19 @@
 				"towers": 8
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "won",
 		"seed": 91,
 		"skill_damage": 12130.48564,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 18790.66935
 	},
 	{
 		"active": true,
 		"basic_damage": 1690.6675,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -8.0,
@@ -7433,16 +7554,19 @@
 				"towers": 5
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "towers",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
+		"summon_damage": 0.0,
 		"tower_damage": 4440.47500000001
 	},
 	{
 		"active": false,
 		"basic_damage": 0.0,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -1.0,
@@ -7507,16 +7631,19 @@
 				"towers": 2
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 1167.9
 	},
 	{
 		"active": false,
 		"basic_damage": 0.0,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -7.0,
@@ -7581,16 +7708,19 @@
 				"towers": 2
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 1167.9
 	},
 	{
 		"active": false,
 		"basic_damage": 0.0,
+		"build": "skill",
 		"camp": false,
 		"camp_success": false,
 		"core": -1.0,
@@ -7655,16 +7785,19 @@
 				"towers": 2
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 1167.9
 	},
 	{
 		"active": true,
 		"basic_damage": 9225.4493375,
+		"build": "skill",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
@@ -7917,16 +8050,19 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 7,
 		"skill_damage": 14964.77645,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 11633.2742125
 	},
 	{
 		"active": true,
 		"basic_damage": 7825.09076249999,
+		"build": "skill",
 		"camp": true,
 		"camp_success": true,
 		"core": 155.0,
@@ -8179,11 +8315,13 @@
 				"towers": 4
 			}
 		],
+		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
 		"seed": 23,
 		"skill_damage": 14599.975275,
 		"skills": true,
+		"summon_damage": 0.0,
 		"tower_damage": 13398.4339625
 	}
 ]

@@ -70,6 +70,7 @@ func _process(delta: float) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and fire_timer <= 0.0 and not reward_spawned:
 		fire_at(get_global_mouse_position())
 	update_enemies(delta)
+	game.combat_builds.tick(game, delta, self)
 	update_bullets(delta)
 	# 2. 战利品必须由玩家走到 Boss 掉落点拾取；死亡时仅撤退，不发奖。
 	if reward_spawned and not reward_taken and hero_pos.distance_to(reward_pos) < 35.0:
@@ -94,6 +95,8 @@ func fire_at(aim: Vector2) -> void:
 ## @param aim 玩家鼠标指定的释放方向。
 ## @return 实际释放并进入冷却时返回 true。
 func cast_skill(index: int, aim: Vector2) -> bool:
+	if game.hero.build_id == "passive": return false
+	if game.hero.build_id == "summon": return game.combat_builds.cast(game, index, aim, self)
 	if index < 0 or index >= 4 or game.hero.cooldowns[index] > 0.0 or game.hero.skill_levels[index] <= 0: return false
 	var direction := (aim - hero_pos).normalized()
 	if direction == Vector2.ZERO: direction = Vector2.RIGHT
@@ -124,10 +127,10 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	return true
 
 ## 扣除真实敌人生命并处理击杀；Boss 击杀才创建可拾取奖励。
-## 精英与首领战甲使用基地共用的减伤和破甲时长，只有攻击技能能打开输出窗口。
+## 精英与首领战甲使用基地共用的减伤和破甲时长，技能、连击及幻影法弹均能破甲。
 ## @param index 当前敌人数组索引。
 ## @param damage 本次结算伤害。
-## @param offensive_skill 是否由攻击技能命中；命中后打开五秒物理破甲窗口。
+## @param offensive_skill 是否由攻击技能、被动追击或幻影命中；命中后打开五秒物理破甲窗口。
 func damage_enemy(index: int, damage: float, offensive_skill: bool = false) -> void:
 	if index < 0 or index >= enemies.size(): return
 	var enemy := enemies[index]
@@ -185,7 +188,13 @@ func update_bullets(delta: float) -> void:
 		var consumed: bool = bullet.life <= 0.0
 		for j in range(enemies.size() - 1, -1, -1):
 			if bullet.pos.distance_to(enemies[j].pos) < 25.0:
-				damage_enemy(j, bullet.damage)
+				var center: Vector2 = enemies[j].pos
+				# 先结算弹丸与范围伤害，再处理可能删除其他敌人的三连追击。
+				var radius: float = bullet.get("splash", 0.0)
+				for target in range(enemies.size() - 1, -1, -1):
+					if target == j or (radius > 0.0 and enemies[target].pos.distance_to(center) <= radius):
+						damage_enemy(target, bullet.damage, bullet.get("break_seconds", 0.0) > 0.0)
+				if bullet.get("source", "hero") == "hero": game.combat_builds.on_basic_hit(game, center, self)
 				consumed = true
 				break
 		if consumed: bullets.remove_at(i)
@@ -224,7 +233,7 @@ func _draw() -> void:
 		if enemy.kind in ["elite", "boss"]:
 			var exposed: bool = enemy.get("exposed_time", 0.0) > 0.0
 			draw_arc(enemy.pos, radius + 5.0, 0.0, TAU, 24, Color("ffbd7a") if exposed else Color("80deff"), 2.0)
-			draw_string(font, enemy.pos + Vector2(-45, -radius - 20), "破甲 %.1f秒" % enemy.exposed_time if exposed else "战甲：攻击技能破甲", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("80deff"))
+			draw_string(font, enemy.pos + Vector2(-45, -radius - 20), "破甲 %.1f秒" % enemy.exposed_time if exposed else "战甲：技能／三连／幻影破甲", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("80deff"))
 		if enemy.windup > 0.0: draw_line(enemy.pos, enemy.aim, Color("ff7777"), 2.0)
 	# 死亡帧与真实敌人数组隔离，奖励仍只由实际击杀路径发放一次。
 	for frame in death_frames:
@@ -233,6 +242,7 @@ func _draw() -> void:
 		draw_texture_rect(art, Rect2(frame.pos - Vector2(size, size) / 2.0, Vector2(size, size)), false, Color(1, 1, 1, frame.time / 0.35))
 	for bullet in bullets: draw_circle(bullet.pos, 6.0, Color("ffe074"))
 	for bullet in hostile_bullets: draw_circle(bullet.pos, 8.0, Color("ff7777"))
+	game.combat_builds.draw(game, self)
 	draw_texture_rect(HERO_MAGE if game.hero.hero_id == "frost_mage" else HERO_WARRIOR, Rect2(hero_pos - Vector2(22, 22), Vector2(44, 44)), false)
 	if reward_spawned and not reward_taken:
 		draw_texture_rect(LOOT_ART, Rect2(reward_pos - Vector2(22, 22), Vector2(44, 44)), false)

@@ -52,6 +52,24 @@ func _initialize() -> void:
 		mouse.pressed = false
 		Input.parse_input_event(mouse)
 		game.free()
+	# 流派卡片使用同一输入路由，选择后恢复数字键建塔，开波后不能再打开。
+	for choice in [KEY_1, KEY_2, KEY_3]:
+		var game: Node2D = load("res://scripts/game.gd").new()
+		root.add_child(game)
+		await process_frame
+		game.set_process(false)
+		await press_key(KEY_1)
+		await press_key(KEY_C)
+		assert(game.build_open)
+		await press_key(choice)
+		assert(not game.build_open and game.hero.build_id == ({KEY_1: "skill", KEY_2: "passive", KEY_3: "summon"})[choice])
+		await press_key(KEY_SPACE)
+		await press_key(KEY_C)
+		assert(not game.build_open)
+		await press_key(KEY_Q)
+		if choice == KEY_2: assert(game.hero.cooldowns[0] == 0.0)
+		if choice == KEY_3: assert(game.combat_builds.familiars.size() == 2)
+		game.free()
 	print("input_controls=PASS 双英雄 面板 方向键 空格 鼠标普攻 QWER 闪避")
 	quit(0)
 

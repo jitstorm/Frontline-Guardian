@@ -20,7 +20,7 @@ const ITEMS := {
 	"storm_grasp": {"name": "风暴之握", "slot": "hands", "rarity": "epic", "price": 100, "rate": 0.25, "effect": "wide_sweep"}
 }
 ## 英雄基础属性；skill_power 为技能增幅，basic_interval 为普攻间隔秒数，basic_range 为射程像素数。
-## 两名英雄均以主动技能为核心，普攻用于补刀，不再共用高频远程枪械的输出预算。
+## 两名英雄默认以主动技能为核心；流派随后调整普攻或召唤预算。
 const HEROES := {
 	"berserker": {"name": "狂战士", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0, "skill_power": 0.0, "basic_interval": 0.48, "basic_range": 190.0},
 	"frost_mage": {"name": "寒霜法师", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0, "skill_power": 0.0, "basic_interval": 0.58, "basic_range": 380.0}
@@ -29,6 +29,25 @@ const SKILL_NAMES := {
 	"berserker": ["横扫", "战吼", "血怒突进", "裂地击"],
 	"frost_mage": ["冰枪", "冰霜新星", "寒冰护盾", "暴风雪"]
 }
+## 三种战斗流派在第一夜前选择并锁定，分别改变技能、普攻或召唤物的核心收益。
+const BUILDS := {
+	"skill": {"name": "技能爆发", "detail": "攻击技能破甲，抓住窗口集中输出", "tradeoff": "依赖主动技能，普攻用于补刀"},
+	"passive": {"name": "连击被动", "detail": "普攻三连触发范围追击、破甲与回血", "tradeoff": "没有四个主动技能，依赖持续命中"},
+	"summon": {"name": "幻影召唤", "detail": "召唤幻影自动攻击，用指令集中火力", "tradeoff": "本体攻击降低，需维护幻影与站位"}
+}
+## 被动与召唤流的四项成长名称；索引仍对应技能升级键五至八。
+const BUILD_SKILL_NAMES := {
+	"passive": ["三连追击", "连击汲取", "护甲训练", "战斗热忱"],
+	"summon": ["幻影召唤", "灵体守护", "幻影迁跃", "集火指令"]
+}
+
+## 当前战斗流派；默认沿用主动技能玩法，第一夜开始后由战场禁止改选。
+var build_id := "skill"
+## 被动流已命中的普攻次数，第三次触发追击后归零，不统计空枪。
+var combo_hits := 0
+## 被动流命中叠加的热忱层数及剩余秒数；停止攻击三秒后清空。
+var fervor_stacks := 0
+var fervor_time := 0.0
 
 ## 当前选择的职业标识；空字符串表示尚未选英雄。
 var hero_id := ""
@@ -53,6 +72,10 @@ var ward_time := 0.0
 func choose(choice: String) -> bool:
 	if not HEROES.has(choice): return false
 	hero_id = choice
+	build_id = "skill"
+	combo_hits = 0
+	fervor_stacks = 0
+	fervor_time = 0.0
 	level = 1
 	xp = 0
 	skill_points = 0
@@ -76,7 +99,18 @@ func stats() -> Dictionary:
 		for key in ["health", "attack", "defense", "rate", "speed", "skill_power"]:
 			result[key] += item.get(key, 0.0)
 	if buff_time > 0.0: result.rate += 0.3
+	# 被动流把输出预算转给持续普攻；召唤流让出本体攻击给独立幻影。
+	if build_id == "passive":
+		result.basic_interval *= 0.68
+		result.defense += 2.0 * skill_levels[2]
+		result.rate += fervor_stacks * 0.025 * skill_levels[3]
+	elif build_id == "summon": result.attack *= 0.8
 	return result
+
+## 获取当前流派的四项技能或被动名称，供升级栏及释放提示共同使用。
+## @return 主动技能流返回职业技能名称，其他流派返回对应的四项成长名称。
+func skill_names() -> Array:
+	return SKILL_NAMES[hero_id] if build_id == "skill" else BUILD_SKILL_NAMES[build_id]
 
 ## 增加击杀经验并按递增门槛升级，未选英雄时忽略经验。
 ## @param amount 本次真实击杀给予的经验点数。
@@ -161,3 +195,5 @@ func tick(delta: float) -> void:
 	for i in cooldowns.size(): cooldowns[i] = maxf(0.0, cooldowns[i] - delta)
 	buff_time = maxf(0.0, buff_time - delta)
 	ward_time = maxf(0.0, ward_time - delta)
+	fervor_time = maxf(0.0, fervor_time - delta)
+	if fervor_time <= 0.0: fervor_stacks = 0

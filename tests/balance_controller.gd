@@ -17,8 +17,9 @@ func prepare(game: Node2D, plan: String) -> void:
 	while game.towers.size() < reserved:
 		if not build_next(game): break
 	if plan != "towers":
-		var weapon := "oak_staff" if game.hero.hero_id == "frost_mage" else "rust_axe"
-		for item_id in [weapon, "leather_vest", "fighter_gloves", "steel_blade" if game.hero.hero_id == "berserker" else "frost_focus", "guardian_mail", "runner_boots", "iron_helm"]:
+		var physical: bool = game.hero.build_id == "passive" or (game.hero.hero_id == "berserker" and game.hero.build_id == "skill")
+		var weapon := "rust_axe" if physical else "oak_staff"
+		for item_id in [weapon, "leather_vest", "fighter_gloves", "steel_blade" if physical else "frost_focus", "guardian_mail", "runner_boots", "iron_helm"]:
 			var item: Dictionary = game.HeroRPG.ITEMS[item_id]
 			var current: String = game.hero.equipment.get(item.slot, "")
 			if current == item_id: continue
@@ -34,7 +35,7 @@ func prepare(game: Node2D, plan: String) -> void:
 		game.upgrade_selected_tower()
 	# 技能点只从实际经验升级获得，每次调用仍走五级上限校验。
 	for slot in [0, 3, 1, 2]:
-		while game.hero.upgrade_skill(slot): pass
+		while game.upgrade_hero_skill(slot): pass
 	game.selected_tower = 0
 
 ## 在固定合法候选点放置混合炮塔，余额不足或没有空位时停止。
@@ -81,6 +82,7 @@ func act(game: Node2D, camp: Node2D = null, skills: bool = true) -> void:
 			target = candidate
 	var distance := pos.distance_to(target.pos)
 	var desired := 105.0 if game.hero.hero_id == "berserker" else 155.0
+	if game.hero.build_id == "summon": desired = 220.0
 	var toward: Vector2 = (target.pos - pos).normalized()
 	var motion := toward if distance > desired + 30.0 else -toward if distance < desired - 20.0 else toward.orthogonal() * 0.5
 	# 靠近任意敌人或弹丸时横向避让；位移仍受每秒移速限制。
@@ -102,6 +104,7 @@ func act(game: Node2D, camp: Node2D = null, skills: bool = true) -> void:
 	elif camp.fire_timer <= 0.0: camp.fire_at(aim)
 	if skills and distance < 245.0:
 		for slot in [0, 1, 3, 2]:
+			if game.hero.build_id == "summon" and slot == 2: continue
 			# 突进仅用于接近远处目标，避免贴脸后反复冲入怪群。
 			if game.hero.hero_id == "berserker" and slot == 2 and distance < 180.0: continue
 			if camp == null: game.cast_skill(slot, aim)
