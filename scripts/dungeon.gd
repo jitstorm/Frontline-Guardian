@@ -118,22 +118,29 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	if game.hero.has_effect("rage_chain") and game.hero.hero_id == "berserker" and index == 2: power *= 1.45
 	if index == 0 and game.hero.evolution == "nova":
 		center = hero_pos
-		radius = 115.0
+		radius = game.SkillEvolution.rules(game.hero).radius
 		power *= 0.8
+	if index == 0 and game.hero.evolution == "echo": radius += game.SkillEvolution.rules(game.hero).radius_bonus
 	for i in range(enemies.size() - 1, -1, -1):
 		if enemies[i].pos.distance_to(center) > radius + 18.0: continue
 		if game.hero.hero_id == "berserker" and game.hero.evolution != "nova" and index == 0 and (enemies[i].pos - hero_pos).normalized().dot(direction) < 0.0: continue
 		var target := enemies[i]
 		damage_enemy(i, power, index != (1 if game.hero.hero_id == "berserker" else 2))
 		# 保存实际命中对象，击杀删除后不能把减速错误施加给移到此索引的另一只怪。
+		if target.hp > 0.0 and index == 0 and game.hero.evolution == "nova" and game.hero.evolution_tier >= 2:
+			target.slow_time = 1.0
+			target.slow_factor = 0.5
 		if target.hp > 0.0 and game.hero.hero_id == "frost_mage":
 			target.slow_time = 2.5
 	if game.hero.hero_id == "berserker" and index == 1: game.player_hp = minf(game.max_player_hp, game.player_hp + 12.0)
 	if game.hero.hero_id == "frost_mage" and index == 2: game.player_hp = minf(game.max_player_hp, game.player_hp + 6.0)
 	game.hero.cooldowns[index] = [3.0, 9.0, 8.0, 22.0][index] if game.hero.hero_id == "berserker" else [2.8, 10.0, 9.0, 23.0][index]
 	if index == 0 and game.hero.evolution == "echo":
-		game.evolution_system.burst(game, self, center + direction * 120.0, radius, power * 0.7, "skill")
+		for echo in game.SkillEvolution.rules(game.hero).echoes:
+			game.evolution_system.burst(game, self, center + direction * echo[0], radius, power * echo[1], "skill")
 		game.hero.cooldowns[index] += 1.0
+	if index == 0 and game.hero.evolution == "nova" and game.hero.evolution_tier >= 3: game.hero.ward_time = maxf(2.0, game.hero.ward_time)
+	game.hero.cooldowns[index] = game.hero.cooldown_seconds(game.hero.cooldowns[index])
 	return true
 
 ## 扣除真实敌人生命并处理击杀；Boss 击杀才创建可拾取奖励。
@@ -157,6 +164,7 @@ func damage_enemy(index: int, damage: float, offensive_skill: bool = false) -> v
 	enemies.remove_at(index)
 	death_frames.append({"pos": enemy.pos, "kind": enemy.kind, "time": 0.35})
 	game.kills += 1
+	if game.hero.has_affix("renewal"): game.player_hp = minf(game.max_player_hp, game.player_hp + 1.0)
 	game.gold += 8 if enemy.kind == "grunt" else 20 if enemy.kind == "elite" else 45
 	if game.hero.gain_xp(12 if enemy.kind == "grunt" else 28 if enemy.kind == "elite" else 60) > 0: game.sync_hero_stats()
 	if enemy.kind == "boss" and not reward_spawned:
@@ -173,22 +181,27 @@ func update_enemies(delta: float) -> void:
 		enemy.exposed_time = maxf(0.0, enemy.get("exposed_time", 0.0) - delta)
 		enemy.attack_timer = maxf(0.0, enemy.attack_timer - delta)
 		enemy.slow_time = maxf(0.0, enemy.slow_time - delta)
+		var pet: Dictionary = game.summon_health.nearest(game.combat_builds.familiars, enemy.pos, 260.0)
+		var target_pos: Vector2 = pet.pos if not pet.is_empty() and enemy.pos.distance_to(pet.pos) < enemy.pos.distance_to(hero_pos) else hero_pos
 		if enemy.windup > 0.0:
 			enemy.windup -= delta
 			if enemy.windup <= 0.0:
 				if enemy.kind == "boss":
 					var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
 					hostile_bullets.append({"pos": enemy.pos, "velocity": direction * 310.0, "life": 2.0, "damage": enemy.damage})
-				elif enemy.pos.distance_to(hero_pos) < 47.0:
+				elif not enemy.get("target_pet", {}).is_empty() and game.combat_builds.familiars.has(enemy.target_pet) and enemy.pos.distance_to(enemy.target_pet.pos) < 47.0:
+					game.summon_health.damage(game, enemy.target_pet, enemy.damage)
+				elif enemy.get("target_pet", {}).is_empty() and enemy.pos.distance_to(hero_pos) < 47.0:
 					game.player_hp -= game.incoming_damage(enemy.damage, game.player_armor, game.hero.ward_time > 0.0)
-		elif enemy.attack_timer <= 0.0 and enemy.pos.distance_to(hero_pos) < (260.0 if enemy.kind == "boss" else 42.0):
+		elif enemy.attack_timer <= 0.0 and enemy.pos.distance_to(target_pos) < (260.0 if enemy.kind == "boss" else 42.0):
 			enemy.windup = 0.65 if enemy.kind == "boss" else 0.32
-			enemy.aim = hero_pos
+			enemy.aim = target_pos
+			enemy.target_pet = pet if target_pos != hero_pos else {}
 			enemy.attack_timer = 1.8 if enemy.kind == "boss" else 1.1
 		else:
 			var speed := 68.0 if enemy.kind == "boss" else 95.0 if enemy.kind == "elite" else 115.0
 			if enemy.slow_time > 0.0: speed *= enemy.get("slow_factor", 0.45)
-			enemy.pos = enemy.pos.move_toward(hero_pos, speed * delta)
+			enemy.pos = enemy.pos.move_toward(target_pos, speed * delta)
 		enemies[i] = enemy
 
 ## 推进双方实体弹丸并以半径碰撞结算伤害和闪避。
@@ -218,7 +231,9 @@ func update_bullets(delta: float) -> void:
 		var bullet := hostile_bullets[i]
 		bullet.pos += bullet.velocity * delta
 		bullet.life -= delta
-		if bullet.pos.distance_to(hero_pos) < 23.0:
+		if game.summon_health.intercept(game, bullet):
+			hostile_bullets.remove_at(i)
+		elif bullet.pos.distance_to(hero_pos) < 23.0:
 			if game.dodge_timer <= 0.0: game.player_hp -= game.incoming_damage(bullet.damage, game.player_armor, game.hero.ward_time > 0.0)
 			hostile_bullets.remove_at(i)
 		elif bullet.life <= 0.0: hostile_bullets.remove_at(i)

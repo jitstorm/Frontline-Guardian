@@ -24,6 +24,7 @@ func _initialize() -> void:
 	game.sell_item(1)
 	assert(game.hero.inventory.size() == game.hero.inventory_affixes.size())
 	assert(not game.select_evolution("nova"))
+	game.hero.gain_xp(35)
 	game.wave = 2
 	game.state = "upgrade"
 	assert(not game.select_evolution("hunter") and game.select_evolution("nova"))
@@ -95,7 +96,7 @@ func _initialize() -> void:
 	game.player_pos += Vector2(150, 0)
 	var health: float = game.player_hp
 	game.evolution_system.tick(game, 1.1)
-	assert(game.player_hp == health and game.combat_builds.familiars[0].life == 5.0)
+	assert(game.player_hp == health and game.combat_builds.familiars[0].hp == game.combat_builds.familiars[0].max_hp - 12.0)
 	enemy.shock_windup = 1.0
 	game.apply_bullet_damage(0, {"damage": 1.0, "velocity": Vector2.ZERO, "knockback": 0.0, "break_seconds": 5.0}, 1.0)
 	assert(enemy.shock_windup == 0.0)

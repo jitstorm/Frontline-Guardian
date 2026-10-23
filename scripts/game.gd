@@ -19,6 +19,11 @@ const GRID_SIZE := Vector2i(32, 18)
 const START_CELL := Vector2i(0, 8)
 const GOAL_CELL := Vector2i(29, 8)
 const HeroRPG = preload("res://scripts/hero_rpg.gd")
+const EquipmentSystem = preload("res://scripts/equipment_system.gd")
+const SkillEvolution = preload("res://scripts/skill_evolution.gd")
+const EnemyDirector = preload("res://scripts/enemy_director.gd")
+const SummonHealth = preload("res://scripts/summon_health.gd")
+const EquipmentUI = preload("res://scripts/equipment_ui.gd")
 const BuildEvolution = preload("res://scripts/build_evolution.gd")
 const CombatBuilds = preload("res://scripts/combat_builds.gd")
 const GoblinCamp = preload("res://dungeon.tscn")
@@ -54,9 +59,13 @@ var hero = HeroRPG.new()
 var combat_builds = CombatBuilds.new()
 ## 第一夜前的流派选择面板，不另设战斗状态或第二套经济余额。
 var build_open := false
-## 形态选择面板只在第二夜后准备阶段打开；每局形态互斥且仅选择一次。
+## 形态选择面板只在第二夜后准备阶段打开；每局路线互斥，后续按夜次和等级领取至三阶。
 var evolution_open := false
 var evolution_system = BuildEvolution.new()
+## 独立模块实例：战场只负责调用顺序，数值与规则分别维护。
+var enemy_director = EnemyDirector.new()
+var summon_health = SummonHealth.new()
+var equipment_ui = EquipmentUI.new()
 ## 已购买词缀宝匣的夜次，每个准备阶段最多购买一次，防止反复刷取。
 var chest_wave := -1
 ## 基地词缀造成的真实损血，独立于普攻、被动和技能。
@@ -334,8 +343,9 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	if hero.has_effect("frost_burst") and hero.hero_id == "frost_mage" and index == 1: radius *= 1.4
 	if index == 0 and hero.evolution == "nova":
 		center = player_pos
-		radius = 115.0
+		radius = SkillEvolution.rules(hero).radius
 		damage *= 0.8
+	if index == 0 and hero.evolution == "echo": radius += SkillEvolution.rules(hero).radius_bonus
 	# 2. 命中时对现存敌人真实扣血，并复用击杀奖励和经验路径。
 	var hits := 0
 	for i in range(enemies.size() - 1, -1, -1):
@@ -352,6 +362,9 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 			enemy.exposed_time = ARMOR_BREAK_SECONDS
 			evolution_system.interrupt(enemy)
 		enemy.hp -= dealt
+		if index == 0 and hero.evolution == "nova" and hero.evolution_tier >= 2:
+			enemy.slow_time = 1.0
+			enemy.slow_factor = 0.5
 		enemy.hit_time = 0.16
 		enemy.pos += (enemy.pos - center).normalized() * (38.0 if hero.hero_id == "berserker" else 8.0)
 		if hero.hero_id == "frost_mage":
@@ -368,8 +381,10 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	if hero.hero_id == "frost_mage" and index == 2: player_hp = minf(max_player_hp, player_hp + 6.0)
 	# 3. 技能真正释放后才进入冷却；未命中也消耗本次施法机会。
 	if index == 0 and hero.evolution == "echo":
-		evolution_system.burst(self, null, center + direction * 120.0, radius, damage * 0.7, "skill")
-	hero.cooldowns[index] = base_cooldowns[index] + (1.0 if index == 0 and hero.evolution == "echo" else 0.0)
+		for echo in SkillEvolution.rules(hero).echoes:
+			evolution_system.burst(self, null, center + direction * echo[0], radius, damage * echo[1], "skill")
+	if index == 0 and hero.evolution == "nova" and hero.evolution_tier >= 3: hero.ward_time = maxf(2.0, hero.ward_time)
+	hero.cooldowns[index] = hero.cooldown_seconds(base_cooldowns[index] + (1.0 if index == 0 and hero.evolution == "echo" else 0.0))
 	impacts.append({"pos": center, "time": 0.2, "color": Color("80deff") if hero.hero_id == "frost_mage" else Color("ffbd7a")})
 	show_notice("%s：命中 %d 次" % [HeroRPG.SKILL_NAMES[hero.hero_id][index], hits])
 	return true
@@ -378,6 +393,7 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 ## @param enemy 已被实际扣血至零的敌人数据。
 func reward_enemy(enemy: Dictionary) -> void:
 	kills += 1
+	if hero.has_affix("renewal"): player_hp = minf(max_player_hp, player_hp + 1.0)
 	# 赏金按夜重置十次领取机会，避免每层强化的收入继续随怪物总量线性放大。
 	gold += enemy.reward + (gold_bonus if bounty_kills < 10 else 0)
 	bounty_kills += 1
@@ -413,7 +429,7 @@ func buy_item(item_id: String) -> bool:
 	show_notice("已购买：" + ("生命药剂" if item_id == "potion" else HeroRPG.ITEMS[item_id].name))
 	return true
 
-## 使用正常金币购买随机基础装备及一个词缀，每个准备阶段限购一次。
+## 使用正常金币购买随机基础装备、品质倍率和一至四个词缀，每个准备阶段限购一次。
 ## 随机结果仅在余额、容量和夜次检查成功后生成，失败不会扣金币或消耗随机结果。
 ## @return 已取得词缀装备并扣除五十金币时返回 true。
 func buy_affix_chest() -> bool:
@@ -424,29 +440,49 @@ func buy_affix_chest() -> bool:
 	# 2. 从最高基础售价七十金币的目录抽取物品，半价出售不能赚回宝匣成本。
 	var pool := ["rust_axe", "oak_staff", "iron_helm", "leather_vest", "runner_boots", "fighter_gloves", "vital_charm", "steel_blade", "guardian_mail"]
 	var item_id: String = pool[rng.randi_range(0, pool.size() - 1)]
-	var affixes: Array = HeroRPG.AFFIXES.keys()
-	var affix: String = affixes[rng.randi_range(0, affixes.size() - 1)]
-	if not hero.pickup(item_id, affix): return false
+	var record: Dictionary = EquipmentSystem.generate(rng)
+	if not hero.pickup(item_id, "", record): return false
 	# 3. 实际收货成功后才扣款并记录本准备阶段限购，物品词缀随实例保存。
 	gold -= 50
 	chest_wave = wave
-	show_notice("宝匣：" + hero.item_label(item_id, affix).split("｜")[0] + "，背包查看效果")
+	show_notice("宝匣：" + EquipmentSystem.label(item_id, record).split("[")[0] + "，背包查看效果")
 	return true
 
-## 从当前流派的两种形态中选择一种；第二夜之后波间或准备阶段开放，一局仅能选择一次。
+## 从当前流派的两种形态中选择一种；第二夜之后波间或准备阶段开放，首次锁定路线，随后按规则领取下一阶。
 ## @param choice 形态目录中的标识，必须匹配本局流派。
 ## @return 形态已锁定时返回 true；无效选择不改变英雄。
 func select_evolution(choice: String) -> bool:
-	if state not in ["ready", "upgrade"] or wave < 2 or hero.evolution != "" or not BuildEvolution.FORMS.has(choice): return false
-	if BuildEvolution.FORMS[choice].build != hero.build_id: return false
-	hero.evolution = choice
+	if state not in ["ready", "upgrade"] or not SkillEvolution.advance(hero, wave, choice): return false
 	evolution_open = false
-	show_notice("形态已锁定：" + BuildEvolution.FORMS[choice].name)
+	show_notice("进化完成：" + SkillEvolution.label(hero))
+	return true
+
+## 在准备阶段重铸背包装备，失败不扣款、不消耗随机源，锁定规则由装备模块校验。
+## @param index 背包实例索引。
+## @param locks 需要保留的词条位置。
+## @return 新记录已写入且扣款成功时返回 true。
+func reforge_item(index: int, locks: Array[int]) -> bool:
+	# 1. 先校验阶段、物品、锁定与预算，拒绝失败交易改变随机序列。
+	if state != "ready" or index < 0 or index >= hero.inventory.size(): return false
+	var record: Dictionary = hero.inventory_rolls[index]
+	var price := EquipmentSystem.cost(record, locks)
+	if price < 0 or gold < price:
+		show_notice("重铸失败：金币不足或词条全部锁定")
+		return false
+	# 2. 生成副本并原子替换记录，成功后才扣除唯一金币余额。
+	var replacement := EquipmentSystem.reforge(record, locks, rng)
+	if not hero.replace_roll(index, replacement): return false
+	gold -= price
+	show_notice("重铸完成，锁定词条与品质已保留")
 	return true
 
 ## 返回本流派可选的两种形态，键盘与卡片共用同一顺序。
 ## @return 与当前流派匹配的形态标识数组。
 func evolution_options() -> Array[String]:
+	if hero.evolution != "":
+		var locked: Array[String] = []
+		locked.append(hero.evolution)
+		return locked
 	var options: Array[String] = []
 	for id in BuildEvolution.FORMS:
 		if BuildEvolution.FORMS[id].build == hero.build_id: options.append(id)
@@ -461,6 +497,7 @@ func sell_item(index: int) -> bool:
 	gold += int(HeroRPG.ITEMS[item_id].price / 2)
 	hero.inventory.remove_at(index)
 	hero.inventory_affixes.remove_at(index)
+	hero.inventory_rolls.remove_at(index)
 	show_notice("已出售：" + HeroRPG.ITEMS[item_id].name)
 	return true
 
@@ -489,6 +526,7 @@ func show_notice(message: String) -> void:
 ## 处理移动以外的输入：建造、开波、强化和重新开始。
 ## @param event 本帧 Godot 输入事件。
 func _unhandled_input(event: InputEvent) -> void:
+	if equipment_ui.handle(self, event): return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if state == "select_hero":
 			if event.physical_keycode == KEY_1: select_hero("berserker")
@@ -506,7 +544,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if evolution_open:
 			var options := evolution_options()
 			if event.physical_keycode == KEY_1: select_evolution(options[0])
-			elif event.physical_keycode == KEY_2: select_evolution(options[1])
+			elif event.physical_keycode == KEY_2: select_evolution(options[1]) if options.size() > 1 else select_evolution(options[0])
 			elif event.physical_keycode in [KEY_V, KEY_ESCAPE]: evolution_open = false
 			return
 		if build_open:
@@ -520,9 +558,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.physical_keycode == KEY_T and shop_open: buy_affix_chest()
 			elif event.physical_keycode == KEY_B: shop_open = false
 			elif event.physical_keycode == KEY_I: inventory_open = false
+			elif event.physical_keycode == KEY_J:
+				shop_open = false
+				inventory_open = false
+				equipment_ui.toggle(self)
 			return
 		match event.physical_keycode:
-			KEY_V: evolution_open = state in ["ready", "upgrade"] and wave >= 2 and hero.evolution == ""
+			KEY_J: equipment_ui.toggle(self)
+			KEY_V: evolution_open = state in ["ready", "upgrade"] and SkillEvolution.available(hero, wave)
 			KEY_C: build_open = state == "ready" and wave == 0
 			KEY_1: selected_tower = 1
 			KEY_2: selected_tower = 2
@@ -555,7 +598,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if state == "dungeon": return
 		if evolution_open:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				for i in 2:
+				for i in evolution_options().size():
 					if Rect2(200 + i * 450, 270, 420, 190).has_point(get_global_mouse_position()): select_evolution(evolution_options()[i])
 			return
 		if build_open:
@@ -656,6 +699,8 @@ func start_wave() -> void:
 	if state != "ready" or wave >= MAX_WAVES:
 		return
 	wave += 1
+	enemy_director.plan(self, wave)
+	show_notice(enemy_director.label())
 	build_open = false
 	evolution_open = false
 	spawn_left = wave_enemy_count(wave)
@@ -703,8 +748,7 @@ func update_spawning(delta: float) -> void:
 			radius = 35.0
 			reward = 70
 		enemies.append({"pos": Vector2(20, 340), "segment": 0, "route": route_from(Vector2(20, 340)), "route_index": 0, "hp": hp, "max_hp": hp, "speed": speed, "attack_timer": 0.0, "windup": 0.0, "target_kind": "", "aim": Vector2.ZERO, "kind": kind, "radius": radius, "reward": reward})
-		if kind == "armored" and wave >= 3: enemies.back().role = "shield"
-		elif kind == "ranged" and wave >= 5: enemies.back().role = "shock"
+		enemy_director.assign(enemies.back(), spawned_this_wave)
 		spawn_left -= 1
 		spawned_this_wave += 1
 		var squad_size := 5 + int(wave / 2)
@@ -734,12 +778,19 @@ func update_enemies(delta: float) -> void:
 			# 优先攻击靠近的玩家；远程敌人可转向炮塔，Boss 具有更远的弹幕预警。
 			var ranged: bool = enemy.kind == "ranged" or enemy.kind == "boss"
 			var range_to_player: float = 300.0 if enemy.kind == "boss" else 180.0 if ranged else enemy.radius + 15.0
+			var pet := summon_health.nearest(combat_builds.familiars, pos, range_to_player)
 			# 已突破防线抵达核心的敌人优先攻击核心，不能靠贴身引怪无限拖延结算。
 			if pos.distance_to(CORE_POS) < 34.0:
 				enemy.target_kind = "core"
 				enemy.aim = CORE_POS
 				enemy.windup = 0.35
 				enemy.attack_timer = 1.35
+			elif not pet.is_empty() and pos.distance_to(pet.pos) < pos.distance_to(player_pos):
+				enemy.target_kind = "summon"
+				enemy.target_pet = pet
+				enemy.aim = pet.pos
+				enemy.windup = 0.65 if ranged else 0.28
+				enemy.attack_timer = enemy.windup + 1.35
 			elif pos.distance_to(player_pos) < range_to_player:
 				enemy.target_kind = "player"
 				enemy.aim = player_pos
@@ -779,13 +830,17 @@ func update_enemies(delta: float) -> void:
 func resolve_enemy_attack(enemy: Dictionary) -> void:
 	var target_kind: String = enemy.target_kind
 	enemy.target_kind = ""
-	if target_kind == "player" and (enemy.kind == "ranged" or enemy.kind == "boss"):
+	if target_kind in ["player", "summon"] and (enemy.kind == "ranged" or enemy.kind == "boss"):
 		var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
 		if direction == Vector2.ZERO: direction = Vector2.LEFT
 		var count := 3 if enemy.kind == "boss" else 1
 		for index in count:
 			var spread := (index - 1) * 0.22 if count == 3 else 0.0
 			hostile_bullets.append({"pos": enemy.pos, "velocity": direction.rotated(spread) * (360.0 if enemy.kind == "boss" else 300.0), "damage": 12.0 if enemy.kind == "boss" else 6.0, "life": 1.5, "radius": 9.0 if enemy.kind == "boss" else 7.0})
+	elif target_kind == "summon":
+		var pet: Dictionary = enemy.get("target_pet", {})
+		if combat_builds.familiars.has(pet) and enemy.pos.distance_to(pet.pos) < enemy.radius + 20.0:
+			summon_health.damage(self, pet, 9.0)
 	elif target_kind == "tower":
 		var direction: Vector2 = (enemy.aim - enemy.pos).normalized()
 		hostile_bullets.append({"pos": enemy.pos, "velocity": direction * 300.0, "damage": 8.0, "life": 1.0, "radius": 7.0})
@@ -807,7 +862,9 @@ func update_hostile_bullets(delta: float) -> void:
 		bullet.pos += bullet.velocity * delta
 		bullet.life -= delta
 		var consumed := false
-		if bullet.pos.distance_to(player_pos) < bullet.radius + 15.0:
+		if summon_health.intercept(self, bullet):
+			consumed = true
+		elif bullet.pos.distance_to(player_pos) < bullet.radius + 15.0:
 			consumed = true
 			if dodge_timer <= 0.0:
 				var damage := incoming_damage(bullet.damage, player_armor, hero.ward_time > 0.0)
@@ -1273,8 +1330,10 @@ func _draw() -> void:
 		draw_arc(mouse, 21.0, 0.0, TAU, 36, tint, 2.0)
 		draw_arc(mouse, (180.0 if selected_tower == 1 else 225.0) + tower_range_bonus, 0.0, TAU, 72, Color(tint, 0.45), 1.5)
 		draw_string(font, mouse + Vector2(26, -20), "建造：%d 金币" % (40 if selected_tower == 1 else 55) if legal else "不可建造／金币不足", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, tint)
-	var message := ("空格：开始第一夜｜C：选择流派" if wave == 0 else "空格：开始下一夜｜V：选择形态" if hero.evolution == "" and wave >= 2 else "空格：开始下一夜") if state == "ready" else ""
-	if state == "upgrade" and hero.evolution == "" and wave >= 2:
+	if state == "fighting" and wave >= 4:
+		draw_string(font, Vector2(20, 180), enemy_director.label(), HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("ffe074"))
+	var message := ("空格：开始第一夜｜C：选择流派" if wave == 0 else "空格：开始下一夜｜V：选择形态" if SkillEvolution.available(hero, wave) else "空格：开始下一夜") if state == "ready" else ""
+	if state == "upgrade" and SkillEvolution.available(hero, wave):
 		draw_string(font, Vector2(420, 425), "V：选择技能形态｜可先选择再挑战营地", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("b4ff91"))
 	if state == "upgrade" and upgrade_choices.size() == 2:
 		if dungeon_available(): draw_string(font, Vector2(420, 454), "G：进入哥布林营地｜选择强化可跳过", HORIZONTAL_ALIGNMENT_LEFT, -1, 19, Color("e7a6ff"))
@@ -1305,7 +1364,7 @@ func _draw() -> void:
 		draw_rect(Rect2(20, 672, 340, 7), Color("253e59"))
 		draw_rect(Rect2(20, 672, 340.0 * hero.xp / hero.xp_to_next(), 7), Color("80deff"))
 		draw_string(font, Vector2(20, 660), "%s %d级  经验 %d/%d  技能点 %d" % [HeroRPG.HEROES[hero.hero_id].name, hero.level, hero.xp, hero.xp_to_next(), hero.skill_points], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
-		draw_string(font, Vector2(20, 633), "流派：%s %s" % [HeroRPG.BUILDS[hero.build_id].name, BuildEvolution.FORMS[hero.evolution].name if hero.evolution != "" else ""], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("b4ff91"))
+		draw_string(font, Vector2(20, 633), "流派：%s %s" % [HeroRPG.BUILDS[hero.build_id].name, SkillEvolution.label(hero) if hero.evolution != "" else ""], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("b4ff91"))
 		for i in 4:
 			var key_name: String = ["Q", "W", "E", "R"][i]
 			var skill_rect := Rect2(375 + i * 100, 620, 94, 75)
@@ -1314,7 +1373,7 @@ func _draw() -> void:
 			draw_string(font, skill_rect.position + Vector2(8, 44), hero.skill_names()[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color.WHITE)
 			draw_string(font, skill_rect.position + Vector2(8, 65), "被动" if hero.build_id == "passive" else "就绪" if hero.cooldowns[i] <= 0.0 else "%.1f秒" % hero.cooldowns[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("80deff"))
 		if hero.build_id == "passive":
-			draw_string(font, Vector2(800, 650), "连击 %d/%d｜热忱 %d/8（%.1f秒）" % [hero.combo_hits, 5 if hero.evolution == "reaper" else 3, hero.fervor_stacks, hero.fervor_time], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("b4ff91"))
+			draw_string(font, Vector2(800, 650), "连击 %d/%d｜热忱 %d/8（%.1f秒）" % [hero.combo_hits, SkillEvolution.combo_required(hero), hero.fervor_stacks, hero.fervor_time], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("b4ff91"))
 		elif hero.build_id == "summon":
 			draw_string(font, Vector2(800, 650), "幻影 %d｜集火 %.1f秒" % [combat_builds.familiars.size(), combat_builds.command_time], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("a1e9ff"))
 	if notice_time > 0.0:
@@ -1363,14 +1422,14 @@ func _draw() -> void:
 			draw_rect(Rect2(pos, Vector2(320, 60)), Color("365a74"))
 			draw_string(font, pos + Vector2(12, 24), "%s：%s" % [slot_name(slot), hero.item_label(hero.equipment[slot], hero.equipment_affixes.get(slot, "")).split("｜")[0] if hero.equipment.has(slot) else "空"], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
 			var affix: String = hero.equipment_affixes.get(slot, "")
-			if affix != "": draw_string(font, pos + Vector2(12, 48), HeroRPG.AFFIXES[affix].detail, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("b4ff91"))
-		draw_string(font, Vector2(100, 315), "背包 %d/%d：点击穿戴，Shift＋点击出售；词缀随装备交换" % [hero.inventory.size(), HeroRPG.CAPACITY], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
+			if affix != "": draw_string(font, pos + Vector2(12, 48), EquipmentSystem.summary(hero.equipment_rolls[slot]), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("b4ff91"))
+		draw_string(font, Vector2(100, 315), "背包 %d/%d：点击穿戴，Shift＋点击出售；J 重铸与词条详情" % [hero.inventory.size(), HeroRPG.CAPACITY], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
 		for i in hero.inventory.size():
 			var pos := Vector2(100 + (i % 2) * 530, 330 + int(i / 2) * 48)
 			draw_rect(Rect2(pos, Vector2(500, 42)), Color("365a74"))
 			draw_string(font, pos + Vector2(12, 18), "%s  [%s]" % [hero.item_label(hero.inventory[i], hero.inventory_affixes[i]).split("｜")[0], rarity_name(HeroRPG.ITEMS[hero.inventory[i]].rarity)], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
 
-			if hero.inventory_affixes[i] != "": draw_string(font, pos + Vector2(12, 36), HeroRPG.AFFIXES[hero.inventory_affixes[i]].detail, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("b4ff91"))
+			if hero.inventory_affixes[i] != "": draw_string(font, pos + Vector2(12, 36), EquipmentSystem.summary(hero.inventory_rolls[i]), HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("b4ff91"))
 	if build_open:
 		draw_rect(Rect2(65, 150, 1150, 410), Color("182b41"))
 		draw_string(font, Vector2(100, 196), "选择本局流派｜第一夜后锁定｜C 关闭", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color("ffe074"))
@@ -1387,13 +1446,20 @@ func _draw() -> void:
 
 	if evolution_open:
 		draw_rect(Rect2(160, 180, 960, 350), Color("182b41"))
-		draw_string(font, Vector2(200, 230), "技能形态二选一｜本局不可更换｜V 关闭", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color("ffe074"))
+		draw_string(font, Vector2(200, 230), "技能形态：选择路线或领取下一阶｜V 关闭", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color("ffe074"))
 		var options := evolution_options()
-		for i in 2:
+		for i in options.size():
 			var form: Dictionary = BuildEvolution.FORMS[options[i]]
 			var card := Rect2(200 + i * 450, 270, 420, 190)
 			draw_rect(card, Color("365a74"))
-			draw_string(font, card.position + Vector2(20, 45), "%d  %s" % [i + 1, form.name], HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color.WHITE)
-			var parts: PackedStringArray = form.detail.split("；")
+			draw_string(font, card.position + Vector2(20, 45), "%d  %s" % [i + 1, form.name if hero.evolution == "" else SkillEvolution.Rules.STAGES[hero.evolution][mini(2, hero.evolution_tier)]], HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color.WHITE)
+			if hero.evolution != "":
+				var next_index := mini(2, hero.evolution_tier)
+				draw_string(font, Vector2(655, 320), "下一阶门槛：完成第 %d 夜／%d 级" % [SkillEvolution.Rules.NIGHTS[next_index], SkillEvolution.Rules.LEVELS[next_index]], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("80deff"))
+				draw_string(font, Vector2(655, 365), "当前：已完成 %d 夜／%d 级" % [wave, hero.level], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+				draw_string(font, Vector2(655, 410), "按 1 进化，不消耗金币；V 稍后决定", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("b4ff91"))
+			var parts: PackedStringArray = form.detail.split("；") if hero.evolution == "" else PackedStringArray([SkillEvolution.next_detail(hero)])
 			for j in parts.size():
 				draw_string(font, card.position + Vector2(20, 100 + j * 35), parts[j], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("d7e7c6"))
+
+	equipment_ui.draw(self, self, font)

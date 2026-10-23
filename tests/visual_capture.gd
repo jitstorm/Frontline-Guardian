@@ -133,5 +133,30 @@ func _initialize() -> void:
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://test_logs/enemy_counter.png")
 	game.free()
+	# 重铸与三阶选择界面为独立夹具，正常交易和升级流程由矩阵与专项测试验证。
+	game = load("res://scripts/game.gd").new()
+	root.add_child(game)
+	game.set_process(false)
+	game.select_hero("frost_mage")
+	game.gold = 500
+	game.rng.seed = 23
+	var record: Dictionary = game.EquipmentSystem.generate(game.rng)
+	while record.quality != "legend": record = game.EquipmentSystem.generate(game.rng)
+	game.hero.pickup("steel_blade", "", record)
+	game.equipment_ui.toggle(game)
+	game.equipment_ui.locks.append(0)
+	game.queue_redraw()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://test_logs/equipment_reforge.png")
+	game.equipment_ui.opened = false
+	game.hero.gain_xp(1000)
+	game.wave = 2
+	assert(game.select_evolution("echo"))
+	game.wave = 4
+	game.evolution_open = true
+	game.queue_redraw()
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://test_logs/evolution_tiers.png")
+	game.free()
 	print("visual_capture=PASS hero_selection shop inventory goblin_camp balance_combat boss_guard boss_break victory defeat")
 	quit(0)

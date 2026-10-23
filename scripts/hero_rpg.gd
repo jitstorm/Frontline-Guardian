@@ -5,33 +5,19 @@ const CAPACITY := 12
 const SLOTS: Array[String] = ["weapon", "head", "chest", "hands", "legs", "relic"]
 const ITEM_IDS: Array[String] = ["rust_axe", "oak_staff", "iron_helm", "leather_vest", "runner_boots", "fighter_gloves", "vital_charm", "steel_blade", "guardian_mail", "berserker_mark", "frost_focus", "storm_grasp"]
 ## 装备价格单位为金币；skill_power 为额外技能伤害比例，零点三表示增加百分之三十。
-const ITEMS := {
-	"rust_axe": {"name": "旧战斧", "slot": "weapon", "rarity": "common", "price": 35, "attack": 5.0},
-	"oak_staff": {"name": "橡木法杖", "slot": "weapon", "rarity": "common", "price": 35, "attack": 4.0, "skill_power": 0.30},
-	"iron_helm": {"name": "铁盔", "slot": "head", "rarity": "common", "price": 28, "health": 18.0},
-	"leather_vest": {"name": "皮甲", "slot": "chest", "rarity": "common", "price": 30, "defense": 2.0},
-	"runner_boots": {"name": "疾行靴", "slot": "legs", "rarity": "common", "price": 30, "speed": 25.0},
-	"fighter_gloves": {"name": "斗士手套", "slot": "hands", "rarity": "common", "price": 30, "rate": 0.15},
-	"vital_charm": {"name": "生命护符", "slot": "relic", "rarity": "rare", "price": 65, "health": 35.0},
-	"steel_blade": {"name": "精钢剑", "slot": "weapon", "rarity": "rare", "price": 70, "attack": 12.0},
-	"guardian_mail": {"name": "守卫铠甲", "slot": "chest", "rarity": "rare", "price": 70, "defense": 5.0, "health": 20.0},
-	"berserker_mark": {"name": "狂战印记", "slot": "relic", "rarity": "epic", "price": 110, "attack": 7.0, "effect": "rage_chain"},
-	"frost_focus": {"name": "寒霜法器", "slot": "relic", "rarity": "epic", "price": 110, "attack": 6.0, "effect": "frost_burst"},
-	"storm_grasp": {"name": "风暴之握", "slot": "hands", "rarity": "epic", "price": 100, "rate": 0.25, "effect": "wide_sweep"}
-}
-## 每件装备最多携带一个随机词缀，数值词缀按装备件数叠加，触发词缀按是否穿戴判断。
-const AFFIXES := {
-	"ember": {"name": "余烬", "detail": "每四次普攻命中引爆周围敌人"},
-	"frost": {"name": "寒意", "detail": "普攻命中使目标附近敌人减速一秒"},
-	"leech": {"name": "汲取", "detail": "普攻命中回血一点，冷却零点六秒"},
-	"swift": {"name": "迅捷", "detail": "攻速增加百分之八"},
-	"arcane": {"name": "秘法", "detail": "技能与幻影伤害增加百分之十二"},
-	"vigor": {"name": "坚韧", "detail": "生命上限增加十二点"}
-}
+const ITEMS = preload("res://scripts/config/equipment_rules.gd").ITEMS
+const AFFIXES = preload("res://scripts/config/equipment_rules.gd").AFFIXES
+const EquipmentSystem = preload("res://scripts/equipment_system.gd")
+
 ## 背包词缀与 inventory 严格同索引；装备词缀以槽位为键，交换和出售必须同步移动。
 var inventory_affixes: Array[String] = []
 var equipment_affixes: Dictionary = {}
-## 本局选定的技能形态；第二夜后通过战场选择，一局只能选择一次。
+## 装备实例完整随机记录，与背包索引及已穿戴槽位同步；旧单词缀字段只保留首词条兼容入口。
+var inventory_rolls: Array[Dictionary] = []
+var equipment_rolls: Dictionary = {}
+## 当前形态阶段，零为未选，最高三阶；解锁由形态模块检查夜次与等级。
+var evolution_tier := 0
+## 本局选定的技能形态；第二夜后通过战场锁定路线，后续由三阶进化模块推进阶段。
 var evolution := ""
 ## 余烬累计的真实命中次数及汲取剩余冷却秒数，切地图保留以防刷新触发频率。
 var affix_hits := 0
@@ -101,6 +87,9 @@ func choose(choice: String) -> bool:
 	cooldowns = [0.0, 0.0, 0.0, 0.0]
 	inventory.clear()
 	inventory_affixes.clear()
+	inventory_rolls.clear()
+	equipment_rolls.clear()
+	evolution_tier = 0
 	equipment_affixes.clear()
 	evolution = ""
 	affix_hits = 0
@@ -117,15 +106,13 @@ func stats() -> Dictionary:
 	var result: Dictionary = HEROES[hero_id].duplicate()
 	result.health += (level - 1) * (12.0 if hero_id == "berserker" else 8.0)
 	result.attack += (level - 1) * (2.5 if hero_id == "berserker" else 3.0)
-	for item_id in equipment.values():
+	for slot in equipment:
+		var item_id: String = equipment[slot]
+		var factor: float = equipment_rolls.get(slot, {}).get("power", 1.0)
 		var item: Dictionary = ITEMS[item_id]
 		for key in ["health", "attack", "defense", "rate", "speed", "skill_power"]:
-			result[key] += item.get(key, 0.0)
-	for affix in equipment_affixes.values():
-		match affix:
-			"swift": result.rate += 0.08
-			"arcane": result.skill_power += 0.12
-			"vigor": result.health += 12.0
+			result[key] += item.get(key, 0.0) * factor
+	EquipmentSystem.apply_stats(result, equipment_rolls)
 	if buff_time > 0.0: result.rate += 0.3
 	# 被动流把输出预算转给持续普攻；召唤流让出本体攻击给独立幻影。
 	if build_id == "passive":
@@ -184,11 +171,15 @@ func skill_damage(index: int) -> float:
 ## 在有可用背包位置时收下战利品或商店商品。
 ## @param item_id 装备目录中的标识。
 ## @param affix 可选词缀标识；空字符串表示原有普通商品。
+## @param roll 完整品质与多词条记录；为空时按普通商品或旧单词缀构造。
 ## @return 商品存在、词缀合法且背包有空位时返回 true。
-func pickup(item_id: String, affix: String = "") -> bool:
+func pickup(item_id: String, affix: String = "", roll: Dictionary = {}) -> bool:
 	if not ITEMS.has(item_id) or inventory.size() >= CAPACITY or (affix != "" and not AFFIXES.has(affix)): return false
+	var record: Dictionary = EquipmentSystem.legacy(affix) if roll.is_empty() else roll.duplicate(true)
+	if not EquipmentSystem.valid(record): return false
 	inventory.append(item_id)
-	inventory_affixes.append(affix)
+	inventory_rolls.append(record)
+	inventory_affixes.append(record.affixes[0] if not record.affixes.is_empty() else "")
 	return true
 
 ## 把背包装备放入对应槽位，并把原装备交换回背包。
@@ -199,11 +190,16 @@ func equip(index: int) -> bool:
 	var item_id := inventory[index]
 	var slot: String = ITEMS[item_id].slot
 	if equipment.has(slot):
+		var previous: Dictionary = equipment_rolls.get(slot, EquipmentSystem.legacy())
+		equipment_rolls[slot] = inventory_rolls[index]
+		inventory_rolls[index] = previous
 		inventory[index] = equipment[slot]
 		var old_affix: String = equipment_affixes.get(slot, "")
 		equipment_affixes[slot] = inventory_affixes[index]
 		inventory_affixes[index] = old_affix
 	else:
+		equipment_rolls[slot] = inventory_rolls[index]
+		inventory_rolls.remove_at(index)
 		equipment_affixes[slot] = inventory_affixes[index]
 		inventory.remove_at(index)
 		inventory_affixes.remove_at(index)
@@ -215,6 +211,8 @@ func equip(index: int) -> bool:
 ## @return 成功卸下时返回 true。
 func unequip(slot: String) -> bool:
 	if not equipment.has(slot) or inventory.size() >= CAPACITY: return false
+	inventory_rolls.append(equipment_rolls.get(slot, EquipmentSystem.legacy()))
+	equipment_rolls.erase(slot)
 	inventory.append(equipment[slot])
 	inventory_affixes.append(equipment_affixes.get(slot, ""))
 	equipment_affixes.erase(slot)
@@ -243,7 +241,9 @@ func tick(delta: float) -> void:
 ## @param affix 装备词缀目录标识。
 ## @return 任意已穿戴槽位携带该词缀时返回 true。
 func has_affix(affix: String) -> bool:
-	return equipment_affixes.values().has(affix)
+	for record in equipment_rolls.values():
+		if record.affixes.has(affix): return true
+	return false
 
 ## 获取物品实例的中文名称和词缀效果，供背包与槽位显示。
 ## @param item_id 基础装备目录标识。
@@ -251,3 +251,19 @@ func has_affix(affix: String) -> bool:
 ## @return 含基础名称及可读词缀效果的字符串。
 func item_label(item_id: String, affix: String = "") -> String:
 	return ITEMS[item_id].name if affix == "" else "%s·%s｜%s" % [AFFIXES[affix].name, ITEMS[item_id].name, AFFIXES[affix].detail]
+
+## 设置背包实例的重铸结果，同步旧入口显示的首词缀；失败时不修改物品。
+## @param index 背包实例索引。
+## @param record 已生成且通过规则校验的完整随机记录。
+## @return 实例和记录都有效时返回 true。
+func replace_roll(index: int, record: Dictionary) -> bool:
+	if index < 0 or index >= inventory.size() or not EquipmentSystem.valid(record): return false
+	inventory_rolls[index] = record.duplicate(true)
+	inventory_affixes[index] = record.affixes[0] if not record.affixes.is_empty() else ""
+	return true
+
+## 返回专注词缀支持下的实际冷却；同类触发词缀不按件数叠加。
+## @param seconds 技能配置中的原始冷却秒数。
+## @return 缩短后仍大于零的冷却秒数。
+func cooldown_seconds(seconds: float) -> float:
+	return seconds * (0.94 if has_affix("focus") else 1.0)

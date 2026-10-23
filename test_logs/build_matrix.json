@@ -14,6 +14,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.642954545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.486509376890502,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.358685610898255,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 5,
+				"ratio": 0.422431521217933,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 6,
+				"ratio": 0.404879854368932,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 7,
+				"ratio": 0.371327790630423,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 8,
+				"ratio": 0.445031336627828,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 468,
 		"hero": "berserker",
@@ -258,10 +332,43 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 11671.8836025,
 		"skills": true,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 13065.1130275
 	},
 	{
@@ -279,6 +386,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.642954545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.486509376890502,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.358685610898255,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 5,
+				"ratio": 0.422431521217933,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 6,
+				"ratio": 0.391364077669902,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 7,
+				"ratio": 0.387825781674465,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 8,
+				"ratio": 0.471018901451373,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 473,
 		"hero": "berserker",
@@ -526,10 +707,43 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 23,
 		"skill_damage": 12369.015961875,
 		"skills": true,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 14451.536884375
 	},
 	{
@@ -547,6 +761,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.642954545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.486509376890502,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.358685610898255,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 5,
+				"ratio": 0.428784763845601,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 6,
+				"ratio": 0.48200479368932,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 7,
+				"ratio": 0.360890337732444,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 8,
+				"ratio": 0.464657832620555,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 458,
 		"hero": "berserker",
@@ -790,10 +1078,43 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 91,
 		"skill_damage": 11751.8994225,
 		"skills": true,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 13657.451095
 	},
 	{
@@ -812,6 +1133,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.567954545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.379068360556564,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.559490474670073,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 5,
+				"ratio": 0.447904204627188,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 6,
+				"ratio": 0.495232827669902,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 7,
+				"ratio": 0.389452380952381,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 8,
+				"ratio": 0.495758698309537,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 503,
 		"hero": "frost_mage",
@@ -1061,10 +1456,49 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 16336.59556375,
 		"skills": true,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 11240.11016125
 	},
 	{
@@ -1083,6 +1517,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.567954545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.379068360556564,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.559490474670073,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 5,
+				"ratio": 0.447904204627188,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 6,
+				"ratio": 0.461821723300972,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 7,
+				"ratio": 0.432752105350789,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 8,
+				"ratio": 0.44343559654499,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 478,
 		"hero": "frost_mage",
@@ -1335,10 +1843,49 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 23,
 		"skill_damage": 14258.227685625,
 		"skills": true,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 14389.214691875
 	},
 	{
@@ -1357,6 +1904,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.567954545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.379068360556564,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.559490474670073,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 5,
+				"ratio": 0.443866803524335,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 6,
+				"ratio": 0.47789083737864,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 7,
+				"ratio": 0.43940727255201,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "skill",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 8,
+				"ratio": 0.432235004630254,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 518,
 		"hero": "frost_mage",
@@ -1605,10 +2226,49 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 91,
 		"skill_damage": 16947.82095875,
 		"skills": true,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 10779.63961625
 	},
 	{
@@ -1626,6 +2286,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.510909090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.790078644888082,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.808394529587058,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.861211340206186,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.921908980582524,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.857455088770879,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.78394561557112,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 598,
 		"hero": "berserker",
@@ -1870,10 +2604,43 @@
 		"passive_damage": 17144.8499,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 4811.726475
 	},
 	{
@@ -1891,6 +2658,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.510909090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.790078644888082,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.808394529587058,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.861211340206186,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.925226941747573,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.808204339520129,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.801489682112068,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 618,
 		"hero": "berserker",
@@ -2138,10 +2979,43 @@
 		"passive_damage": 16520.7379375,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 6487.84655
 	},
 	{
@@ -2159,6 +3033,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.510909090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.790078644888082,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.808394529587058,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.878578278590266,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.939033980582525,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.882664397006502,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.856864594558189,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 588,
 		"hero": "berserker",
@@ -2402,10 +3350,43 @@
 		"passive_damage": 18226.1189,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 4511.48285
 	},
 	{
@@ -2423,6 +3404,80 @@
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.510909090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.790078644888082,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.930177735206471,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.919163569887317,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.898475303398058,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.835335826454248,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.87031325936153,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 687,
 		"hero": "berserker",
@@ -2672,10 +3727,43 @@
 		"passive_damage": 17253.8095125,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 3952.6256125
 	},
 	{
@@ -2693,6 +3781,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.68,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.728856624319419,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.722318007662836,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.81726054902901,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.923679611650486,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.814719447219447,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.770934657866378,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 598,
 		"hero": "frost_mage",
@@ -2937,10 +4099,43 @@
 		"passive_damage": 17397.260525,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 5962.1303
 	},
 	{
@@ -2958,6 +4153,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.68,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.728856624319419,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.722318007662836,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.81726054902901,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.875745145631068,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.783652531678847,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.710361147966055,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 603,
 		"hero": "frost_mage",
@@ -3205,10 +4474,43 @@
 		"passive_damage": 16618.491675,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 8263.40426250001
 	},
 	{
@@ -3226,6 +4528,80 @@
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.68,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.728856624319419,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.722318007662836,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.815958403260609,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.858834951456311,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.852318996792681,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.784093669181034,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 588,
 		"hero": "frost_mage",
@@ -3469,10 +4845,43 @@
 		"passive_damage": 17413.623275,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 6481.4538125
 	},
 	{
@@ -3490,6 +4899,80 @@
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.68,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.728856624319419,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.851665602383994,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.873323243826421,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.866522451456311,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.707325290937133,
+				"role": "shield"
+			},
+			{
+				"assigned": 0,
+				"dominant": "basic",
+				"focus_summons": false,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.794149976427802,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 687,
 		"hero": "frost_mage",
@@ -3739,10 +5222,43 @@
 		"passive_damage": 16888.44095,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 6477.095875
 	},
 	{
@@ -3756,16 +5272,90 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 1836.85626925,
+		"basic_damage": 1616.127765,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.641809090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.460896793708409,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.573458267347808,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.701030459122513,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.783322299029125,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.766644606270922,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.746952226831897,
+				"role": "shock"
+			}
+		],
 		"form": "",
-		"gold": 543,
+		"gold": 558,
 		"hero": "berserker",
-		"hero_damage": 1836.85626925,
-		"hp": 285.428571428571,
+		"hero_damage": 1616.127765,
+		"hp": 291.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -3823,7 +5413,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 128.663474,
+				"basic_damage": 114.138592,
 				"basic_start": 74.27,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -3831,11 +5421,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 129,
-				"hero_damage": 128.663474,
+				"hero_damage": 114.138592,
 				"hero_start": 74.27,
 				"night": 3,
 				"peak_alive": 10,
-				"seconds": 17.4,
+				"seconds": 17.85,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -3845,13 +5435,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 319,
-				"tower_damage": 665.229721999999,
+				"tower_damage": 687.418631999999,
 				"tower_start": 653.6948,
 				"towers": 3
 			},
 			{
-				"basic_damage": 135.56,
-				"basic_start": 202.933474,
+				"basic_damage": 119.790098,
+				"basic_start": 188.408592,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3860,11 +5450,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 174,
-				"hero_damage": 135.56,
-				"hero_start": 202.933474,
+				"hero_damage": 119.790098,
+				"hero_start": 188.408592,
 				"night": 4,
-				"peak_alive": 6,
-				"seconds": 17.55,
+				"peak_alive": 10,
+				"seconds": 18.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -3873,14 +5463,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 667,
-				"tower_damage": 738.23944,
-				"tower_start": 1318.924522,
+				"start_tick": 676,
+				"tower_damage": 877.811466,
+				"tower_start": 1341.113432,
 				"towers": 4
 			},
 			{
-				"basic_damage": 360.52596,
-				"basic_start": 338.493474,
+				"basic_damage": 193.99058,
+				"basic_start": 308.19869,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3892,11 +5482,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 184,
-				"hero_damage": 360.52596,
-				"hero_start": 338.493474,
+				"hero_damage": 193.99058,
+				"hero_start": 308.19869,
 				"night": 5,
-				"peak_alive": 4,
-				"seconds": 17.4,
+				"peak_alive": 7,
+				"seconds": 18.0,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3905,14 +5495,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 1018,
-				"tower_damage": 403.552608,
-				"tower_start": 2057.163962,
+				"start_tick": 1046,
+				"tower_damage": 698.721548000004,
+				"tower_start": 2218.924898,
 				"towers": 4
 			},
 			{
-				"basic_damage": 329.96504,
-				"basic_start": 699.019434,
+				"basic_damage": 383.512,
+				"basic_start": 502.18927,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3924,11 +5514,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 235,
-				"hero_damage": 329.96504,
-				"hero_start": 699.019434,
+				"hero_damage": 383.512,
+				"hero_start": 502.18927,
 				"night": 6,
 				"peak_alive": 9,
-				"seconds": 19.5,
+				"seconds": 18.3,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3937,14 +5527,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1366,
-				"tower_damage": 1243.55171,
-				"tower_start": 2460.71657,
+				"start_tick": 1406,
+				"tower_damage": 947.943869999999,
+				"tower_start": 2917.646446,
 				"towers": 4
 			},
 			{
-				"basic_damage": 306.69318725,
-				"basic_start": 1028.984474,
+				"basic_damage": 324.80329,
+				"basic_start": 885.70127,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3955,12 +5545,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 258,
-				"hero_damage": 306.69318725,
-				"hero_start": 1028.984474,
+				"gold_end": 273,
+				"hero_damage": 324.80329,
+				"hero_start": 885.70127,
 				"night": 7,
-				"peak_alive": 10,
-				"seconds": 22.45,
+				"peak_alive": 7,
+				"seconds": 21.45,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -3969,14 +5559,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1756,
-				"tower_damage": 1914.06915425001,
-				"tower_start": 3704.26828,
+				"start_tick": 1772,
+				"tower_damage": 1553.823378,
+				"tower_start": 3865.590316,
 				"towers": 4
 			},
 			{
-				"basic_damage": 501.178608,
-				"basic_start": 1335.67766125,
+				"basic_damage": 405.623205000001,
+				"basic_start": 1210.50456,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -3987,12 +5577,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 543,
-				"hero_damage": 501.178608,
-				"hero_start": 1335.67766125,
+				"gold_end": 558,
+				"hero_damage": 405.623205000001,
+				"hero_start": 1210.50456,
 				"night": 8,
-				"peak_alive": 8,
-				"seconds": 26.1,
+				"peak_alive": 9,
+				"seconds": 25.65,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4001,20 +5591,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2205,
-				"tower_damage": 2084.839384,
-				"tower_start": 5618.33743425001,
+				"start_tick": 2201,
+				"tower_damage": 2017.0974835,
+				"tower_start": 5419.413694,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 26283.4669125001,
-		"tower_damage": 7703.17681825001
+		"summon_damage": 26770.8610575001,
+		"tier": 0,
+		"tower_damage": 7436.5111775
 	},
 	{
 		"active": true,
@@ -4027,15 +5656,89 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 1631.447824,
+		"basic_damage": 1319.926656,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.641809090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.460896793708409,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.573458267347808,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.701030459122513,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.779626068932038,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.84144600487232,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.762691561085668,
+				"role": "shock"
+			}
+		],
 		"form": "",
-		"gold": 548,
+		"gold": 578,
 		"hero": "berserker",
-		"hero_damage": 1631.447824,
+		"hero_damage": 1319.926656,
 		"hp": 311.0,
 		"kills": 290,
 		"level": 10,
@@ -4094,7 +5797,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 128.663474,
+				"basic_damage": 114.138592,
 				"basic_start": 74.27,
 				"core_end": 125.0,
 				"core_start": 125.0,
@@ -4104,11 +5807,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 96,
-				"hero_damage": 128.663474,
+				"hero_damage": 114.138592,
 				"hero_start": 74.27,
 				"night": 3,
 				"peak_alive": 10,
-				"seconds": 17.4,
+				"seconds": 17.85,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -4118,13 +5821,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 319,
-				"tower_damage": 665.229721999999,
+				"tower_damage": 687.418631999999,
 				"tower_start": 653.6948,
 				"towers": 3
 			},
 			{
-				"basic_damage": 135.56,
-				"basic_start": 202.933474,
+				"basic_damage": 119.790098,
+				"basic_start": 188.408592,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4134,11 +5837,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 161,
-				"hero_damage": 135.56,
-				"hero_start": 202.933474,
+				"hero_damage": 119.790098,
+				"hero_start": 188.408592,
 				"night": 4,
-				"peak_alive": 6,
-				"seconds": 17.55,
+				"peak_alive": 10,
+				"seconds": 18.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -4147,14 +5850,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 667,
-				"tower_damage": 738.23944,
-				"tower_start": 1318.924522,
+				"start_tick": 676,
+				"tower_damage": 877.811466,
+				"tower_start": 1341.113432,
 				"towers": 4
 			},
 			{
-				"basic_damage": 226.67304,
-				"basic_start": 338.493474,
+				"basic_damage": 115.06272,
+				"basic_start": 308.19869,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4166,11 +5869,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 189,
-				"hero_damage": 226.67304,
-				"hero_start": 338.493474,
+				"hero_damage": 115.06272,
+				"hero_start": 308.19869,
 				"night": 5,
-				"peak_alive": 4,
-				"seconds": 17.5,
+				"peak_alive": 6,
+				"seconds": 18.0,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4179,14 +5882,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 1018,
-				"tower_damage": 418.348892000003,
-				"tower_start": 2057.163962,
+				"start_tick": 1046,
+				"tower_damage": 792.877876000003,
+				"tower_start": 2218.924898,
 				"towers": 4
 			},
 			{
-				"basic_damage": 179.27452,
-				"basic_start": 565.166514,
+				"basic_damage": 235.92744,
+				"basic_start": 423.26141,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4198,10 +5901,10 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 245,
-				"hero_damage": 179.27452,
-				"hero_start": 565.166514,
+				"hero_damage": 235.92744,
+				"hero_start": 423.26141,
 				"night": 6,
-				"peak_alive": 8,
+				"peak_alive": 5,
 				"seconds": 19.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
@@ -4211,14 +5914,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1368,
-				"tower_damage": 1190.64654,
-				"tower_start": 2475.512854,
+				"start_tick": 1406,
+				"tower_damage": 668.73409,
+				"tower_start": 3011.802774,
 				"towers": 4
 			},
 			{
-				"basic_damage": 387.606052,
-				"basic_start": 744.441034,
+				"basic_damage": 265.171552,
+				"basic_start": 659.18885,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -4229,12 +5932,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 288,
-				"hero_damage": 387.606052,
-				"hero_start": 744.441034,
+				"gold_end": 243,
+				"hero_damage": 265.171552,
+				"hero_start": 659.18885,
 				"night": 7,
 				"peak_alive": 7,
-				"seconds": 21.15,
+				"seconds": 21.3,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4243,14 +5946,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1758,
-				"tower_damage": 1653.143848,
-				"tower_start": 3666.159394,
+				"start_tick": 1796,
+				"tower_damage": 1496.6062985,
+				"tower_start": 3680.536864,
 				"towers": 4
 			},
 			{
-				"basic_damage": 499.400738,
-				"basic_start": 1132.047086,
+				"basic_damage": 395.566254,
+				"basic_start": 924.360402,
 				"core_end": 155.0,
 				"core_start": 155.0,
 				"equipment": {
@@ -4261,12 +5964,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 548,
-				"hero_damage": 499.400738,
-				"hero_start": 1132.047086,
+				"gold_end": 578,
+				"hero_damage": 395.566254,
+				"hero_start": 924.360402,
 				"night": 8,
-				"peak_alive": 13,
-				"seconds": 29.55,
+				"peak_alive": 9,
+				"seconds": 26.25,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4275,20 +5978,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2181,
-				"tower_damage": 3158.38641100001,
-				"tower_start": 5319.303242,
+				"start_tick": 2222,
+				"tower_damage": 2173.02126749999,
+				"tower_start": 5177.1431625,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 25714.3625230001,
-		"tower_damage": 8477.68965300001
+		"summon_damage": 27153.4089140001,
+		"tier": 0,
+		"tower_damage": 7350.16443
 	},
 	{
 		"active": true,
@@ -4301,16 +6043,90 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 1599.610736,
+		"basic_damage": 1396.4592425,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.641809090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.460896793708409,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.573458267347808,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.68298391632702,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.851241129126212,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.84966417442207,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.760045180967134,
+				"role": "shock"
+			}
+		],
 		"form": "",
 		"gold": 548,
 		"hero": "berserker",
-		"hero_damage": 1599.610736,
-		"hp": 328.428571428571,
+		"hero_damage": 1396.4592425,
+		"hp": 331.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -4368,7 +6184,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 128.663474,
+				"basic_damage": 114.138592,
 				"basic_start": 74.27,
 				"core_end": 120.0,
 				"core_start": 120.0,
@@ -4376,11 +6192,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 119,
-				"hero_damage": 128.663474,
+				"hero_damage": 114.138592,
 				"hero_start": 74.27,
 				"night": 3,
 				"peak_alive": 10,
-				"seconds": 17.4,
+				"seconds": 17.85,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					2,
@@ -4390,13 +6206,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 319,
-				"tower_damage": 665.229721999999,
+				"tower_damage": 687.418631999999,
 				"tower_start": 653.6948,
 				"towers": 3
 			},
 			{
-				"basic_damage": 273.8624,
-				"basic_start": 202.933474,
+				"basic_damage": 212.5319,
+				"basic_start": 188.408592,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4405,11 +6221,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 164,
-				"hero_damage": 273.8624,
-				"hero_start": 202.933474,
+				"hero_damage": 212.5319,
+				"hero_start": 188.408592,
 				"night": 4,
-				"peak_alive": 5,
-				"seconds": 16.7,
+				"peak_alive": 8,
+				"seconds": 17.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -4418,14 +6234,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 667,
-				"tower_damage": 721.300343999999,
-				"tower_start": 1318.924522,
+				"start_tick": 676,
+				"tower_damage": 845.287367999999,
+				"tower_start": 1341.113432,
 				"towers": 4
 			},
 			{
-				"basic_damage": 114.13798,
-				"basic_start": 476.795874,
+				"basic_damage": 76.85844,
+				"basic_start": 400.940492,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4436,11 +6252,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 202,
-				"hero_damage": 114.13798,
-				"hero_start": 476.795874,
+				"hero_damage": 76.85844,
+				"hero_start": 400.940492,
 				"night": 5,
-				"peak_alive": 6,
-				"seconds": 17.75,
+				"peak_alive": 4,
+				"seconds": 18.15,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4449,14 +6265,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 1001,
-				"tower_damage": 470.019928000003,
-				"tower_start": 2040.224866,
+				"start_tick": 1027,
+				"tower_damage": 536.028108000005,
+				"tower_start": 2186.4008,
 				"towers": 4
 			},
 			{
-				"basic_damage": 177.0091,
-				"basic_start": 590.933854,
+				"basic_damage": 51.5082599999999,
+				"basic_start": 477.798932,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4468,11 +6284,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 225,
-				"hero_damage": 177.0091,
-				"hero_start": 590.933854,
+				"hero_damage": 51.5082599999999,
+				"hero_start": 477.798932,
 				"night": 6,
 				"peak_alive": 6,
-				"seconds": 18.6,
+				"seconds": 18.65,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4481,14 +6297,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1356,
-				"tower_damage": 1004.49314,
-				"tower_start": 2510.244794,
+				"start_tick": 1390,
+				"tower_damage": 806.262859999998,
+				"tower_start": 2722.428908,
 				"towers": 4
 			},
 			{
-				"basic_damage": 361.313052,
-				"basic_start": 767.942954,
+				"basic_damage": 248.18913,
+				"basic_start": 529.307192,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4500,11 +6316,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 263,
-				"hero_damage": 361.313052,
-				"hero_start": 767.942954,
+				"hero_damage": 248.18913,
+				"hero_start": 529.307192,
 				"night": 7,
-				"peak_alive": 5,
-				"seconds": 21.7,
+				"peak_alive": 9,
+				"seconds": 21.05,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4513,14 +6329,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1728,
-				"tower_damage": 1386.016749,
-				"tower_start": 3514.737934,
+				"start_tick": 1763,
+				"tower_damage": 1533.2354465,
+				"tower_start": 3528.691768,
 				"towers": 4
 			},
 			{
-				"basic_damage": 470.35473,
-				"basic_start": 1129.256006,
+				"basic_damage": 618.9629205,
+				"basic_start": 777.496322,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -4532,11 +6348,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 548,
-				"hero_damage": 470.35473,
-				"hero_start": 1129.256006,
+				"hero_damage": 618.9629205,
+				"hero_start": 777.496322,
 				"night": 8,
 				"peak_alive": 10,
-				"seconds": 28.3,
+				"seconds": 27.85,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4545,20 +6361,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2162,
-				"tower_damage": 2262.6188935,
-				"tower_start": 4900.754683,
+				"start_tick": 2184,
+				"tower_damage": 1982.058525,
+				"tower_start": 5061.9272145,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 27060.5156875001,
-		"tower_damage": 7163.3735765
+		"summon_damage": 27383.0550180001,
+		"tier": 0,
+		"tower_damage": 7043.9857395
 	},
 	{
 		"active": true,
@@ -4571,6 +6426,35 @@
 		"camp": false,
 		"camp_success": false,
 		"core": -4.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.942727272727273,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.746279491833031,
+				"role": "balanced"
+			}
+		],
 		"form": "",
 		"gold": 88,
 		"hero": "berserker",
@@ -4663,10 +6547,19 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
+		"rolls": {
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
+		"tier": 0,
 		"tower_damage": 2348.597
 	},
 	{
@@ -4680,15 +6573,89 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 1773.6427725,
+		"basic_damage": 1659.933326,
 		"build": "summon",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.641809090909091,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.460896793708409,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.752319380587484,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.792260375209782,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.829856211165048,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.7477400420632,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.759479944100216,
+				"role": "shock"
+			}
+		],
 		"form": "",
-		"gold": 647,
+		"gold": 632,
 		"hero": "berserker",
-		"hero_damage": 1773.6427725,
+		"hero_damage": 1659.933326,
 		"hp": 303.0,
 		"kills": 295,
 		"level": 11,
@@ -4777,7 +6744,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 134.78516,
+				"basic_damage": 135.09196,
 				"basic_start": 166.43,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -4788,7 +6755,7 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 163,
-				"hero_damage": 134.78516,
+				"hero_damage": 135.09196,
 				"hero_start": 166.43,
 				"night": 4,
 				"peak_alive": 6,
@@ -4802,13 +6769,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 566,
-				"tower_damage": 558.400419999999,
+				"tower_damage": 558.093619999999,
 				"tower_start": 1026.97622,
 				"towers": 4
 			},
 			{
-				"basic_damage": 189.15401,
-				"basic_start": 301.21516,
+				"basic_damage": 152.2283,
+				"basic_start": 301.52196,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -4820,11 +6787,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 203,
-				"hero_damage": 189.15401,
-				"hero_start": 301.21516,
+				"hero_damage": 152.2283,
+				"hero_start": 301.52196,
 				"night": 5,
-				"peak_alive": 4,
-				"seconds": 19.2,
+				"peak_alive": 5,
+				"seconds": 18.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4834,13 +6801,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 897,
-				"tower_damage": 459.37589,
-				"tower_start": 1585.37664,
+				"tower_damage": 548.764109999999,
+				"tower_start": 1585.06984,
 				"towers": 4
 			},
 			{
-				"basic_damage": 242.95896,
-				"basic_start": 490.36917,
+				"basic_damage": 162.582976,
+				"basic_start": 453.75026,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -4852,11 +6819,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 294,
-				"hero_damage": 242.95896,
-				"hero_start": 490.36917,
+				"hero_damage": 162.582976,
+				"hero_start": 453.75026,
 				"night": 6,
-				"peak_alive": 5,
-				"seconds": 19.3,
+				"peak_alive": 12,
+				"seconds": 18.3,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4865,14 +6832,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1281,
-				"tower_damage": 904.33571,
-				"tower_start": 2044.75253,
+				"start_tick": 1267,
+				"tower_damage": 1276.736666,
+				"tower_start": 2133.83395,
 				"towers": 4
 			},
 			{
-				"basic_damage": 290.40208,
-				"basic_start": 733.32813,
+				"basic_damage": 281.64988,
+				"basic_start": 616.333236,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -4883,12 +6850,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 302,
-				"hero_damage": 290.40208,
-				"hero_start": 733.32813,
+				"gold_end": 287,
+				"hero_damage": 281.64988,
+				"hero_start": 616.333236,
 				"night": 7,
-				"peak_alive": 8,
-				"seconds": 21.15,
+				"peak_alive": 6,
+				"seconds": 22.35,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4897,14 +6864,14 @@
 					4
 				],
 				"skill_start": 0.0,
-				"start_tick": 1667,
-				"tower_damage": 1469.5739575,
-				"tower_start": 2949.08824,
+				"start_tick": 1633,
+				"tower_damage": 1503.971015,
+				"tower_start": 3410.570616,
 				"towers": 4
 			},
 			{
-				"basic_damage": 749.9125625,
-				"basic_start": 1023.73021,
+				"basic_damage": 761.95021,
+				"basic_start": 897.983116,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -4915,12 +6882,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 647,
-				"hero_damage": 749.9125625,
-				"hero_start": 1023.73021,
+				"gold_end": 632,
+				"hero_damage": 761.95021,
+				"hero_start": 897.983116,
 				"night": 8,
-				"peak_alive": 10,
-				"seconds": 27.3,
+				"peak_alive": 7,
+				"seconds": 26.75,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -4929,20 +6896,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2090,
-				"tower_damage": 2442.321719,
-				"tower_start": 4418.6621975,
+				"start_tick": 2080,
+				"tower_damage": 2187.117738,
+				"tower_start": 4914.541631,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 27188.8733110001,
-		"tower_damage": 6860.9839165
+		"summon_damage": 27061.9073050001,
+		"tier": 0,
+		"tower_damage": 7101.659369
 	},
 	{
 		"active": true,
@@ -4955,16 +6961,90 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 4931.22743399999,
+		"basic_damage": 4786.04006649999,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.5936,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.492214156079855,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.506525085142614,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.622597549748262,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.725829959223301,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.762235210403632,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.658584704269935,
+				"role": "shock"
+			}
+		],
 		"form": "",
 		"gold": 558,
 		"hero": "frost_mage",
-		"hero_damage": 4931.22743399999,
-		"hp": 193.0,
+		"hero_damage": 4786.04006649999,
+		"hp": 205.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -5078,7 +7158,7 @@
 				"towers": 4
 			},
 			{
-				"basic_damage": 632.94512,
+				"basic_damage": 666.11776,
 				"basic_start": 1106.406496,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -5091,11 +7171,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 184,
-				"hero_damage": 632.94512,
+				"hero_damage": 666.11776,
 				"hero_start": 1106.406496,
 				"night": 5,
 				"peak_alive": 5,
-				"seconds": 17.8,
+				"seconds": 17.85,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5105,13 +7185,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 938,
-				"tower_damage": 449.837280000003,
+				"tower_damage": 463.462808000001,
 				"tower_start": 2030.64526,
 				"towers": 4
 			},
 			{
-				"basic_damage": 522.78324,
-				"basic_start": 1739.351616,
+				"basic_damage": 492.033509999999,
+				"basic_start": 1772.524256,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5123,11 +7203,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 235,
-				"hero_damage": 522.78324,
-				"hero_start": 1739.351616,
+				"hero_damage": 492.033509999999,
+				"hero_start": 1772.524256,
 				"night": 6,
 				"peak_alive": 5,
-				"seconds": 18.6,
+				"seconds": 18.5,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5136,14 +7216,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1294,
-				"tower_damage": 683.218789999999,
-				"tower_start": 2480.48254,
+				"start_tick": 1295,
+				"tower_damage": 864.58105,
+				"tower_start": 2494.108068,
 				"towers": 4
 			},
 			{
-				"basic_damage": 855.907802999997,
-				"basic_start": 2262.134856,
+				"basic_damage": 825.588240499997,
+				"basic_start": 2264.557766,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5155,11 +7235,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 273,
-				"hero_damage": 855.907802999997,
-				"hero_start": 2262.134856,
+				"hero_damage": 825.588240499997,
+				"hero_start": 2264.557766,
 				"night": 7,
-				"peak_alive": 7,
-				"seconds": 20.6,
+				"peak_alive": 6,
+				"seconds": 20.95,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5168,14 +7248,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1666,
-				"tower_damage": 1338.4886085,
-				"tower_start": 3163.70133,
+				"start_tick": 1665,
+				"tower_damage": 1709.078915,
+				"tower_start": 3358.689118,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1813.184775,
-				"basic_start": 3118.042659,
+				"basic_damage": 1695.89406,
+				"basic_start": 3090.1460065,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -5187,11 +7267,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 558,
-				"hero_damage": 1813.184775,
-				"hero_start": 3118.042659,
+				"hero_damage": 1695.89406,
+				"hero_start": 3090.1460065,
 				"night": 8,
-				"peak_alive": 6,
-				"seconds": 26.1,
+				"peak_alive": 8,
+				"seconds": 26.05,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5200,20 +7280,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2078,
-				"tower_damage": 1905.3611275,
-				"tower_start": 4502.1899385,
+				"start_tick": 2084,
+				"tower_damage": 2091.31872,
+				"tower_start": 5067.768033,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24484.7215,
-		"tower_damage": 6407.551066
+		"summon_damage": 23878.3731805,
+		"tier": 0,
+		"tower_damage": 7159.086753
 	},
 	{
 		"active": true,
@@ -5226,16 +7345,90 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 3996.5094585,
+		"basic_damage": 4265.512473,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 155.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.5936,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.492214156079855,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.506525085142614,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.622597549748262,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.840246633009709,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.69515735142051,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.700798037648168,
+				"role": "shock"
+			}
+		],
 		"form": "",
-		"gold": 563,
+		"gold": 578,
 		"hero": "frost_mage",
-		"hero_damage": 3996.5094585,
-		"hp": 213.0,
+		"hero_damage": 4265.512473,
+		"hp": 225.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -5352,7 +7545,7 @@
 				"towers": 4
 			},
 			{
-				"basic_damage": 463.92216,
+				"basic_damage": 423.628752,
 				"basic_start": 1106.406496,
 				"core_end": 125.0,
 				"core_start": 125.0,
@@ -5365,10 +7558,10 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 189,
-				"hero_damage": 463.92216,
+				"hero_damage": 423.628752,
 				"hero_start": 1106.406496,
 				"night": 5,
-				"peak_alive": 3,
+				"peak_alive": 5,
 				"seconds": 17.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
@@ -5379,13 +7572,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 938,
-				"tower_damage": 215.294400000001,
+				"tower_damage": 234.555120000001,
 				"tower_start": 2030.64526,
 				"towers": 4
 			},
 			{
-				"basic_damage": 484.456159999999,
-				"basic_start": 1570.328656,
+				"basic_damage": 684.799839999999,
+				"basic_start": 1530.035248,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -5397,11 +7590,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 245,
-				"hero_damage": 484.456159999999,
-				"hero_start": 1570.328656,
+				"hero_damage": 684.799839999999,
+				"hero_start": 1530.035248,
 				"night": 6,
-				"peak_alive": 5,
-				"seconds": 18.05,
+				"peak_alive": 6,
+				"seconds": 18.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5411,13 +7604,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 1289,
-				"tower_damage": 715.946359999999,
-				"tower_start": 2245.93966,
+				"tower_damage": 1054.54086,
+				"tower_start": 2265.20038,
 				"towers": 4
 			},
 			{
-				"basic_damage": 734.044939999998,
-				"basic_start": 2054.784816,
+				"basic_damage": 709.819777499998,
+				"basic_start": 2214.835088,
 				"core_end": 125.0,
 				"core_start": 125.0,
 				"equipment": {
@@ -5429,11 +7622,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 243,
-				"hero_damage": 734.044939999998,
-				"hero_start": 2054.784816,
+				"hero_damage": 709.819777499998,
+				"hero_start": 2214.835088,
 				"night": 7,
-				"peak_alive": 5,
-				"seconds": 20.45,
+				"peak_alive": 8,
+				"seconds": 20.7,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5442,14 +7635,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1650,
-				"tower_damage": 1871.4800015,
-				"tower_start": 2961.88602,
+				"start_tick": 1660,
+				"tower_damage": 1511.455591,
+				"tower_start": 3319.74124,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1207.6797025,
-				"basic_start": 2788.829756,
+				"basic_damage": 1340.8576075,
+				"basic_start": 2924.6548655,
 				"core_end": 155.0,
 				"core_start": 155.0,
 				"equipment": {
@@ -5460,12 +7653,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 563,
-				"hero_damage": 1207.6797025,
-				"hero_start": 2788.829756,
+				"gold_end": 578,
+				"hero_damage": 1340.8576075,
+				"hero_start": 2924.6548655,
 				"night": 8,
-				"peak_alive": 9,
-				"seconds": 26.5,
+				"peak_alive": 8,
+				"seconds": 26.3,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5474,20 +7667,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2059,
-				"tower_damage": 2309.62465,
-				"tower_start": 4833.3660215,
+				"start_tick": 2074,
+				"tower_damage": 2485.69973499999,
+				"tower_start": 4831.196831,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 23,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24683.99987,
-		"tower_damage": 7142.9906715
+		"summon_damage": 24241.090961,
+		"tier": 0,
+		"tower_damage": 7316.896566
 	},
 	{
 		"active": true,
@@ -5500,16 +7732,90 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 4651.472847,
+		"basic_damage": 4897.20780349999,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 120.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.5936,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.492214156079855,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.506525085142614,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.679245631742988,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.74892932815534,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.696958532695376,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.684471859644396,
+				"role": "shock"
+			}
+		],
 		"form": "",
 		"gold": 548,
 		"hero": "frost_mage",
-		"hero_damage": 4651.472847,
-		"hp": 233.0,
+		"hero_damage": 4897.20780349999,
+		"hp": 245.0,
 		"kills": 290,
 		"level": 10,
 		"night": 8,
@@ -5623,7 +7929,7 @@
 				"towers": 4
 			},
 			{
-				"basic_damage": 427.36328,
+				"basic_damage": 540.323016,
 				"basic_start": 1007.495272,
 				"core_end": 120.0,
 				"core_start": 120.0,
@@ -5635,11 +7941,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 202,
-				"hero_damage": 427.36328,
+				"hero_damage": 540.323016,
 				"hero_start": 1007.495272,
 				"night": 5,
-				"peak_alive": 5,
-				"seconds": 17.4,
+				"peak_alive": 6,
+				"seconds": 18.35,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5649,13 +7955,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 923,
-				"tower_damage": 369.817600000002,
+				"tower_damage": 494.088152000003,
 				"tower_start": 1940.533164,
 				"towers": 4
 			},
 			{
-				"basic_damage": 726.895719999999,
-				"basic_start": 1434.858552,
+				"basic_damage": 820.348319999999,
+				"basic_start": 1547.818288,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -5667,11 +7973,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 225,
-				"hero_damage": 726.895719999999,
-				"hero_start": 1434.858552,
+				"hero_damage": 820.348319999999,
+				"hero_start": 1547.818288,
 				"night": 6,
-				"peak_alive": 7,
-				"seconds": 18.65,
+				"peak_alive": 5,
+				"seconds": 19.35,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5680,14 +7986,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 1271,
-				"tower_damage": 918.43565,
-				"tower_start": 2310.350764,
+				"start_tick": 1290,
+				"tower_damage": 908.715379999999,
+				"tower_start": 2434.621316,
 				"towers": 4
 			},
 			{
-				"basic_damage": 697.842709999998,
-				"basic_start": 2161.754272,
+				"basic_damage": 978.762325499997,
+				"basic_start": 2368.166608,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -5699,11 +8005,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 263,
-				"hero_damage": 697.842709999998,
-				"hero_start": 2161.754272,
+				"hero_damage": 978.762325499997,
+				"hero_start": 2368.166608,
 				"night": 7,
-				"peak_alive": 6,
-				"seconds": 20.8,
+				"peak_alive": 5,
+				"seconds": 20.9,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5712,14 +8018,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1644,
-				"tower_damage": 1479.263083,
-				"tower_start": 3228.786414,
+				"start_tick": 1677,
+				"tower_damage": 1363.7185885,
+				"tower_start": 3343.336696,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1791.875865,
-				"basic_start": 2859.596982,
+				"basic_damage": 1550.27887,
+				"basic_start": 3346.9289335,
 				"core_end": 120.0,
 				"core_start": 120.0,
 				"equipment": {
@@ -5731,11 +8037,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 548,
-				"hero_damage": 1791.875865,
-				"hero_start": 2859.596982,
+				"hero_damage": 1550.27887,
+				"hero_start": 3346.9289335,
 				"night": 8,
-				"peak_alive": 9,
-				"seconds": 26.35,
+				"peak_alive": 8,
+				"seconds": 25.7,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -5744,20 +8050,59 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 2060,
-				"tower_damage": 2143.5357175,
-				"tower_start": 4708.049497,
+				"start_tick": 2095,
+				"tower_damage": 2049.7476125,
+				"tower_start": 4707.0552845,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 91,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24320.4419385,
-		"tower_damage": 6851.5852145
+		"summon_damage": 24169.4892995,
+		"tier": 0,
+		"tower_damage": 6756.802897
 	},
 	{
 		"active": true,
@@ -5767,15 +8112,53 @@
 			"hands": "",
 			"weapon": ""
 		},
-		"basic_damage": 2137.18000000001,
+		"basic_damage": 2156.53500000001,
 		"build": "summon",
 		"camp": false,
 		"camp_success": false,
 		"core": 52.6086956521739,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.775454545454545,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.676588021778584,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 6,
+				"night": 4,
+				"ratio": 0.632164883993188,
+				"role": "shield"
+			}
+		],
 		"form": "",
 		"gold": 149,
 		"hero": "frost_mage",
-		"hero_damage": 2137.18000000001,
+		"hero_damage": 2156.53500000001,
 		"hp": -6.04347826086954,
 		"kills": 81,
 		"level": 5,
@@ -5861,7 +8244,7 @@
 				"towers": 3
 			},
 			{
-				"basic_damage": 1079.84425000001,
+				"basic_damage": 1099.19925000001,
 				"basic_start": 1057.33575,
 				"core_end": 52.6086956521739,
 				"core_start": 150.0,
@@ -5871,10 +8254,10 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 149,
-				"hero_damage": 1079.84425000001,
+				"hero_damage": 1099.19925000001,
 				"hero_start": 1057.33575,
 				"night": 4,
-				"peak_alive": 17,
+				"peak_alive": 18,
 				"seconds": 120.2,
 				"skill_damage": 0.0,
 				"skill_levels": [
@@ -5885,7 +8268,7 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 1052,
-				"tower_damage": 2082.38575000001,
+				"tower_damage": 2055.35075000001,
 				"tower_start": 2088.36425,
 				"towers": 4
 			}
@@ -5893,11 +8276,32 @@
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "lost",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": false,
 		"summon_damage": 0.0,
-		"tower_damage": 4170.75000000001
+		"tier": 0,
+		"tower_damage": 4143.71500000001
 	},
 	{
 		"active": true,
@@ -5910,16 +8314,90 @@
 			"relic": "",
 			"weapon": ""
 		},
-		"basic_damage": 5317.98217599999,
+		"basic_damage": 5086.48349799999,
 		"build": "summon",
 		"camp": true,
 		"camp_success": true,
 		"core": 150.0,
+		"director": [
+			{
+				"assigned": 0,
+				"dominant": "balanced",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 1,
+				"ratio": 0.0,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 2,
+				"ratio": 0.5936,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "tower",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 3,
+				"ratio": 0.492214156079855,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": false,
+				"limit": 0,
+				"night": 4,
+				"ratio": 0.439054487015751,
+				"role": "balanced"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 8,
+				"night": 5,
+				"ratio": 0.776082138575881,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 9,
+				"night": 6,
+				"ratio": 0.802588733009709,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 11,
+				"night": 7,
+				"ratio": 0.729028187251345,
+				"role": "shock"
+			},
+			{
+				"assigned": 0,
+				"dominant": "summon",
+				"focus_summons": true,
+				"limit": 12,
+				"night": 8,
+				"ratio": 0.663121358836206,
+				"role": "shock"
+			}
+		],
 		"form": "",
-		"gold": 632,
+		"gold": 647,
 		"hero": "frost_mage",
-		"hero_damage": 5317.98217599999,
-		"hp": 211.409005628518,
+		"hero_damage": 5086.48349799999,
+		"hp": 213.0,
 		"kills": 295,
 		"level": 11,
 		"night": 8,
@@ -5977,7 +8455,7 @@
 				"towers": 2
 			},
 			{
-				"basic_damage": 352.58367,
+				"basic_damage": 398.08575,
 				"basic_start": 282.3982,
 				"core_end": 150.0,
 				"core_start": 150.0,
@@ -5988,11 +8466,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 128,
-				"hero_damage": 352.58367,
+				"hero_damage": 398.08575,
 				"hero_start": 282.3982,
 				"night": 3,
 				"peak_alive": 8,
-				"seconds": 12.15,
+				"seconds": 12.9,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					4,
@@ -6002,13 +8480,13 @@
 				],
 				"skill_start": 0.0,
 				"start_tick": 312,
-				"tower_damage": 600.547049999999,
+				"tower_damage": 656.043057999999,
 				"tower_start": 667.999,
 				"towers": 3
 			},
 			{
-				"basic_damage": 448.33548,
-				"basic_start": 634.98187,
+				"basic_damage": 434.65648,
+				"basic_start": 680.48395,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -6018,8 +8496,8 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 163,
-				"hero_damage": 448.33548,
-				"hero_start": 634.98187,
+				"hero_damage": 434.65648,
+				"hero_start": 680.48395,
 				"night": 4,
 				"peak_alive": 3,
 				"seconds": 16.1,
@@ -6031,14 +8509,14 @@
 					1
 				],
 				"skill_start": 0.0,
-				"start_tick": 555,
-				"tower_damage": 358.94008,
-				"tower_start": 1268.54605,
+				"start_tick": 570,
+				"tower_damage": 312.51264,
+				"tower_start": 1324.042058,
 				"towers": 4
 			},
 			{
-				"basic_damage": 670.648719999999,
-				"basic_start": 1083.31735,
+				"basic_damage": 466.19678,
+				"basic_start": 1115.14043,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -6050,8 +8528,8 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 203,
-				"hero_damage": 670.648719999999,
-				"hero_start": 1083.31735,
+				"hero_damage": 466.19678,
+				"hero_start": 1115.14043,
 				"night": 5,
 				"peak_alive": 5,
 				"seconds": 17.45,
@@ -6063,14 +8541,14 @@
 					2
 				],
 				"skill_start": 0.0,
-				"start_tick": 877,
-				"tower_damage": 431.455239999999,
-				"tower_start": 1627.48613,
+				"start_tick": 892,
+				"tower_damage": 347.13764,
+				"tower_start": 1636.554698,
 				"towers": 4
 			},
 			{
-				"basic_damage": 560.508479999998,
-				"basic_start": 1753.96607,
+				"basic_damage": 673.120316,
+				"basic_start": 1581.33721,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -6082,11 +8560,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 294,
-				"hero_damage": 560.508479999998,
-				"hero_start": 1753.96607,
+				"hero_damage": 673.120316,
+				"hero_start": 1581.33721,
 				"night": 6,
-				"peak_alive": 4,
-				"seconds": 18.65,
+				"peak_alive": 6,
+				"seconds": 18.3,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -6095,14 +8573,14 @@
 					3
 				],
 				"skill_start": 0.0,
-				"start_tick": 1226,
-				"tower_damage": 740.12846,
-				"tower_start": 2058.94137,
+				"start_tick": 1241,
+				"tower_damage": 872.963555999999,
+				"tower_start": 1983.692338,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1048.199492,
-				"basic_start": 2314.47455,
+				"basic_damage": 941.481026999999,
+				"basic_start": 2254.457526,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -6114,11 +8592,11 @@
 					"weapon": "oak_staff"
 				},
 				"gold_end": 302,
-				"hero_damage": 1048.199492,
-				"hero_start": 2314.47455,
+				"hero_damage": 941.481026999999,
+				"hero_start": 2254.457526,
 				"night": 7,
 				"peak_alive": 6,
-				"seconds": 20.0,
+				"seconds": 21.55,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -6127,14 +8605,14 @@
 					4
 				],
 				"skill_start": 0.0,
-				"start_tick": 1599,
-				"tower_damage": 1339.8385985,
-				"tower_start": 2799.06983,
+				"start_tick": 1607,
+				"tower_damage": 1559.506005,
+				"tower_start": 2856.655894,
 				"towers": 4
 			},
 			{
-				"basic_damage": 1955.30813399999,
-				"basic_start": 3362.674042,
+				"basic_damage": 1890.544945,
+				"basic_start": 3195.938553,
 				"core_end": 150.0,
 				"core_start": 150.0,
 				"equipment": {
@@ -6145,12 +8623,12 @@
 					"relic": "frost_focus",
 					"weapon": "oak_staff"
 				},
-				"gold_end": 632,
-				"hero_damage": 1955.30813399999,
-				"hero_start": 3362.674042,
+				"gold_end": 647,
+				"hero_damage": 1890.544945,
+				"hero_start": 3195.938553,
 				"night": 8,
-				"peak_alive": 5,
-				"seconds": 27.0,
+				"peak_alive": 6,
+				"seconds": 26.4,
 				"skill_damage": 0.0,
 				"skill_levels": [
 					5,
@@ -6159,19 +8637,58 @@
 					5
 				],
 				"skill_start": 0.0,
-				"start_tick": 1999,
-				"tower_damage": 1871.941465,
-				"tower_start": 4138.9084285,
+				"start_tick": 2038,
+				"tower_damage": 1976.391753,
+				"tower_start": 4416.161899,
 				"towers": 4
 			}
 		],
 		"passive_damage": 0.0,
 		"plan": "mixed",
 		"result": "won",
+		"rolls": {
+			"chest": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"hands": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"head": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"legs": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"relic": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			},
+			"weapon": {
+				"affixes": [],
+				"power": 1.0,
+				"quality": "common",
+				"reforges": 0
+			}
+		},
 		"seed": 7,
 		"skill_damage": 0.0,
 		"skills": true,
-		"summon_damage": 24494.6679304999,
-		"tower_damage": 6010.8498935
+		"summon_damage": 24344.4628499999,
+		"tier": 0,
+		"tower_damage": 6392.553652
 	}
 ]

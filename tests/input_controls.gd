@@ -75,6 +75,7 @@ func _initialize() -> void:
 	await process_frame
 	evolved.set_process(false)
 	await press_key(KEY_1)
+	evolved.hero.gain_xp(35)
 	evolved.wave = 2
 	evolved.state = "upgrade"
 	await press_key(KEY_V)
@@ -88,6 +89,16 @@ func _initialize() -> void:
 	await press_key(KEY_T)
 	assert(evolved.gold == 50 and evolved.hero.inventory.size() == 1)
 	await press_key(KEY_B)
+	evolved.gold = 500
+	await press_key(KEY_J)
+	assert(evolved.equipment_ui.opened)
+	if evolved.hero.inventory_rolls[0].affixes.size() > 1:
+		await press_key(KEY_1)
+		assert(evolved.equipment_ui.locks.has(0))
+	await press_key(KEY_K)
+	assert(evolved.hero.inventory_rolls[0].reforges == 1 and evolved.gold < 500)
+	await press_key(KEY_J)
+	assert(not evolved.equipment_ui.opened)
 	evolved.free()
 	print("input_controls=PASS 双英雄 面板 方向键 空格 鼠标普攻 QWER 闪避")
 	quit(0)
