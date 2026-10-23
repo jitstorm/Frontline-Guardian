@@ -5,26 +5,26 @@ const CAPACITY := 12
 const SLOTS: Array[String] = ["weapon", "head", "chest", "hands", "legs", "relic"]
 const ITEM_IDS: Array[String] = ["rust_axe", "oak_staff", "iron_helm", "leather_vest", "runner_boots", "fighter_gloves", "vital_charm", "steel_blade", "guardian_mail", "berserker_mark", "frost_focus", "storm_grasp"]
 const ITEMS := {
-	"rust_axe": {"name": "Rust Axe", "slot": "weapon", "rarity": "common", "price": 35, "attack": 5.0},
-	"oak_staff": {"name": "Oak Staff", "slot": "weapon", "rarity": "common", "price": 35, "attack": 4.0},
-	"iron_helm": {"name": "Iron Helm", "slot": "head", "rarity": "common", "price": 28, "health": 18.0},
-	"leather_vest": {"name": "Leather Vest", "slot": "chest", "rarity": "common", "price": 30, "defense": 2.0},
-	"runner_boots": {"name": "Runner Boots", "slot": "legs", "rarity": "common", "price": 30, "speed": 25.0},
-	"fighter_gloves": {"name": "Fighter Gloves", "slot": "hands", "rarity": "common", "price": 30, "rate": 0.15},
-	"vital_charm": {"name": "Vital Charm", "slot": "relic", "rarity": "rare", "price": 65, "health": 35.0},
-	"steel_blade": {"name": "Steel Blade", "slot": "weapon", "rarity": "rare", "price": 70, "attack": 12.0},
-	"guardian_mail": {"name": "Guardian Mail", "slot": "chest", "rarity": "rare", "price": 70, "defense": 5.0, "health": 20.0},
-	"berserker_mark": {"name": "Berserker Mark", "slot": "relic", "rarity": "epic", "price": 110, "attack": 7.0, "effect": "rage_chain"},
-	"frost_focus": {"name": "Frost Focus", "slot": "relic", "rarity": "epic", "price": 110, "attack": 6.0, "effect": "frost_burst"},
-	"storm_grasp": {"name": "Storm Grasp", "slot": "hands", "rarity": "epic", "price": 100, "rate": 0.25, "effect": "wide_sweep"}
+	"rust_axe": {"name": "旧战斧", "slot": "weapon", "rarity": "common", "price": 35, "attack": 5.0},
+	"oak_staff": {"name": "橡木法杖", "slot": "weapon", "rarity": "common", "price": 35, "attack": 4.0},
+	"iron_helm": {"name": "铁盔", "slot": "head", "rarity": "common", "price": 28, "health": 18.0},
+	"leather_vest": {"name": "皮甲", "slot": "chest", "rarity": "common", "price": 30, "defense": 2.0},
+	"runner_boots": {"name": "疾行靴", "slot": "legs", "rarity": "common", "price": 30, "speed": 25.0},
+	"fighter_gloves": {"name": "斗士手套", "slot": "hands", "rarity": "common", "price": 30, "rate": 0.15},
+	"vital_charm": {"name": "生命护符", "slot": "relic", "rarity": "rare", "price": 65, "health": 35.0},
+	"steel_blade": {"name": "精钢剑", "slot": "weapon", "rarity": "rare", "price": 70, "attack": 12.0},
+	"guardian_mail": {"name": "守卫铠甲", "slot": "chest", "rarity": "rare", "price": 70, "defense": 5.0, "health": 20.0},
+	"berserker_mark": {"name": "狂战印记", "slot": "relic", "rarity": "epic", "price": 110, "attack": 7.0, "effect": "rage_chain"},
+	"frost_focus": {"name": "寒霜法器", "slot": "relic", "rarity": "epic", "price": 110, "attack": 6.0, "effect": "frost_burst"},
+	"storm_grasp": {"name": "风暴之握", "slot": "hands", "rarity": "epic", "price": 100, "rate": 0.25, "effect": "wide_sweep"}
 }
 const HEROES := {
-	"berserker": {"name": "Berserker", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0},
-	"frost_mage": {"name": "Frost Mage", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0}
+	"berserker": {"name": "狂战士", "health": 145.0, "attack": 19.0, "defense": 3.0, "rate": 1.0, "speed": 235.0},
+	"frost_mage": {"name": "寒霜法师", "health": 95.0, "attack": 16.0, "defense": 1.0, "rate": 1.15, "speed": 255.0}
 }
 const SKILL_NAMES := {
-	"berserker": ["Cleave", "War Cry", "Blood Rush", "Earthshatter"],
-	"frost_mage": ["Ice Lance", "Frost Nova", "Ice Ward", "Blizzard"]
+	"berserker": ["横扫", "战吼", "血怒突进", "裂地击"],
+	"frost_mage": ["冰枪", "冰霜新星", "寒冰护盾", "暴风雪"]
 }
 
 ## 当前选择的职业标识；空字符串表示尚未选英雄。

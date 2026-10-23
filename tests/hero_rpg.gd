@@ -87,11 +87,11 @@ func _initialize() -> void:
 	full.select_hero("berserker")
 	for i in 12: assert(full.hero.pickup("iron_helm"))
 	var full_gold: int = full.gold
-	assert(not full.buy_item("oak_staff") and full.gold == full_gold and full.notice == "Inventory full")
+	assert(not full.buy_item("oak_staff") and full.gold == full_gold and full.notice == "背包已满")
 	full.hero.choose("frost_mage")
 	assert(full.hero.inventory.is_empty() and full.hero.equipment.is_empty() and full.hero.skill_points == 0)
 	full.gold = 0
-	assert(not full.buy_item("steel_blade") and full.notice == "Not enough gold" and full.gold == 0)
+	assert(not full.buy_item("steel_blade") and full.notice == "金币不足" and full.gold == 0)
 	# 每个按键都在真实敌人生命上检查伤害和冷却，避免只有界面技能图标而无战斗效果。
 	for class_id in ["berserker", "frost_mage"]:
 		for skill_index in 4:

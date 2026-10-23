@@ -14,6 +14,20 @@ const START_CELL := Vector2i(0, 8)
 const GOAL_CELL := Vector2i(29, 8)
 const HeroRPG = preload("res://scripts/hero_rpg.gd")
 const GoblinCamp = preload("res://dungeon.tscn")
+const UI_FONT = preload("res://assets/fonts/NotoSansSC-VF.ttf")
+const HERO_WARRIOR = preload("res://assets/kenney/tile_0085.png")
+const HERO_MAGE = preload("res://assets/kenney/tile_0084.png")
+const ENEMY_GRUNT = preload("res://assets/kenney/tile_0108.png")
+const ENEMY_RUNNER = preload("res://assets/kenney/tile_0110.png")
+const ENEMY_ARMORED = preload("res://assets/kenney/tile_0096.png")
+const ENEMY_RANGED = preload("res://assets/kenney/tile_0121.png")
+const ENEMY_ELITE = preload("res://assets/kenney/tile_0122.png")
+const ENEMY_BOSS = preload("res://assets/kenney/tile_0110.png")
+const TOWER_FAST = preload("res://assets/kenney/tile_0090.png")
+const TOWER_HEAVY = preload("res://assets/kenney/tile_0092.png")
+const CORE_ART = preload("res://assets/kenney/tile_0082.png")
+const FLOOR_ART = preload("res://assets/kenney/tile_0049.png")
+const ROAD_ART = preload("res://assets/kenney/tile_0036.png")
 
 var upgrade_pool: Array[String] = ["生命补给", "急救包", "枪械增幅", "快速扳机", "高速弹头", "冲击弹", "双重射击", "炮塔增幅", "射程扩展", "机械润滑", "核心修复", "核心加固", "移动训练", "赏金猎人", "军需补给", "防弹衣", "核心装甲", "塔体加固", "穿甲弹", "巨兽克星"]
 var rng := RandomNumberGenerator.new()
@@ -202,10 +216,10 @@ func enter_dungeon() -> bool:
 func complete_dungeon(item_id: String) -> void:
 	if state != "dungeon" or dungeon_reward_claimed or dungeon_scene == null or not dungeon_scene.reward_spawned or not dungeon_scene.reward_taken: return
 	dungeon_reward_claimed = true
-	if hero.pickup(item_id): show_notice("Camp cleared: epic loot obtained")
+	if hero.pickup(item_id): show_notice("营地已清除：获得史诗战利品")
 	else:
 		gold += 60
-		show_notice("Camp cleared: bag full, +60 gold")
+		show_notice("营地已清除：背包已满，获得 60 金币")
 	leave_dungeon()
 
 ## 返回基地第 2 夜波间状态；炮塔、强化选项和本局经济保持原状。
@@ -275,7 +289,7 @@ func cast_skill(index: int, aim: Vector2) -> bool:
 	# 3. 技能真正释放后才进入冷却；未命中也消耗本次施法机会。
 	hero.cooldowns[index] = base_cooldowns[index]
 	impacts.append({"pos": center, "time": 0.2, "color": Color("80deff") if hero.hero_id == "frost_mage" else Color("ffbd7a")})
-	show_notice("%s  %d hit(s)" % [HeroRPG.SKILL_NAMES[hero.hero_id][index], hits])
+	show_notice("%s：命中 %d 次" % [HeroRPG.SKILL_NAMES[hero.hero_id][index], hits])
 	return true
 
 ## 对真实击杀统一发放原有金币和英雄经验；炮塔与英雄技能走同一条奖励路径。
@@ -293,25 +307,25 @@ func reward_enemy(enemy: Dictionary) -> void:
 ## @return 购买且实际取得商品时返回 true。
 func buy_item(item_id: String) -> bool:
 	if state != "ready":
-		show_notice("Shop opens during preparation")
+		show_notice("商店仅在准备阶段开放")
 		return false
 	var price := 22 if item_id == "potion" else int(HeroRPG.ITEMS.get(item_id, {}).get("price", -1))
 	if price < 0:
-		show_notice("Unknown item")
+		show_notice("未知商品")
 		return false
 	if gold < price:
-		show_notice("Not enough gold")
+		show_notice("金币不足")
 		return false
 	if item_id == "potion":
 		if player_hp >= max_player_hp:
-			show_notice("Health already full")
+			show_notice("生命值已满")
 			return false
 		player_hp = minf(max_player_hp, player_hp + 55.0)
 	elif not hero.pickup(item_id):
-		show_notice("Inventory full")
+		show_notice("背包已满")
 		return false
 	gold -= price
-	show_notice("Purchased " + item_id)
+	show_notice("已购买：" + ("生命药剂" if item_id == "potion" else HeroRPG.ITEMS[item_id].name))
 	return true
 
 ## 出售背包中的装备并退回目录价格的一半；穿戴中的装备需先卸下。
@@ -322,7 +336,7 @@ func sell_item(index: int) -> bool:
 	var item_id: String = hero.inventory[index]
 	gold += int(HeroRPG.ITEMS[item_id].price / 2)
 	hero.inventory.remove_at(index)
-	show_notice("Sold " + item_id)
+	show_notice("已出售：" + HeroRPG.ITEMS[item_id].name)
 	return true
 
 ## 穿戴背包物品后立即更新原战斗变量，使装备加成参与下一次伤害和受击。
@@ -901,9 +915,40 @@ func apply_upgrade(choice: String) -> void:
 	upgrade_choices.clear()
 	state = "ready"
 
-## 绘制战场、单位、状态栏及波间选择，素材缺失时也能完整运行。
+## 把炮塔、英雄和敌人的战斗状态映射到同一套 CC0 像素素材；动画由时间和战斗状态驱动。
+## @param art 实际绘制的贴图。
+## @param pos 单位中心坐标，单位为画面像素。
+## @param size 绘制边长，单位为画面像素。
+## @param tint 受伤或攻击时的颜色反馈。
+func draw_unit(art: Texture2D, pos: Vector2, size: float, tint: Color = Color.WHITE) -> void:
+	var bob := sin(Time.get_ticks_msec() * 0.009 + pos.x) * 2.0
+	draw_texture_rect(art, Rect2(pos + Vector2(-size / 2.0, -size / 2.0 + bob), Vector2(size, size)), false, tint)
+
+## 将塔的内部目标策略转换为玩家可见的中文名称。
+## @param priority 塔的目标策略标识。
+## @return 对应的中文名称；未知标识按最近目标显示。
+func priority_name(priority: String) -> String:
+	return {"nearest": "最近", "front": "最前", "strong": "最强"}.get(priority, "最近")
+
+## 转换商店和背包共用的装备稀有度名称。
+## @param rarity 装备目录中的稀有度标识。
+## @return 中文稀有度名称；未知标识显示为未知。
+func rarity_name(rarity: String) -> String:
+	return {"common": "普通", "rare": "稀有", "epic": "史诗"}.get(rarity, "未知")
+
+## 转换背包中的装备槽名称，不修改实际装备关系。
+## @param slot 装备目录中的槽位标识。
+## @return 对应的中文槽位名称；未知标识显示为未知。
+func slot_name(slot: String) -> String:
+	return {"weapon": "武器", "head": "头部", "chest": "胸甲", "hands": "手部", "legs": "腿部", "relic": "饰品"}.get(slot, "未知")
+
+## 绘制战场、单位、状态栏及波间选择；中文均使用随项目打包的字体。
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), BG)
+	# 地面与道路保持原有碰撞、导航和建塔判定，仅替换视觉表现。
+	for x in range(0, 1280, 40):
+		for y in range(80, 720, 40):
+			draw_texture_rect(FLOOR_ART, Rect2(x, y, 40, 40), false, Color("737f84"))
 	for x in range(0, 1280, 40):
 		draw_line(Vector2(x, 85), Vector2(x, 720), Color("192839"), 1.0)
 	for y in range(100, 720, 40):
@@ -911,12 +956,14 @@ func _draw() -> void:
 	for i in range(PATH.size() - 1):
 		draw_line(PATH[i], PATH[i + 1], ROAD, 76.0, true)
 		draw_line(PATH[i], PATH[i + 1], Color("698095"), 2.0, true)
-	draw_circle(CORE_POS, 37.0, Color("638cff"))
-	draw_circle(CORE_POS, 23.0, Color("c6d4ff"))
+		var distance := PATH[i].distance_to(PATH[i + 1])
+		for step in range(0, int(distance), 36):
+			var point := PATH[i].lerp(PATH[i + 1], float(step) / distance)
+			draw_texture_rect(ROAD_ART, Rect2(point - Vector2(20, 20), Vector2(40, 40)), false)
+	draw_unit(CORE_ART, CORE_POS, 70.0)
 	for i in towers.size():
 		var tower := towers[i]
-		draw_circle(tower.pos, 21.0, Color("247e79") if tower.kind == 1 else Color("995642"))
-		draw_circle(tower.pos, 12.0, Color("7fffd4") if tower.kind == 1 else Color("ff9b71"))
+		draw_unit(TOWER_FAST if tower.kind == 1 else TOWER_HEAVY, tower.pos, 48.0)
 		draw_rect(Rect2(tower.pos + Vector2(-20, -31), Vector2(40.0 * tower.hp / tower.max_hp, 3)), Color("7fffd4"))
 		if i == selected_tower_index:
 			draw_arc(tower.pos, 27.0, 0.0, TAU, 32, Color.WHITE, 2.0)
@@ -928,7 +975,15 @@ func _draw() -> void:
 		if enemy.kind == "ranged": color = Color("c98bbb")
 		if enemy.kind == "elite": color = Color("ae79e9")
 		if enemy.kind == "boss": color = Color("ec5370")
-		draw_circle(enemy.pos, enemy.radius, color)
+		var art: Texture2D = ENEMY_GRUNT
+		match enemy.kind:
+			"runner": art = ENEMY_RUNNER
+			"armored": art = ENEMY_ARMORED
+			"ranged": art = ENEMY_RANGED
+			"elite": art = ENEMY_ELITE
+			"boss": art = ENEMY_BOSS
+		# 受击时短暂发亮，蓄力时用原有预警线表示攻击状态。
+		draw_unit(art, enemy.pos, enemy.radius * 2.4, Color.WHITE if enemy.windup <= 0.0 else color)
 		draw_rect(Rect2(enemy.pos + Vector2(-enemy.radius, -enemy.radius - 9.0), Vector2(enemy.radius * 2.0 * enemy.hp / enemy.max_hp, 4)), Color("ffdc7d"))
 		if enemy.windup > 0.0:
 			draw_line(enemy.pos, enemy.aim, Color("ff7272", 0.7), 2.0)
@@ -936,7 +991,7 @@ func _draw() -> void:
 		if enemy.kind == "boss":
 			draw_rect(Rect2(400, 676, 480, 26), Color("182b41"))
 			draw_rect(Rect2(408, 683, 464.0 * maxf(0.0, enemy.hp) / enemy.max_hp, 11), Color("ec5370"))
-			draw_string(ThemeDB.fallback_font, Vector2(400, 667), "BOSS - dodge the warning spread", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffd2a8"))
+			draw_string(UI_FONT, Vector2(400, 667), "首领：躲开预警范围", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffd2a8"))
 	for bullet in bullets:
 		draw_circle(bullet.pos, bullet.radius, bullet.color)
 	for bullet in hostile_bullets:
@@ -947,25 +1002,25 @@ func _draw() -> void:
 	for item in hit_texts:
 		var tint: Color = item.color
 		tint.a = clampf(item.time / 0.65, 0.0, 1.0)
-		draw_string(ThemeDB.fallback_font, item.pos, str(item.value), HORIZONTAL_ALIGNMENT_LEFT, -1, 17, tint)
-	draw_circle(player_pos, 17.0, Color("ffe074"))
+		draw_string(UI_FONT, item.pos, str(item.value), HORIZONTAL_ALIGNMENT_LEFT, -1, 17, tint)
+	draw_unit(HERO_MAGE if hero.hero_id == "frost_mage" else HERO_WARRIOR, player_pos, 43.0)
 	if dodge_timer > 0.0:
 		draw_arc(player_pos, 23.0, 0.0, TAU, 24, Color("80deff"), 3.0)
 	draw_line(player_pos, player_pos + (get_global_mouse_position() - player_pos).normalized() * 27.0, Color.WHITE, 5.0)
 	draw_rect(Rect2(0, 0, 1280, 85), Color("182b41"))
-	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(25, 33), "FRONTLINE GUARDIAN", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color.WHITE)
-	draw_string(font, Vector2(25, 65), "Arrows Move | Mouse Fire | QWER Skills | F Dodge | B Shop | I Bag | 1/2 Towers", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
+	var font := UI_FONT
+	draw_string(font, Vector2(25, 33), "最后防线", HORIZONTAL_ALIGNMENT_LEFT, -1, 25, Color.WHITE)
+	draw_string(font, Vector2(25, 65), "方向键移动  鼠标射击  Q/W/E/R 技能  F 闪避  B 商店  I 背包  1/2 选塔", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
 	if selected_tower_index >= 0 and selected_tower_index < towers.size():
 		var selected := towers[selected_tower_index]
 		var upgrade_cost: int = 30 * selected.level
-		var next_stats := "MAX LEVEL" if selected.level >= 3 else "U $%d: DMG %.0f -> %.0f  RNG %.0f -> %.0f" % [upgrade_cost, selected.damage, selected.damage * 1.35, selected.range + tower_range_bonus, selected.range + tower_range_bonus + 20.0]
+		var next_stats := "已满级" if selected.level >= 3 else "U 花费 %d 金币：伤害 %.0f→%.0f  射程 %.0f→%.0f" % [upgrade_cost, selected.damage, selected.damage * 1.35, selected.range + tower_range_bonus, selected.range + tower_range_bonus + 20.0]
 		draw_rect(Rect2(18, 91, 760, 65), Color("182b41", 0.9))
-		draw_string(font, Vector2(25, 117), "Tower Lv%d  HP %d/%d  Target %s | H Repair $15  X Sell  P Priority" % [selected.level, ceili(selected.hp), ceili(selected.max_hp), selected.priority], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
+		draw_string(font, Vector2(25, 117), "炮塔 Lv%d  生命 %d/%d  目标 %s｜H 修理 15 金币  X 出售  P 切换目标" % [selected.level, ceili(selected.hp), ceili(selected.max_hp), priority_name(selected.priority)], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
 		draw_string(font, Vector2(25, 142), next_stats, HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
-	draw_string(font, Vector2(825, 32), "Night %d/%d   Gold %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
-	draw_string(font, Vector2(825, 62), "HP %d/%d   Core %d/%d" % [ceili(player_hp), ceili(max_player_hp), ceili(core_hp), ceili(max_core_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
-	draw_string(font, Vector2(575, 65), "F Dodge %s" % ("READY" if dodge_cooldown <= 0.0 else "%.1fs" % dodge_cooldown), HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("80deff"))
+	draw_string(font, Vector2(825, 32), "第 %d/%d 夜   金币 %d" % [wave, MAX_WAVES, gold], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
+	draw_string(font, Vector2(825, 62), "生命 %d/%d   核心 %d/%d" % [ceili(player_hp), ceili(max_player_hp), ceili(core_hp), ceili(max_core_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+	draw_string(font, Vector2(575, 65), "F 闪避 %s" % ("就绪" if dodge_cooldown <= 0.0 else "%.1fs" % dodge_cooldown), HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("80deff"))
 	draw_rect(Rect2(825, 73, 180.0 * maxf(0.0, player_hp) / max_player_hp, 5), Color("ffe074"))
 	draw_rect(Rect2(1020, 73, 180.0 * maxf(0.0, core_hp) / max_core_hp, 5), Color("638cff"))
 	if selected_tower > 0:
@@ -974,22 +1029,22 @@ func _draw() -> void:
 		var tint := Color("7fffd4") if legal else Color("ff7777")
 		draw_arc(mouse, 21.0, 0.0, TAU, 36, tint, 2.0)
 		draw_arc(mouse, (180.0 if selected_tower == 1 else 225.0) + tower_range_bonus, 0.0, TAU, 72, Color(tint, 0.45), 1.5)
-		draw_string(font, mouse + Vector2(26, -20), "BUILD $%d" % (40 if selected_tower == 1 else 55) if legal else "BLOCKED / NO GOLD", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, tint)
-	var message := "SPACE: Start wave" if state == "ready" else ""
+		draw_string(font, mouse + Vector2(26, -20), "建造：%d 金币" % (40 if selected_tower == 1 else 55) if legal else "不可建造／金币不足", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, tint)
+	var message := "空格：开始下一夜" if state == "ready" else ""
 	if state == "upgrade" and upgrade_choices.size() == 2:
-		if dungeon_available(): draw_string(font, Vector2(420, 454), "G: Enter Goblin Camp  |  Choose upgrade to skip", HORIZONTAL_ALIGNMENT_LEFT, -1, 19, Color("e7a6ff"))
+		if dungeon_available(): draw_string(font, Vector2(420, 454), "G：进入哥布林营地｜选择强化可跳过", HORIZONTAL_ALIGNMENT_LEFT, -1, 19, Color("e7a6ff"))
 		draw_rect(Rect2(300, 470, 680, 200), Color("182b41"))
-		draw_string(font, Vector2(475, 515), "NIGHT CLEARED - CHOOSE ONE", HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("ffe074"))
+		draw_string(font, Vector2(475, 515), "本夜已完成：选择一项强化", HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("ffe074"))
 		for i in 2:
 			var card := Rect2(340 + i * 320, 545, 280, 110)
 			draw_rect(card, Color("365a74"))
 			draw_string(font, card.position + Vector2(18, 42), upgrade_choices[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
-			draw_string(font, card.position + Vector2(18, 79), "Press Q" if i == 0 else "Press E", HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("b6c8d7"))
-	if state == "won": message = "VICTORY!  Eight nights survived.  Press R to restart"
-	if state == "lost": message = "DEFEAT!  Press R to restart"
+			draw_string(font, card.position + Vector2(18, 79), "按 Q 选择" if i == 0 else "按 E 选择", HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("b6c8d7"))
+	if state == "won": message = "胜利！守住八夜。按 R 重新开始"
+	if state == "lost": message = "失败！按 R 重新开始"
 	if state == "won" or state == "lost":
 		draw_rect(Rect2(240, 550, 800, 140), Color("182b41"))
-		draw_string(font, Vector2(275, 600), "Nights reached: %d    Enemies defeated: %d" % [wave, kills], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
+		draw_string(font, Vector2(275, 600), "坚持夜数：%d    击败敌人：%d" % [wave, kills], HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 	if state == "ready":
 		draw_rect(Rect2(20, 575, 370, 42), Color("253e59"))
 		draw_string(font, Vector2(35, 604), message, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
@@ -997,56 +1052,57 @@ func _draw() -> void:
 		draw_rect(Rect2(240, 635, 800, 55), Color("253e59"))
 		draw_string(font, Vector2(270, 670), message, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
 	if hero.hero_id != "":
-		draw_string(font, Vector2(770, 105), "5-8: Upgrade Q/W/E/R skills", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("80deff"))
+		draw_string(font, Vector2(770, 105), "按 5–8 升级 Q/W/E/R 技能", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("80deff"))
 		draw_rect(Rect2(20, 672, 340, 7), Color("253e59"))
 		draw_rect(Rect2(20, 672, 340.0 * hero.xp / hero.xp_to_next(), 7), Color("80deff"))
-		draw_string(font, Vector2(20, 660), "%s Lv%d  XP %d/%d  Points %d" % [HeroRPG.HEROES[hero.hero_id].name, hero.level, hero.xp, hero.xp_to_next(), hero.skill_points], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
+		draw_string(font, Vector2(20, 660), "%s Lv%d  经验 %d/%d  技能点 %d" % [HeroRPG.HEROES[hero.hero_id].name, hero.level, hero.xp, hero.xp_to_next(), hero.skill_points], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("80deff"))
 		for i in 4:
 			var key_name: String = ["Q", "W", "E", "R"][i]
 			var skill_rect := Rect2(375 + i * 78, 635, 70, 55)
 			draw_rect(skill_rect, Color("365a74") if hero.cooldowns[i] <= 0.0 else Color("253545"))
 			draw_string(font, skill_rect.position + Vector2(8, 23), "%s %d" % [key_name, hero.skill_levels[i]], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
-			draw_string(font, skill_rect.position + Vector2(8, 44), "READY" if hero.cooldowns[i] <= 0.0 else "%.1fs" % hero.cooldowns[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("80deff"))
+			draw_string(font, skill_rect.position + Vector2(8, 44), "就绪" if hero.cooldowns[i] <= 0.0 else "%.1fs" % hero.cooldowns[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("80deff"))
 	if notice_time > 0.0:
 		draw_rect(Rect2(760, 575, 470, 43), Color("253e59"))
 		draw_string(font, Vector2(775, 603), notice, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
 	if state == "select_hero":
 		draw_rect(Rect2(190, 160, 900, 390), Color("182b41"))
-		draw_string(font, Vector2(490, 220), "CHOOSE YOUR HERO", HORIZONTAL_ALIGNMENT_LEFT, -1, 28, Color("ffe074"))
+		draw_string(font, Vector2(490, 220), "选择英雄", HORIZONTAL_ALIGNMENT_LEFT, -1, 28, Color("ffe074"))
 		for i in 2:
 			var rect := Rect2(265 + i * 405, 270, 345, 210)
 			draw_rect(rect, Color("704b3e") if i == 0 else Color("365a74"))
-			var title := "1  BERSERKER" if i == 0 else "2  FROST MAGE"
-			var detail := "High HP / melee / knockback" if i == 0 else "Frost / range / slow"
+			var title := "1  狂战士" if i == 0 else "2  寒霜法师"
+			var detail := "高生命／近战／击退" if i == 0 else "冰霜／远程／减速"
+			draw_unit(HERO_WARRIOR if i == 0 else HERO_MAGE, rect.position + Vector2(280, 100), 75.0)
 			draw_string(font, rect.position + Vector2(30, 65), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color.WHITE)
 			draw_string(font, rect.position + Vector2(30, 115), detail, HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
 	if shop_open:
 		draw_rect(Rect2(65, 102, 1150, 560), Color("182b41"))
-		draw_string(font, Vector2(100, 136), "SHOP - click to buy  |  B close  |  Gold %d" % gold, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("ffe074"))
+		draw_string(font, Vector2(100, 136), "商店：点击购买｜B 关闭｜金币 %d" % gold, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("ffe074"))
 		for i in HeroRPG.ITEM_IDS.size():
 			var id: String = HeroRPG.ITEM_IDS[i]
 			var item: Dictionary = HeroRPG.ITEMS[id]
 			var effect_label := ""
 			match item.get("effect", ""):
-				"rage_chain": effect_label = " | Rush +45%"
-				"frost_burst": effect_label = " | Nova +40%"
-				"wide_sweep": effect_label = " | Cleave +55%"
+				"rage_chain": effect_label = "｜血怒伤害 +45%"
+				"frost_burst": effect_label = "｜冰霜新星范围 +40%"
+				"wide_sweep": effect_label = "｜横扫范围 +55%"
 			var pos := Vector2(110 + (i % 2) * 530, 150 + int(i / 2) * 68)
 			draw_rect(Rect2(pos, Vector2(500, 57)), Color("365a74"))
-			draw_string(font, pos + Vector2(12, 22), "%s [%s]  $%d%s" % [item.name, item.rarity, item.price, effect_label], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
-			draw_string(font, pos + Vector2(12, 44), "ATK %d  HP %d  DEF %d  SPD %d  RATE +%d%%" % [int(item.get("attack", 0)), int(item.get("health", 0)), int(item.get("defense", 0)), int(item.get("speed", 0)), int(item.get("rate", 0.0) * 100)], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
+			draw_string(font, pos + Vector2(12, 22), "%s [%s]  %d 金币%s" % [item.name, rarity_name(item.rarity), item.price, effect_label], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+			draw_string(font, pos + Vector2(12, 44), "攻击 %d  生命 %d  防御 %d  移速 %d  攻速 +%d%%" % [int(item.get("attack", 0)), int(item.get("health", 0)), int(item.get("defense", 0)), int(item.get("speed", 0)), int(item.get("rate", 0.0) * 100)], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("b6c8d7"))
 		draw_rect(Rect2(905, 570, 255, 60), Color("365a74"))
-		draw_string(font, Vector2(920, 605), "Potion +55 HP  $22", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+		draw_string(font, Vector2(920, 605), "药剂：恢复 55 生命｜22 金币", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 	if inventory_open:
 		draw_rect(Rect2(65, 102, 1150, 560), Color("182b41"))
-		draw_string(font, Vector2(100, 132), "EQUIPMENT - click slot to remove  |  I close", HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
+		draw_string(font, Vector2(100, 132), "装备：点击槽位卸下｜I 关闭", HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
 		for i in HeroRPG.SLOTS.size():
 			var slot: String = HeroRPG.SLOTS[i]
 			var pos := Vector2(100 + (i % 3) * 350, 140 + int(i / 3) * 70)
 			draw_rect(Rect2(pos, Vector2(320, 60)), Color("365a74"))
-			draw_string(font, pos + Vector2(12, 35), "%s: %s" % [slot, hero.equipment.get(slot, "empty")], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
-		draw_string(font, Vector2(100, 315), "BAG %d/%d - click to equip, Shift-click to sell" % [hero.inventory.size(), HeroRPG.CAPACITY], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
+			draw_string(font, pos + Vector2(12, 35), "%s：%s" % [slot_name(slot), HeroRPG.ITEMS[hero.equipment[slot]].name if hero.equipment.has(slot) else "空"], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+		draw_string(font, Vector2(100, 315), "背包 %d/%d：点击穿戴，Shift＋点击出售" % [hero.inventory.size(), HeroRPG.CAPACITY], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("ffe074"))
 		for i in hero.inventory.size():
 			var pos := Vector2(100 + (i % 2) * 530, 330 + int(i / 2) * 48)
 			draw_rect(Rect2(pos, Vector2(500, 42)), Color("365a74"))
-			draw_string(font, pos + Vector2(12, 28), "%s  [%s]" % [HeroRPG.ITEMS[hero.inventory[i]].name, HeroRPG.ITEMS[hero.inventory[i]].rarity], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)
+			draw_string(font, pos + Vector2(12, 28), "%s  [%s]" % [HeroRPG.ITEMS[hero.inventory[i]].name, rarity_name(HeroRPG.ITEMS[hero.inventory[i]].rarity)], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color.WHITE)

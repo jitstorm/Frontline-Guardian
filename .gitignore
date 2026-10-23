@@ -1,4 +1,5 @@
 .godot/
+.godot_user/
 *.tmp
 *.zip
 test_logs/*.png.import

@@ -5,6 +5,14 @@ signal reward_collected(item_id: String)
 signal retreat_requested
 
 const HeroRPG = preload("res://scripts/hero_rpg.gd")
+const UI_FONT = preload("res://assets/fonts/NotoSansSC-VF.ttf")
+const HERO_WARRIOR = preload("res://assets/kenney/tile_0085.png")
+const HERO_MAGE = preload("res://assets/kenney/tile_0084.png")
+const GOBLIN = preload("res://assets/kenney/tile_0108.png")
+const GOBLIN_ELITE = preload("res://assets/kenney/tile_0110.png")
+const GOBLIN_BOSS = preload("res://assets/kenney/tile_0122.png")
+const LOOT_ART = preload("res://assets/kenney/tile_0082.png")
+const FLOOR_ART = preload("res://assets/kenney/tile_0049.png")
 const ARENA := Rect2(35, 95, 1210, 580)
 ## 掉落按所选职业决定，让首次副本奖励能立即参与对应技能构筑。
 var loot_id := ""
@@ -124,7 +132,7 @@ func damage_enemy(index: int, damage: float) -> void:
 	if enemy.kind == "boss" and not reward_spawned:
 		reward_spawned = true
 		reward_pos = enemy.pos
-		notice = "Boss defeated! Collect the glowing reward."
+		notice = "首领已击败！靠近发光战利品领取奖励。"
 
 ## 怪物追逐英雄，近战有攻击前摇，小 Boss 发射可见弹丸。
 ## @param delta 本帧经过的秒数。
@@ -180,23 +188,30 @@ func update_bullets(delta: float) -> void:
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, 1280, 720), Color("17251e"))
 	draw_rect(ARENA, Color("294432"))
+	# 副本地面复用同系列图块并染成林地色，避免角色与场景风格断裂。
+	for x in range(40, 1240, 40):
+		for y in range(100, 660, 40):
+			draw_texture_rect(FLOOR_ART, Rect2(x, y, 40, 40), false, Color("6d9370"))
 	for i in 10:
 		draw_circle(Vector2(120 + i * 115, 140 + (i % 3) * 210), 25.0, Color("31543b"))
-	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(35, 40), "GOBLIN CAMP  |  Gold %d  |  HP %d/%d  |  ESC retreat" % [game.gold, ceili(game.player_hp), ceili(game.max_player_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color.WHITE)
-	draw_string(font, Vector2(35, 72), "Arrows move  Mouse shoot  Q/W/E/R skills  F dodge", HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("d7e7c6"))
+	var font := UI_FONT
+	draw_string(font, Vector2(35, 40), "哥布林营地｜金币 %d｜生命 %d/%d｜Esc 撤退" % [game.gold, ceili(game.player_hp), ceili(game.max_player_hp)], HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color.WHITE)
+	draw_string(font, Vector2(35, 72), "方向键移动  鼠标射击  Q/W/E/R 技能  F 闪避", HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("d7e7c6"))
 	for enemy in enemies:
 		var color := Color("99cb70") if enemy.kind == "grunt" else Color("d7a75d") if enemy.kind == "elite" else Color("e66565")
 		var radius := 19.0 if enemy.kind == "grunt" else 27.0 if enemy.kind == "elite" else 38.0
-		draw_circle(enemy.pos, radius, color)
+		# 普通怪、精英与首领共用同一画风；蓄力时用颜色反馈区分攻击阶段。
+		var art: Texture2D = GOBLIN if enemy.kind == "grunt" else GOBLIN_ELITE if enemy.kind == "elite" else GOBLIN_BOSS
+		var bob := sin(Time.get_ticks_msec() * 0.009 + enemy.pos.x) * 2.0
+		draw_texture_rect(art, Rect2(enemy.pos + Vector2(-radius, -radius + bob), Vector2(radius * 2.0, radius * 2.0)), false, Color.WHITE if enemy.windup <= 0.0 else color)
 		draw_rect(Rect2(enemy.pos + Vector2(-radius, -radius - 11), Vector2(radius * 2.0 * enemy.hp / enemy.max_hp, 5)), Color("ffe074"))
 		if enemy.windup > 0.0: draw_line(enemy.pos, enemy.aim, Color("ff7777"), 2.0)
 	for bullet in bullets: draw_circle(bullet.pos, 6.0, Color("ffe074"))
 	for bullet in hostile_bullets: draw_circle(bullet.pos, 8.0, Color("ff7777"))
-	draw_circle(hero_pos, 18.0, Color("80deff") if game.hero.hero_id == "frost_mage" else Color("ffe074"))
+	draw_texture_rect(HERO_MAGE if game.hero.hero_id == "frost_mage" else HERO_WARRIOR, Rect2(hero_pos - Vector2(22, 22), Vector2(44, 44)), false)
 	if reward_spawned and not reward_taken:
-		draw_circle(reward_pos, 22.0, Color("e7a6ff"))
-		draw_string(font, reward_pos + Vector2(28, 0), "Epic loot", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
+		draw_texture_rect(LOOT_ART, Rect2(reward_pos - Vector2(22, 22), Vector2(44, 44)), false)
+		draw_string(font, reward_pos + Vector2(28, 0), "史诗战利品", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color.WHITE)
 		draw_rect(Rect2(320, 595, 640, 65), Color("182b41"))
-		draw_string(font, Vector2(342, 630), "REWARD: %s - walk to the glowing drop" % HeroRPG.ITEMS[loot_id].name, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("e7a6ff"))
+		draw_string(font, Vector2(342, 630), "奖励：%s——靠近发光掉落物领取" % HeroRPG.ITEMS[loot_id].name, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("e7a6ff"))
 	if notice != "": draw_string(font, Vector2(320, 680), notice, HORIZONTAL_ALIGNMENT_LEFT, -1, 21, Color("ffe074"))
